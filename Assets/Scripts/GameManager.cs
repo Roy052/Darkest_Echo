@@ -20,9 +20,9 @@ public class GameManager : Singleton
 
     public int stageNum = 10;
 
-    public void LoadScene(string sceneName)
+    public void LoadLobby()
     {
-        SceneManager.LoadScene(sceneName);
+        SceneManager.LoadScene("Lobby");
     }
 
     public void LoadStage(int num)
