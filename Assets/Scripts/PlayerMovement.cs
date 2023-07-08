@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving;
     private Vector3 lastFootprint;
     private EnumFoot whichFoot;
+    private AudioSource audioSrc;
 
     private void Start()
     {
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = 4.5f;
         stopTime = 0;
         isMoving = false;
+        audioSrc = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -80,7 +82,11 @@ public class PlayerMovement : MonoBehaviour
         {
             //추가필요
             stopTime += Time.deltaTime;
-            
+            if (stopTime >= 2f)
+            {
+                SpawnDecal(stop);
+                stopTime = 0f;
+            }
         }
         
         isMoving = false;
@@ -103,6 +109,7 @@ public class PlayerMovement : MonoBehaviour
             }
             decal.transform.position = transform.position + (stepOffset * 0.3f);
             decal.transform.up = moveDirection;
+            audioSrc.Play();
         }
         else
         {

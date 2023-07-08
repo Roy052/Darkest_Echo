@@ -8,14 +8,14 @@ public class Footprint : MonoBehaviour
     public float fadeDuration = 2f;      // Duration of the fade in seconds
     public float visibleDuration = 10f;  // Duration of staying partially transparent in seconds
 
-    private Renderer renderer;
+    private Renderer Footprintrenderer;
     private Color originalColor;
     private float fadeStartTime;
     private bool isFading = false;
     void Start()
     {
-        renderer = GetComponent<Renderer>();
-        originalColor = renderer.material.color;
+        Footprintrenderer = GetComponent<Renderer>();
+        originalColor = Footprintrenderer.material.color;
         fadeStartTime = Time.time;
     }
 
@@ -32,13 +32,13 @@ public class Footprint : MonoBehaviour
             {
                 float t = elapsed / fadeDuration;
                 Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0.5f, t));
-                renderer.material.color = newColor;
+                Footprintrenderer.material.color = newColor;
             }
             else if (elapsed < (fadeDuration + visibleDuration))
             {
                 // Stay partially transparent for the visible duration
                 Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-                renderer.material.color = newColor;
+                Footprintrenderer.material.color = newColor;
             }
             else if (elapsed < (fadeDuration + visibleDuration + fadeDuration))
             {
@@ -59,7 +59,7 @@ public class Footprint : MonoBehaviour
             {
                 float t = elapsed / fadeDuration;
                 Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(0.5f, 0f, t));
-                renderer.material.color = newColor;
+                Footprintrenderer.material.color = newColor;
             }
             else
             {
