@@ -14,8 +14,8 @@ public class PlayerMovement : MonoBehaviour
         Right,
     }
 
-    public GameObject leftPrefab = null;
-    public GameObject rightPrefab = null;
+    public GameObject leftPrefab;
+    public GameObject rightPrefab;
     public GameObject stop = null;
     public float footprintSpacer = 2.0f;
     private float stopTime;
