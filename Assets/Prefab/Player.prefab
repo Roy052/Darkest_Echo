@@ -98,10 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fc9736b087e4845be9b1304e52e6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftPrefab: {fileID: 1654270230993369571, guid: 43f2bb9252e1cd942a5673810721bf28, type: 3}
+  leftPrefab: {fileID: 3959664807709800381, guid: 22daef1447b1ea34db1b8cd9432db00e, type: 3}
   rightPrefab: {fileID: 5475340837298045659, guid: 43f09fba1b5cc1f40a4b55e49667e8cb, type: 3}
-  stop: {fileID: 0}
-  footprintSpacer: 2
+  stopPrefab: {fileID: 0}
 --- !u!82 &-337521091722608657
 AudioSource:
   m_ObjectHideFlags: 0
@@ -112,7 +111,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: e5b9a63e11f3a8b4a8fef1eb139cc786, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -158,7 +157,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0

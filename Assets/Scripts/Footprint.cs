@@ -1,71 +1,95 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Vector3 = System.Numerics.Vector3;
 
 public class Footprint : MonoBehaviour
 {
-    public float fadeDuration = 2f;      // Duration of the fade in seconds
-    public float visibleDuration = 10f;  // Duration of staying partially transparent in seconds
+    public float fadeDuration; // Duration of the fade in seconds
+    public float visibleDuration; // Duration of staying partially transparent in seconds
 
     private Renderer Footprintrenderer;
     private Color originalColor;
+    private Color targetColor;
     private float fadeStartTime;
-    private bool isFading = false;
-    void Start()
+    private bool isFading;
+    private bool isStop;
+    private bool isSneaking;
+    private GameObject player;
+
+    private void Start()
     {
         Footprintrenderer = GetComponent<Renderer>();
+        player = GameObject.Find("Player");
+        isStop = player.GetComponent<PlayerMovement>().IsStop();
+        isFading = false;
         originalColor = Footprintrenderer.material.color;
         fadeStartTime = Time.time;
+        fadeDuration = 2f;
+        visibleDuration = 10f;
+        
+        isSneaking = player.GetComponent<PlayerMovement>().IsSneaking();
+        // Player sneaking logic
+        if (isSneaking)
+        {
+            targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+            Footprintrenderer.material.color = targetColor;
+        }
     }
 
 
-    void Update()
+    private void Update()
     {
-        // Calculate the elapsed time since the fade started
-        float elapsed = Time.time - fadeStartTime;
-
-        if (!isFading)
+        // If Player is stopped, do not fade
+        if (!isStop)
         {
-            // Fade to 50% transparency over the fade duration
-            if (elapsed < fadeDuration)
+            // Calculate the elapsed time since the fade started
+            var elapsed = Time.time - fadeStartTime;
+
+            if (!isFading)
             {
-                float t = elapsed / fadeDuration;
-                Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0.5f, t));
-                Footprintrenderer.material.color = newColor;
-            }
-            else if (elapsed < (fadeDuration + visibleDuration))
-            {
-                // Stay partially transparent for the visible duration
-                Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-                Footprintrenderer.material.color = newColor;
-            }
-            else if (elapsed < (fadeDuration + visibleDuration + fadeDuration))
-            {
-                // Fade to fully transparent over the fade duration
-                isFading = true;
-                fadeStartTime = Time.time;
+                // Fade to 50% transparency over the fade duration
+                if (elapsed < fadeDuration && !isSneaking)
+                {
+                    var t = elapsed / fadeDuration;
+                    targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0.5f, t));
+                    Footprintrenderer.material.color = targetColor;
+                }
+                else if (elapsed < fadeDuration + visibleDuration)
+                {
+                    // Stay at 50% transparency for the duration of visibleDuration
+                }
+                else if (elapsed < fadeDuration + visibleDuration + fadeDuration)
+                {
+                    // Fade to fully transparent over the fade duration
+                    isFading = true;
+                    fadeStartTime = Time.time;
+                }
+                // Can't reach here
             }
             else
             {
-                // Object has completed the fade and should be destroyed
-                Destroy(gameObject);
+                // Fade to fully transparent over the fade duration
+                if (elapsed < fadeDuration)
+                {
+                    var t = elapsed / fadeDuration;
+                    targetColor = new Color(originalColor.r, originalColor.g, originalColor.b,
+                        Mathf.Lerp(0.5f, 0f, t));
+                    Footprintrenderer.material.color = targetColor;
+                }
+                else
+                {
+                    // Object has completed the fade and should be destroyed
+                    Destroy(gameObject);
+                }
             }
         }
         else
         {
-            // Fade to fully transparent over the fade duration
-            if (elapsed < fadeDuration)
+            // When player move again, start fading
+            if (player.GetComponent<PlayerMovement>().IsStop() == false)
             {
-                float t = elapsed / fadeDuration;
-                Color newColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(0.5f, 0f, t));
-                Footprintrenderer.material.color = newColor;
+                isStop = false;
+                fadeStartTime = Time.time;
             }
-            else
-            {
-                // Object has completed the fade and should be destroyed
-                Destroy(gameObject);
-            }
+            // Can't reach here
         }
     }
 }
