@@ -206,7 +206,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 162353036}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422853187}
+        m_TargetAssemblyTypeName: LobbySM, Assembly-CSharp
+        m_MethodName: OnStage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &162353036
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,7 +269,7 @@ GameObject:
   - component: {fileID: 264552721}
   - component: {fileID: 264552720}
   m_Layer: 5
-  m_Name: Label
+  m_Name: LabelStage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -481,7 +493,7 @@ GameObject:
   - component: {fileID: 680972688}
   - component: {fileID: 680972687}
   m_Layer: 5
-  m_Name: Label
+  m_Name: LabelPlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -642,9 +654,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eebc00b18b51dfd48a5fc50a3e57f2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  btnPlay: {fileID: 0}
-  btnStage: {fileID: 0}
-  btnSurvival: {fileID: 0}
+  btnPlay: {fileID: 2052622608}
+  btnStage: {fileID: 162353033}
+  line: {fileID: 587646893}
+  btnSurvival: {fileID: 1681387000}
+  labelPlay: {fileID: 680972687}
+  labelStage: {fileID: 264552720}
+  labelSurvival: {fileID: 2125400081}
 --- !u!224 &1422853188
 RectTransform:
   m_ObjectHideFlags: 0
@@ -669,6 +685,63 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &1518942665
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7775779698203087906, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_Name
+      value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
 --- !u!1 &1681387000
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,7 +825,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1681387003}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422853187}
+        m_TargetAssemblyTypeName: LobbySM, Assembly-CSharp
+        m_MethodName: OnSurvival
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1681387003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -958,7 +1043,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2052622611}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422853187}
+        m_TargetAssemblyTypeName: LobbySM, Assembly-CSharp
+        m_MethodName: OnPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2052622611
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1009,7 +1106,7 @@ GameObject:
   - component: {fileID: 2125400082}
   - component: {fileID: 2125400081}
   m_Layer: 5
-  m_Name: Label
+  m_Name: LabelSurvival
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
