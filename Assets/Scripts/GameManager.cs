@@ -32,7 +32,8 @@ public class GameManager : Singleton
         gm = null;
     }
 
-    public int stageNum = 10;
+    public int unlockedStageNum = 10;
+    public int stageNum = 1;
 
     public void LoadLobby()
     {

@@ -15,7 +15,7 @@ public class SelectStageSM : Singleton
 
     public void Set()
     {
-        for(int i = 1; i <= gm.stageNum; i++)
+        for(int i = 1; i <= gm.unlockedStageNum; i++)
         {
             if(stageEltList.Count > i)
             {
