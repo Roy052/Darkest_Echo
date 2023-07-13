@@ -29,7 +29,8 @@ public class GameManager : Singleton
 
     private void OnDestroy()
     {
-        gm = null;
+        if(gm == this)
+            gm = null;
     }
 
     public int unlockedStageNum = 10;

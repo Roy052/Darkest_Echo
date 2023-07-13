@@ -7,12 +7,27 @@ public class StageSM : Singleton
 {
     public Text textNumber;
     public Text textTitle;
+    public Image endImage;
     int stageNum;
+
+    public GameObject player;
+
+    private void Awake()
+    {
+        stageSM = this;
+    }
+
+    private void OnDestroy()
+    {
+        stageSM = null;
+    }
 
     private void Start()
     {
         textNumber.color = new Color(1, 1, 1, 0);
         textTitle.color = new Color(1, 1, 1, 0);
+        player.SetActive(false);
+
         SetUp(gm.stageNum);
     }
 
@@ -20,6 +35,7 @@ public class StageSM : Singleton
     {
         stageNum = num;
         textNumber.text = $"- {Extended.ConvertToRoman(num)} -";
+        textTitle.text = gameInfos.stageTitle[num];
 
         StartCoroutine(_SetUp());
     }
@@ -32,10 +48,21 @@ public class StageSM : Singleton
         yield return new WaitForSeconds(3);
         StartCoroutine(FadeManager.FadeOut(textNumber, 1));
         StartCoroutine(FadeManager.FadeOut(textTitle, 1));
+        yield return new WaitForSeconds(1);
+
+        player.SetActive(true);
     }
 
-    public IEnumerator StageEnd()
+    public void StageEnd()
     {
+        StartCoroutine(_StageEnd());
+    }
+
+    public IEnumerator _StageEnd()
+    {
+        StartCoroutine(FadeManager.FadeIn(endImage, 1));
         yield return new WaitForSeconds(1);
+        gm.stageNum += 1;
+        gm.LoadStage(stageNum + 1);
     }
 }

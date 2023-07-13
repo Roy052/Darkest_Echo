@@ -7,6 +7,7 @@ public class SelectStageSM : Singleton
     public GameObject stagePrefab;
 
     List<StageElt> stageEltList = new List<StageElt>();
+    List<GameObject> lines = new List<GameObject>();
 
     private void Start()
     {
