@@ -11,17 +11,17 @@ public class SoundWave : MonoBehaviour
     private float trailStartTime;
     public float fadeDuration;
     public Color originalColor;
-    
+
     private void Start()
     {
-        moveSpeed = 10f;
+        moveSpeed = 7f;
         moveDir = moveDir.normalized;
         reflectDir = Vector3.zero;
         rigid = GetComponent<Rigidbody2D>();
         hitInfo = new RaycastHit2D[1];
         trailRenderer = GetComponent<TrailRenderer>();
         originalColor = trailRenderer.startColor;
-        fadeDuration = 2f;
+        fadeDuration = 1.5f;
         trailStartTime = Time.time;
     }
 
@@ -31,11 +31,8 @@ public class SoundWave : MonoBehaviour
         rigid.Cast(moveDir, hitInfo, 0.1f);
         if (hitInfo[0].collider != null)
             reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
-        
-        transform.position += moveSpeed * Time.deltaTime * moveDir;
-        
+
         // Fading sound wave and destroy it
-        
         var elapsed = Time.time - trailStartTime;
         if (elapsed < fadeDuration)
         {
@@ -43,8 +40,13 @@ public class SoundWave : MonoBehaviour
             trailRenderer.startColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
             trailRenderer.endColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
         }
-        else Destroy(gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
             
+        // Move the sound wave
+        transform.position += moveSpeed * Time.deltaTime * moveDir;
     }
 
     private void OnTriggerEnter2D(Collider2D other)

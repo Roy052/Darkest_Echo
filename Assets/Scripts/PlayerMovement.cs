@@ -1,39 +1,38 @@
 using System;
-using UnityEngine;
 using System.Collections;
-using UnityEngine.Assertions.Comparers;
+using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Camera mainCamera;
-    private Vector3 targetPosition;
-    private Vector3 moveDir = Vector3.zero;
-    private float moveSpeed;
-
     public enum EnumFoot
     {
         Left,
         Right
     }
 
+    private Camera mainCamera;
+    private Vector3 targetPosition;
+    private Vector3 moveDir = Vector3.zero;
+    private float moveSpeed;
     public GameObject leftPrefab;
     public GameObject rightPrefab;
     public GameObject stopPrefab;
     public GameObject soundWavePrefab;
     private float footprintSpacer;
+    private float movementTimer;
     private float stopTime;
     private bool isMoving;
     private bool isStop;
     private bool isSneaking;
-    private Vector3 lastFootprint;
     private EnumFoot whichFoot;
     private AudioSource audioSrc;
-    
+
     private void Start()
     {
         mainCamera = Camera.main;
         moveSpeed = 4.5f;
-        footprintSpacer = 2.0f;
+        footprintSpacer = 0.5f;
+        movementTimer = 0;
         stopTime = 0;
         isMoving = false;
         isStop = false;
@@ -47,26 +46,25 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             moveSpeed = 2.0f;
-            footprintSpacer = 1.0f;
             audioSrc.mute = true;
             isSneaking = true;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             moveSpeed = 4.5f;
-            footprintSpacer = 2.0f;
             audioSrc.mute = false;
             isSneaking = false;
         }
-
+    
         // Footstep decal logic
         if (isMoving)
         {
             stopTime = 0;
+            movementTimer += Time.deltaTime;
             isStop = false;
-            var movingDistance = Vector3.Distance(lastFootprint, transform.position);
-            if (movingDistance >= footprintSpacer)
+            if (movementTimer >= footprintSpacer)
             {
+                movementTimer = 0;
                 if (whichFoot == EnumFoot.Left)
                 {
                     SpawnDecal(leftPrefab, 0.3f);
@@ -77,8 +75,6 @@ public class PlayerMovement : MonoBehaviour
                     SpawnDecal(rightPrefab, 0.3f);
                     whichFoot = EnumFoot.Left;
                 }
-
-                lastFootprint = transform.position;
             }
         }
         else
@@ -90,20 +86,15 @@ public class PlayerMovement : MonoBehaviour
                 if (stopTime >= 1.5f)
                 {
                     isStop = true;
+                    movementTimer = 0;
                     SpawnDecal(stopPrefab, 0.5f);
                 }
             }
         }
-
-        isMoving = false;
+        
     }
 
     private void FixedUpdate()
-    {
-        Move();
-    }
-
-    private void Move()
     {
         // Player movement input logic
         var x = Input.GetAxisRaw("Horizontal");
@@ -127,8 +118,9 @@ public class PlayerMovement : MonoBehaviour
             transform.up = moveDir;
             transform.position += moveSpeed * Time.deltaTime * moveDir;
         }
+        else isMoving = false;
     }
-    
+
     private void SpawnDecal(GameObject prefab, float stepWidth)
     {
         if (prefab != stopPrefab)
@@ -147,12 +139,6 @@ public class PlayerMovement : MonoBehaviour
             {
                 var soundWave = Instantiate(soundWavePrefab);
                 soundWave.transform.position = transform.position + stepOffset * stepWidth;
-                if (isSneaking)
-                {
-                    soundWave.GetComponent<TrailRenderer>().startColor = new Color(1f, 1f, 1f, 0.5f);
-                    soundWave.GetComponent<TrailRenderer>().endColor = new Color(1f, 1f, 1f, 0.5f);
-                    soundWave.GetComponent<SoundWave>().fadeDuration = 0.5f;
-                }
             }
         }
         else
@@ -170,7 +156,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    
+
     private IEnumerator DelayedStep(GameObject prefab, float stepWidth)
     {
         yield return new WaitForSeconds(0.2f);
@@ -182,11 +168,10 @@ public class PlayerMovement : MonoBehaviour
         if (isStop) return true;
         return false;
     }
-    
+
     public bool IsSneaking()
     {
         if (isSneaking) return true;
         return false;
     }
-
 }
