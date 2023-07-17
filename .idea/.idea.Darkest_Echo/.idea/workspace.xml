@@ -6,7 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="c48b409c-9534-4ff8-a6d7-d6e2cbfb10a5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Darkest_Echo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Darkest_Echo/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/LeftFootstep.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/LeftFootstep.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/RightFootstep.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/RightFootstep.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefab/SoundWave.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/SoundWave.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/SoundWave.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/SoundWave.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/StopFootstep.prefab" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/StopFootstep.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObjectDestroyer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/ObjectDestroyer.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerMovement.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/SoundWave.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SoundWave.cs" afterDir="false" />
     </list>
@@ -81,10 +90,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="21948">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="21948" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -123,7 +132,8 @@
       <workItem from="1689270514799" duration="14464000" />
       <workItem from="1689437425394" duration="228000" />
       <workItem from="1689437678171" duration="6101000" />
-      <workItem from="1689527823412" duration="3995000" />
+      <workItem from="1689527823412" duration="4160000" />
+      <workItem from="1689589417650" duration="11440000" />
     </task>
     <servers />
   </component>

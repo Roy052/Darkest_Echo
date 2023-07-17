@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject rightPrefab;
     public GameObject stopPrefab;
     public GameObject soundWavePrefab;
+    private int soundWaveCount;
     private float footprintSpacer;
     private float movementTimer;
     private float stopTime;
@@ -30,13 +31,15 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         mainCamera = Camera.main;
-        moveSpeed = 4.5f;
+        moveSpeed = 3.5f;
         footprintSpacer = 0.5f;
         movementTimer = 0;
         stopTime = 0;
         isMoving = false;
         isStop = false;
         isSneaking = false;
+        soundWaveCount = 20;
+        whichFoot = EnumFoot.Left;
         audioSrc = GetComponent<AudioSource>();
     }
 
@@ -45,13 +48,15 @@ public class PlayerMovement : MonoBehaviour
         // Player sneaking logic with left shift
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            moveSpeed = 2.0f;
+            moveSpeed = 1.5f;
+            soundWaveCount = 18;
             audioSrc.mute = true;
             isSneaking = true;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            moveSpeed = 4.5f;
+            moveSpeed = 3.5f;
+            soundWaveCount = 20;
             audioSrc.mute = false;
             isSneaking = false;
         }
@@ -67,12 +72,12 @@ public class PlayerMovement : MonoBehaviour
                 movementTimer = 0;
                 if (whichFoot == EnumFoot.Left)
                 {
-                    SpawnDecal(leftPrefab, 0.3f);
+                    SpawnDecal(leftPrefab, 0.1f);
                     whichFoot = EnumFoot.Right;
                 }
                 else if (whichFoot == EnumFoot.Right)
                 {
-                    SpawnDecal(rightPrefab, 0.3f);
+                    SpawnDecal(rightPrefab, 0.1f);
                     whichFoot = EnumFoot.Left;
                 }
             }
@@ -87,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     isStop = true;
                     movementTimer = 0;
-                    SpawnDecal(stopPrefab, 0.5f);
+                    SpawnDecal(stopPrefab, 0.2f);
                 }
             }
         }
@@ -126,19 +131,26 @@ public class PlayerMovement : MonoBehaviour
         if (prefab != stopPrefab)
         {
             //Left and right step each
-            Vector3 stepOffset;
+            float stepOffset;
             var decal = Instantiate(prefab);
             if (prefab == leftPrefab)
-                stepOffset = -transform.right;
+                stepOffset = -1f;
             else
-                stepOffset = transform.right;
-            decal.transform.position = transform.position + stepOffset * stepWidth;
+                stepOffset = 1f;
+            decal.transform.position = transform.position + stepOffset * stepWidth * transform.right;
             decal.transform.up = moveDir;
+            decal.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0,0,stepOffset * 5f));
             audioSrc.Play();
-            if (Mathf.Approximately(stepWidth, 0.3f))
+            if (Mathf.Approximately(stepWidth, 0.1f))
             {
-                var soundWave = Instantiate(soundWavePrefab);
-                soundWave.transform.position = transform.position + stepOffset * stepWidth;
+                for(var i = 1; i <= soundWaveCount; i++)
+                {
+                    var soundWave = Instantiate(soundWavePrefab);
+                    soundWave.transform.position = transform.position + stepOffset * stepWidth * transform.right;
+                    float angle = (360 / soundWaveCount * i + 5) * Mathf.Deg2Rad;
+                    Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+                    soundWave.GetComponent<SoundWave>().SetMoveDir(direction);
+                }
             }
         }
         else
