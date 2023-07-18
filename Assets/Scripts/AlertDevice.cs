@@ -2,11 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AlertDevice : MonoBehaviour
+public class AlertDevice : StageObject
 {
     public SoundWaveGenerator soundWaveGenerator;
     bool deviceOn = false;
     float time = 0;
+
+    private void Awake()
+    {
+        type = StageObjectType.AlertDevice;
+    }
+
     void Update()
     {
         if(deviceOn && time > 1)
