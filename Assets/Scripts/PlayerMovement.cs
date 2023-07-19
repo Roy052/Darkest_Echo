@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 moveDir = Vector3.zero;
     private float moveSpeed;
+    private float clapPower;
     public GameObject leftPrefab;
     public GameObject rightPrefab;
     public GameObject stopPrefab;
@@ -27,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isSneaking;
     private EnumFoot whichFoot;
     private AudioSource audioSrc;
+    
 
     private void Start()
     {
@@ -34,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = 3.5f;
         footprintSpacer = 0.5f;
         movementTimer = 0;
+        clapPower = 0;
         stopTime = 0;
         isMoving = false;
         isStop = false;
@@ -50,17 +53,38 @@ public class PlayerMovement : MonoBehaviour
         {
             moveSpeed = 1.5f;
             soundWaveCount = 18;
-            audioSrc.mute = true;
             isSneaking = true;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             moveSpeed = 3.5f;
             soundWaveCount = 20;
-            audioSrc.mute = false;
             isSneaking = false;
         }
-    
+        
+        // Clap logic with space bar
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
+        {
+            clapPower += Time.deltaTime;
+        }
+        else if (Input.GetKeyUp(KeyCode.Space))
+        {
+            clapPower = Mathf.Clamp(clapPower, 0f, 1f);
+            audioSrc.volume = Mathf.Lerp(0.5f, 1f, clapPower);
+            clapPower = Mathf.Lerp(1f, 3f, clapPower);
+            for(var i = 1; i <= 80; i++)
+            {
+                var soundWave = Instantiate(soundWavePrefab);
+                soundWave.transform.position = transform.position;
+                float angle = (4.5f * i + 5) * Mathf.Deg2Rad;
+                Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+                soundWave.GetComponent<SoundWave>().SetMoveDir(direction);
+                soundWave.GetComponent<SoundWave>().SetDuration(clapPower, clapPower * 0.5f);
+            }
+            audioSrc.Play();
+            clapPower = 0;
+        }
+
         // Footstep decal logic
         if (isMoving)
         {
@@ -140,7 +164,6 @@ public class PlayerMovement : MonoBehaviour
             decal.transform.position = transform.position + stepOffset * stepWidth * transform.right;
             decal.transform.up = moveDir;
             decal.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0,0,stepOffset * 5f));
-            audioSrc.Play();
             if (Mathf.Approximately(stepWidth, 0.1f))
             {
                 for(var i = 1; i <= soundWaveCount; i++)

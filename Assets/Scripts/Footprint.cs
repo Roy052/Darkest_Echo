@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Footprint : MonoBehaviour
@@ -13,6 +14,7 @@ public class Footprint : MonoBehaviour
     private bool isStop;
     private bool isSneaking;
     private GameObject player;
+    private AudioSource audioSrc;
 
     private void Start()
     {
@@ -24,14 +26,18 @@ public class Footprint : MonoBehaviour
         fadeStartTime = Time.time;
         fadeDuration = 2f;
         visibleDuration = 10f;
+        audioSrc = GetComponent<AudioSource>();
         
         isSneaking = player.GetComponent<PlayerMovement>().IsSneaking();
         // Player sneaking logic
         if (isSneaking)
         {
+            audioSrc.mute = true;
             targetColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
             Footprintrenderer.material.color = targetColor;
         }
+        else if (isStop) 
+            audioSrc.mute = true;
     }
 
 

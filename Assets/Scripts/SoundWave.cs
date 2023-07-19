@@ -13,8 +13,8 @@ public class SoundWave : MonoBehaviour
     private Color originalColor;
     private GameObject player;
     private bool isSneaking;
-
-    private void Start()
+    
+    private void Awake()
     {
         moveSpeed = 7f;
         reflectDir = Vector3.zero;
@@ -22,8 +22,10 @@ public class SoundWave : MonoBehaviour
         hitInfo = new RaycastHit2D[1];
         trailRenderer = GetComponent<TrailRenderer>();
         fadeDuration = 1.5f;
+        trailRenderer.time = 1f;
         trailStartTime = Time.time;
         player = GameObject.Find("Player");
+
         isSneaking = player.GetComponent<PlayerMovement>().IsSneaking();
         // Player sneaking logic
         if (isSneaking)
@@ -31,15 +33,22 @@ public class SoundWave : MonoBehaviour
             trailRenderer.startColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
             moveSpeed = 5f;
             trailRenderer.time = 0.5f;
-            fadeDuration = 1.0f;
+            fadeDuration = 1f;
         }
+
         originalColor = trailRenderer.startColor;
+    }
+    
+    
+    private void Start()
+    {
+        
     }
 
     private void Update()
     {
         // Cast a ray to detect the wall
-        rigid.Cast(moveDir, hitInfo, 0.1f);
+        rigid.Cast(moveDir, hitInfo);
         if (hitInfo[0].collider != null)
             reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
 
@@ -48,13 +57,14 @@ public class SoundWave : MonoBehaviour
         if (elapsed < fadeDuration)
         {
             var t = elapsed / fadeDuration;
-            trailRenderer.startColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
+            trailRenderer.startColor =
+                new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
         }
         else
         {
             Destroy(gameObject);
         }
-        
+
         // Move the sound wave
         transform.position += moveSpeed * Time.deltaTime * moveDir;
     }
@@ -68,9 +78,15 @@ public class SoundWave : MonoBehaviour
             hitInfo = new RaycastHit2D[1];
         }
     }
-    
+
     public void SetMoveDir(Vector3 dir)
     {
         moveDir = dir.normalized;
+    }
+
+    public void SetDuration(float fade, float trail)
+    {
+        fadeDuration = fade;
+        trailRenderer.time = trail;
     }
 }
