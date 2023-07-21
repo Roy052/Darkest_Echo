@@ -237,16 +237,16 @@ public class StageGenerator : MonoBehaviour
 
                 Transform trObject = objObject.transform;
                 trObject.position = stageData.objects[i].position;
-                trObject.eulerAngles = stageData.enemys[i].rotation;
-                trObject.localScale = stageData.enemys[i].scale;
+                trObject.eulerAngles = stageData.objects[i].rotation;
+                trObject.localScale = stageData.objects[i].scale;
                 trObject.SetAsFirstSibling();
             }
             else
             {
                 Transform trObject = objectsParent.GetChild(i);
                 trObject.position = stageData.objects[i].position;
-                trObject.eulerAngles = stageData.enemys[i].rotation;
-                trObject.localScale = stageData.enemys[i].scale;
+                trObject.eulerAngles = stageData.objects[i].rotation;
+                trObject.localScale = stageData.objects[i].scale;
                 trObject.SetAsFirstSibling();
             }
         }

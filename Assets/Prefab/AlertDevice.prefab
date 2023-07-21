@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e068df7410616747a20641172fe1885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 0
   soundWaveGenerator: {fileID: 6817740584537170151}
 --- !u!114 &6817740584537170151
 MonoBehaviour:
@@ -59,7 +60,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d91ee2a5c79cabc40bcd894b1ea301f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundWavePrefab: {fileID: 2512112386076158165, guid: f958181edb4e50c4cba2ac79d9af2569, type: 3}
+  soundWavePrefab: {fileID: 6482488101695510294, guid: 97a57d0094ee9f249b1126009fdfbdfc, type: 3}
 --- !u!61 &6817740584537170144
 BoxCollider2D:
   m_ObjectHideFlags: 0
