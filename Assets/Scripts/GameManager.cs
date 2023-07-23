@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public enum GameState
 {
@@ -51,5 +52,16 @@ public class GameManager : Singleton
     public void LoadStage(int num)
     {
         SceneManager.LoadScene($"Stage{num}");
+    }
+
+
+    public StageData LoadStageData(int stageNum)
+    {
+        string path = Application.dataPath + "/StageDatas";
+        string data = File.ReadAllText(path + "/" + StageGenerator.fileName + (stageNum + 1));
+        Debug.Log(data);
+        StageData stageData = JsonUtility.FromJson<StageData>(data);
+
+        return stageData;
     }
 }

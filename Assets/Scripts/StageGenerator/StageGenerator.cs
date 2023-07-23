@@ -60,7 +60,7 @@ public class SerializableList<T>
 public class StageGenerator : MonoBehaviour
 {
     string path;
-    readonly string fileName = "StageData";
+    public static readonly string fileName = "StageData";
 
     [SerializeField] private StageData stageData;
 
@@ -140,14 +140,16 @@ public class StageGenerator : MonoBehaviour
         }
 
         string json = JsonUtility.ToJson(stageData);
-        path = Application.persistentDataPath;
-        File.WriteAllText(path + "/" + fileName + stageNum, json);
+        path = Application.dataPath + "/StageDatas";
+        Debug.Log(path);
+        File.WriteAllText(path + "/" + fileName + (stageNum + 1), json);
         Debug.Log(json);
     }
 
     public void LoadStageData(int stageNum)
     {
-        string data = File.ReadAllText(path + "/" + fileName + stageNum);
+        path = Application.dataPath + "/StageDatas";
+        string data = File.ReadAllText(path + "/" + fileName + (stageNum + 1));
         Debug.Log(data);
         StageData stageData = JsonUtility.FromJson<StageData>(data);
 
@@ -173,11 +175,12 @@ public class StageGenerator : MonoBehaviour
 
         //Wall
         int count = wallsParent.childCount;
-        for (int i = stageData.walls.Count - 1; i >= 0; i--)
+        for(int i = 0; i < stageData.walls.Count; i++)
         {
-            if(i >= count - 1)
+            if (i > count - 1)
             {
                 GameObject objWall = Instantiate(wallPrefab, wallsParent);
+                objWall.name = $"Wall {i}";
                 objWall.SetActive(true);
 
                 Transform trWall = objWall.transform;
@@ -197,17 +200,17 @@ public class StageGenerator : MonoBehaviour
         }
 
         //Enemy
-        count = enemysParent.childCount;
         while(enemysParent.childCount > 1)
         {
-
+            Destroy(enemysParent.GetChild(0).gameObject);
         }
 
-        for (int i = stageData.enemys.Count - 1; i >= 0; i--)
+        for(int i = 0; i < stageData.enemys.Count; i++)
         {
-            if (i >= count - 1)
+            if (i > count - 1)
             {
                 GameObject objEnemy = Instantiate(enemyPrefab[stageData.enemyTypes[i]], enemysParent);
+                objEnemy.name = $"Enemy {i}";
                 objEnemy.SetActive(true);
 
                 Transform trEnemy = objEnemy.transform;
@@ -216,18 +219,14 @@ public class StageGenerator : MonoBehaviour
                 trEnemy.localScale = stageData.enemys[i].scale;
                 trEnemy.SetAsFirstSibling();
             }
-            else
-            {
-                Transform trEnemy = enemysParent.GetChild(i);
-                trEnemy.position = stageData.enemys[i].position;
-                trEnemy.eulerAngles = stageData.enemys[i].rotation;
-                trEnemy.localScale = stageData.enemys[i].scale;
-                trEnemy.SetAsFirstSibling();
-            }
         }
 
         //Object
-        count = objectsParent.childCount;
+        while (objectsParent.childCount > 1)
+        {
+            Destroy(objectsParent.GetChild(0).gameObject);
+        }
+
         for (int i = stageData.objects.Count - 1; i >= 0; i--)
         {
             if (i >= count - 1)
@@ -241,17 +240,10 @@ public class StageGenerator : MonoBehaviour
                 trObject.localScale = stageData.objects[i].scale;
                 trObject.SetAsFirstSibling();
             }
-            else
-            {
-                Transform trObject = objectsParent.GetChild(i);
-                trObject.position = stageData.objects[i].position;
-                trObject.eulerAngles = stageData.objects[i].rotation;
-                trObject.localScale = stageData.objects[i].scale;
-                trObject.SetAsFirstSibling();
-            }
         }
     }
 
     public static bool isImmortal;
+    public static int stageIdx;
 }
 

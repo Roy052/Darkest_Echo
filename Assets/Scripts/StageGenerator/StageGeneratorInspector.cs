@@ -28,9 +28,6 @@ public class StageGeneratorInspector : Editor
         EditorGUILayout.Separator();
         if (EditorApplication.isPlaying)
         {
-            //if (GUILayout.Button("Reset", style, GUILayout.Height(30)))
-            //    Reset();
-
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Immortal");
             GUILayout.FlexibleSpace();
@@ -43,20 +40,19 @@ public class StageGeneratorInspector : Editor
         {
             Stages = new int[Singleton.gameInfos.stageTitle.Count];
 
-            int previous = idxMap;
+            int previous = StageGenerator.stageIdx;
             if (StageNames == null)
             {
                 StageNames = new string[Singleton.gameInfos.stageTitle.Count];
                 foreach(var kvp in Singleton.gameInfos.stageTitle)
-                {
-                        
+                { 
                     StageNames[kvp.Key - 1] = kvp.Value;
                 }
             }
 
             idxMap = EditorGUILayout.Popup("Stage", idxMap, StageNames);
             if (previous != idxMap)
-                EditorPrefs.SetInt(Application.productName + "EditorPlayStage", Stages[idxMap]);
+                EditorPrefs.SetInt("EditorPlayStage", idxMap);
 
             GUILayout.Space(6f);
             if (GUILayout.Button("Save", style, GUILayout.Height(30)))
@@ -76,12 +72,14 @@ public class StageGeneratorInspector : Editor
     {
         StageGenerator stageGenerator = GameObject.Find("StageGenerator").GetComponent<StageGenerator>();
         stageGenerator.SaveStageData(idxMap);
+        AssetDatabase.Refresh();
     }
 
     public void Load()
     {
         StageGenerator stageGenerator = GameObject.Find("StageGenerator").GetComponent<StageGenerator>();
         stageGenerator.LoadStageData(idxMap);
+        AssetDatabase.Refresh();
     }
 
     public void ResetExist()

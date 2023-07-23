@@ -11,6 +11,15 @@ public class StageSM : Singleton
     int stageNum;
 
     public GameObject player;
+    public GameObject endZone;
+
+    public GameObject wallPrefab;
+    public GameObject[] enemyPrefab;
+    public GameObject[] objectPrefab;
+
+    public Transform wallParent;
+    public Transform enemysParent;
+    public Transform objectsParent;
 
     private void Awake()
     {
@@ -64,5 +73,12 @@ public class StageSM : Singleton
         yield return new WaitForSeconds(1);
         gm.stageNum += 1;
         gm.LoadStage(stageNum + 1);
+    }
+
+    public void LoadStageData()
+    {
+        StageData data = gm.LoadStageData(stageNum);
+
+        
     }
 }
