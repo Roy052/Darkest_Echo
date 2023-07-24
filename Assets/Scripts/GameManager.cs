@@ -51,14 +51,15 @@ public class GameManager : Singleton
 
     public void LoadStage(int num)
     {
-        SceneManager.LoadScene($"Stage{num}");
+        SceneManager.LoadScene("Stage");
     }
 
 
     public StageData LoadStageData(int stageNum)
     {
         string path = Application.dataPath + "/StageDatas";
-        string data = File.ReadAllText(path + "/" + StageGenerator.fileName + (stageNum + 1));
+        Debug.Log(path + "/" + StageGenerator.fileName + stageNum);   
+        string data = File.ReadAllText(path + "/" + StageGenerator.fileName + stageNum);
         Debug.Log(data);
         StageData stageData = JsonUtility.FromJson<StageData>(data);
 

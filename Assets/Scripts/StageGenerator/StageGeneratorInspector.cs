@@ -9,12 +9,14 @@ public class StageGeneratorInspector : Editor
     public static int[] Stages;
     public static string[] StageNames;
 
-    int idxMap;
+    int currentStageIdx;
 
     private void OnEnable()
     {
         if (EditorApplication.isPlaying)
             InitPlaySet();
+        else
+            InitEditorSet();
     }
 
     public override void OnInspectorGUI()
@@ -40,7 +42,7 @@ public class StageGeneratorInspector : Editor
         {
             Stages = new int[Singleton.gameInfos.stageTitle.Count];
 
-            int previous = StageGenerator.stageIdx;
+            int previous = currentStageIdx;
             if (StageNames == null)
             {
                 StageNames = new string[Singleton.gameInfos.stageTitle.Count];
@@ -50,9 +52,9 @@ public class StageGeneratorInspector : Editor
                 }
             }
 
-            idxMap = EditorGUILayout.Popup("Stage", idxMap, StageNames);
-            if (previous != idxMap)
-                EditorPrefs.SetInt("EditorPlayStage", idxMap);
+            currentStageIdx = EditorGUILayout.Popup("Stage", currentStageIdx, StageNames);
+            if (previous != currentStageIdx)
+                EditorPrefs.SetInt(Application.productName + "EditorStage", currentStageIdx);
 
             GUILayout.Space(6f);
             if (GUILayout.Button("Save", style, GUILayout.Height(30)))
@@ -68,17 +70,22 @@ public class StageGeneratorInspector : Editor
         StageGenerator.isImmortal = EditorPrefs.GetBool("IsImmortal", false);
     }
 
+    void InitEditorSet()
+    {
+        currentStageIdx = EditorPrefs.GetInt(Application.productName + "EditorStage", 0);
+    }
+
     public void Save()
     {
         StageGenerator stageGenerator = GameObject.Find("StageGenerator").GetComponent<StageGenerator>();
-        stageGenerator.SaveStageData(idxMap);
+        stageGenerator.SaveStageData(currentStageIdx);
         AssetDatabase.Refresh();
     }
 
     public void Load()
     {
         StageGenerator stageGenerator = GameObject.Find("StageGenerator").GetComponent<StageGenerator>();
-        stageGenerator.LoadStageData(idxMap);
+        stageGenerator.LoadStageData(currentStageIdx);
         AssetDatabase.Refresh();
     }
 

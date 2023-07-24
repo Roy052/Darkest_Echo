@@ -244,6 +244,5 @@ public class StageGenerator : MonoBehaviour
     }
 
     public static bool isImmortal;
-    public static int stageIdx;
 }
 
