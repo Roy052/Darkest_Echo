@@ -46,10 +46,9 @@ public class Grid : MonoBehaviour
         return grid[x, y];
     }
 
-    public Node[] GetNeighbors(Node node)
+    public List<Node> GetNeighbors(Node node)
     {
-        Node[] neighbors = new Node[8];
-        int neighborCount = 0;
+        List<Node> neighbors = new List<Node>();
 
         for (int x = -1; x <= 1; x++)
         {
@@ -62,10 +61,7 @@ public class Grid : MonoBehaviour
                 int checkY = node.gridY + y;
 
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
-                {
-                    neighbors[neighborCount] = grid[checkX, checkY];
-                    neighborCount++;
-                }
+                    neighbors.Add(grid[checkX, checkY]);
             }
         }
 
