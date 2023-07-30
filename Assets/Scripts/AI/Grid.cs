@@ -1,3 +1,4 @@
+using System.Text;
 using UnityEngine;
 using System.Collections.Generic;
 
@@ -6,6 +7,7 @@ public class Grid : MonoBehaviour
     public LayerMask unwalkableMask;
     public Vector2 gridSize;
     public float nodeRadius;
+    public float objectRadius;
     public Node[,] grid;
 
     private float nodeDiameter;
@@ -29,10 +31,12 @@ public class Grid : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
-                bool walkable = !Physics2D.OverlapCircle(worldPoint, nodeRadius, unwalkableMask);
+                bool walkable = !Physics2D.OverlapCircle(worldPoint, objectRadius, unwalkableMask);
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
             }
         }
+
+        //OnLogGrid();
     }
 
     public Node NodeFromWorldPoint(Vector2 worldPosition)
@@ -84,17 +88,18 @@ public class Grid : MonoBehaviour
         return path.ToArray();
     }
 
-    private void OnDrawGizmos()
+    private void OnLogGrid()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(gridSize.x, gridSize.y, 1));
-
-        if (grid != null)
+        StringBuilder sb = new StringBuilder();
+        for (int i = gridSizeX - 1; i >= 0; i--)
         {
-            foreach (Node node in grid)
+            for (int j = 0; j < gridSizeY; j++)
             {
-                Gizmos.color = (node.walkable) ? Color.white : Color.red;
-                Gizmos.DrawCube(node.worldPosition, Vector3.one * (nodeDiameter - 0.1f));
+                sb.Append($"{grid[i, j].walkable} ");
             }
+            sb.AppendLine();
         }
+
+        Debug.Log(sb.ToString());
     }
 }

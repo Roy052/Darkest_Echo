@@ -76,6 +76,18 @@ public class StageSM : Singleton
         SetUp(gm.stageNum);
     }
 
+    public void StageRestart()
+    {
+        StartCoroutine(_StageRestart());
+    }
+
+    public IEnumerator _StageRestart()
+    {
+        StartCoroutine(FadeManager.FadeIn(endImage, 1));
+        yield return new WaitForSeconds(1);
+        SetUp(gm.stageNum);
+    }
+
     IEnumerator LoadStageData()
     {
         StageData data = gm.LoadStageData(stageNum);
