@@ -57,8 +57,8 @@ public class SoundWave : MonoBehaviour
                 new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
         }
         else
-        {
-            //SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+        { 
+            SoundWaveGenerator.instance.RemoveSoundWave();
         }
 
         // Move the sound wave

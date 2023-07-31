@@ -55,7 +55,7 @@ public class SoundWaveGenerator : MonoBehaviour
     private GameObject CreateNewSoundWave()
     {
         var soundWave = Instantiate(soundWavePrefab, this.transform);
-        soundWave.gameObject.SetActive(false);
+        soundWave.SetActive(false);
         return soundWave;
     }
 
@@ -85,19 +85,14 @@ public class SoundWaveGenerator : MonoBehaviour
                 soundWave.GetComponent<SoundWave>().fadeDuration = 0.5f;
             }
             soundWave.transform.SetParent(null);
-            soundWave.gameObject.SetActive(true);
+            soundWave.SetActive(true);
         }
-    }
-
-    private void Update()
-    {
-        Debug.Log(objectPool.Count);
     }
 
     public void RemoveSoundWave(GameObject soundWave)
     {
-        soundWave.transform.SetParent(instance.transform);
-        soundWave.gameObject.SetActive(false);
+        soundWave.transform.SetParent(this.transform);
+        soundWave.SetActive(false);
         instance.objectPool.Enqueue(soundWave);
     }
 }
