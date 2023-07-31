@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class AlertDevice : StageObject
 {
+    public SoundWaveGenerator soundWaveGenerator;
     bool deviceOn = false;
     float time = 0;
 
@@ -16,7 +17,7 @@ public class AlertDevice : StageObject
     {
         if(deviceOn && time > 1)
         {
-            SoundWaveGenerator.instance.SpawnSoundWave(false, false, transform.position);
+            soundWaveGenerator.SpawnSoundWave(this.transform.position, false);
             time = 0;
         }
         time += Time.deltaTime;
