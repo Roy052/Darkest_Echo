@@ -39,8 +39,8 @@ public class SoundWave : MonoBehaviour
 
         originalColor = trailRenderer.startColor;
     }
-    
 
+    float currentTime = 0;
     private void Update()
     {
         // Cast a ray to detect the wall
@@ -49,20 +49,20 @@ public class SoundWave : MonoBehaviour
             reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
 
         // Fading sound wave and destroy it
-        var elapsed = Time.time - trailStartTime;
-        if (elapsed < fadeDuration)
+        if (currentTime < fadeDuration)
         {
-            var t = elapsed / fadeDuration;
+            var t = currentTime / fadeDuration;
             trailRenderer.startColor =
                 new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
         }
         else
         {
-            //SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+            SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
         }
 
         // Move the sound wave
         transform.position += moveSpeed * Time.deltaTime * moveDir;
+        currentTime += Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
