@@ -166,6 +166,8 @@ public class PlayerMovement : MonoBehaviour
             decal.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0,0,stepOffset * 5f));
             if (Mathf.Approximately(stepWidth, 0.1f))
             {
+                /* 
+                 
                 for(var i = 1; i <= soundWaveCount; i++)
                 {
                     var soundWave = Instantiate(soundWavePrefab);
@@ -174,6 +176,8 @@ public class PlayerMovement : MonoBehaviour
                     Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
                     soundWave.GetComponent<SoundWave>().SetMoveDir(direction);
                 }
+                */
+                SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, false, transform.position + stepOffset * stepWidth * transform.right);
             }
         }
         else

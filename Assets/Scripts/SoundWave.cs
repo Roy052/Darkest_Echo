@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class SoundWave : MonoBehaviour
 {
@@ -39,11 +40,6 @@ public class SoundWave : MonoBehaviour
         originalColor = trailRenderer.startColor;
     }
     
-    
-    private void Start()
-    {
-        
-    }
 
     private void Update()
     {
@@ -62,7 +58,7 @@ public class SoundWave : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            //SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
         }
 
         // Move the sound wave

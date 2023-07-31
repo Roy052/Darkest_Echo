@@ -198,6 +198,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8127572245937137552, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8127572245937137557, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
       propertyPath: m_Name
       value: Player
@@ -206,6 +210,10 @@ PrefabInstance:
       propertyPath: leftPrefab
       value: 
       objectReference: {fileID: 7585566241875273743, guid: 22daef1447b1ea34db1b8cd9432db00e, type: 3}
+    - target: {fileID: 8127572245937137581, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
+      propertyPath: soundWavePrefab
+      value: 
+      objectReference: {fileID: 9187790592075441457, guid: 2bd9b71b754db58449f75b10d390a35a, type: 3}
     - target: {fileID: 8127572245937137583, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
       propertyPath: m_RootOrder
       value: 1
