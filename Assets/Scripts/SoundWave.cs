@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -9,38 +10,52 @@ public class SoundWave : MonoBehaviour
     private RaycastHit2D[] hitInfo;
     private Rigidbody2D rigid;
     private TrailRenderer trailRenderer;
+    private Renderer soundWaveRenderer;
     private float trailStartTime;
-    public float fadeDuration;
+    private float fadeDuration;
     private Color originalColor;
     private GameObject player;
+    private float currentTime;
     private bool isSneaking;
+    private bool isClapping;
     
     private void Awake()
     {
+        currentTime = 0;
         moveSpeed = 7f;
         reflectDir = Vector3.zero;
         rigid = GetComponent<Rigidbody2D>();
         hitInfo = new RaycastHit2D[1];
         trailRenderer = GetComponent<TrailRenderer>();
+        soundWaveRenderer = GetComponent<Renderer>();
         fadeDuration = 1.5f;
         trailRenderer.time = 1f;
+        player = GameObject.Find("Player"); 
+    }
+
+    private void OnEnable()
+    {
         trailStartTime = Time.time;
-        player = GameObject.Find("Player");
-
-        isSneaking = player.GetComponent<PlayerMovement>().IsSneaking();
+        
         // Player sneaking logic
-        if (isSneaking)
+        if (player.GetComponent<PlayerMovement>().IsSneaking())
         {
-            trailRenderer.startColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-            moveSpeed = 5f;
-            trailRenderer.time = 0.5f;
-            fadeDuration = 1f;
+            var sneakingColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
+            trailRenderer.startColor = sneakingColor;
+            soundWaveRenderer.material.color = sneakingColor;
+            moveSpeed = 4f;
+            trailRenderer.time = 0.6f;
+            fadeDuration = 0.7f;
         }
-
+        // Player clapping logic
+        else if (player.GetComponent<PlayerMovement>().IsClapping())
+        {
+            fadeDuration = player.GetComponent<PlayerMovement>().GetFadeDuration();
+            trailRenderer.time = fadeDuration * 0.5f;
+        }
         originalColor = trailRenderer.startColor;
     }
 
-    float currentTime = 0;
     private void Update()
     {
         // Cast a ray to detect the wall
@@ -52,8 +67,9 @@ public class SoundWave : MonoBehaviour
         if (currentTime < fadeDuration)
         {
             var t = currentTime / fadeDuration;
-            trailRenderer.startColor =
-                new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
+            var fadingColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
+            trailRenderer.startColor = fadingColor;
+            soundWaveRenderer.material.color = fadingColor;
         }
         else
         {
@@ -81,9 +97,4 @@ public class SoundWave : MonoBehaviour
         moveDir = dir.normalized;
     }
 
-    public void SetDuration(float fade, float trail)
-    {
-        fadeDuration = fade;
-        trailRenderer.time = trail;
-    }
 }

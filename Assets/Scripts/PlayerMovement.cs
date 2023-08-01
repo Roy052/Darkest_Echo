@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -19,18 +18,18 @@ public class PlayerMovement : MonoBehaviour
     public GameObject rightPrefab;
     public GameObject stopPrefab;
     public GameObject soundWavePrefab;
-    private int soundWaveCount;
     private float footprintSpacer;
     private float movementTimer;
     private float stopTime;
     private bool isMoving;
     private bool isStop;
     private bool isSneaking;
+    private bool isClapping;
     private EnumFoot whichFoot;
     private AudioSource audioSrc;
-    
 
-    private void Start()
+
+    public void Awake()
     {
         mainCamera = Camera.main;
         moveSpeed = 3.5f;
@@ -41,7 +40,7 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
         isStop = false;
         isSneaking = false;
-        soundWaveCount = 20;
+        isClapping = false;
         whichFoot = EnumFoot.Left;
         audioSrc = GetComponent<AudioSource>();
     }
@@ -52,37 +51,32 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftShift))
         {
             moveSpeed = 1.5f;
-            soundWaveCount = 18;
             isSneaking = true;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             moveSpeed = 3.5f;
-            soundWaveCount = 20;
             isSneaking = false;
         }
-        
+
         // Clap logic with space bar
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
+        if (!isSneaking)
         {
-            clapPower += Time.deltaTime;
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            clapPower = Mathf.Clamp(clapPower, 0f, 1f);
-            audioSrc.volume = Mathf.Lerp(0.5f, 1f, clapPower);
-            clapPower = Mathf.Lerp(1f, 3f, clapPower);
-            for(var i = 1; i <= 80; i++)
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
             {
-                var soundWave = Instantiate(soundWavePrefab);
-                soundWave.transform.position = transform.position;
-                float angle = (4.5f * i + 5) * Mathf.Deg2Rad;
-                Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-                soundWave.GetComponent<SoundWave>().SetMoveDir(direction);
-                soundWave.GetComponent<SoundWave>().SetDuration(clapPower, clapPower * 0.5f);
+                clapPower += Time.deltaTime;
+                isClapping = true;
             }
-            audioSrc.Play();
-            clapPower = 0;
+            else if (Input.GetKeyUp(KeyCode.Space))
+            {
+                clapPower = Mathf.Clamp(clapPower, 0f, 1f);
+                audioSrc.volume = Mathf.Lerp(0.5f, 1f, clapPower);
+                clapPower = Mathf.Lerp(1f, 3f, clapPower);
+                SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, isClapping, transform.position);
+                audioSrc.Play();
+                clapPower = 0;
+                isClapping = false;
+            }
         }
 
         // Footstep decal logic
@@ -120,7 +114,6 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        
     }
 
     private void FixedUpdate()
@@ -147,7 +140,10 @@ public class PlayerMovement : MonoBehaviour
             transform.up = moveDir;
             transform.position += moveSpeed * Time.deltaTime * moveDir;
         }
-        else isMoving = false;
+        else
+        {
+            isMoving = false;
+        }
     }
 
     private void SpawnDecal(GameObject prefab, float stepWidth)
@@ -163,22 +159,11 @@ public class PlayerMovement : MonoBehaviour
                 stepOffset = 1f;
             decal.transform.position = transform.position + stepOffset * stepWidth * transform.right;
             decal.transform.up = moveDir;
-            decal.transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0,0,stepOffset * 5f));
+            decal.transform.rotation =
+                Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, stepOffset * 5f));
             if (Mathf.Approximately(stepWidth, 0.1f))
-            {
-                /* 
-                 
-                for(var i = 1; i <= soundWaveCount; i++)
-                {
-                    var soundWave = Instantiate(soundWavePrefab);
-                    soundWave.transform.position = transform.position + stepOffset * stepWidth * transform.right;
-                    float angle = (360 / soundWaveCount * i + 5) * Mathf.Deg2Rad;
-                    Vector3 direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-                    soundWave.GetComponent<SoundWave>().SetMoveDir(direction);
-                }
-                */
-                SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, false, transform.position + stepOffset * stepWidth * transform.right);
-            }
+                SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, false,
+                    transform.position + stepOffset * stepWidth * transform.right);
         }
         else
         {
@@ -212,5 +197,16 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isSneaking) return true;
         return false;
+    }
+
+    public bool IsClapping()
+    {
+        if (isClapping) return true;
+        return false;
+    }
+
+    public float GetFadeDuration()
+    {
+        return clapPower;
     }
 }

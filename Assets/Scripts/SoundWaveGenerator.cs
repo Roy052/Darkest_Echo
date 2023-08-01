@@ -32,8 +32,6 @@ public class SoundWaveGenerator : MonoBehaviour
     public Queue<GameObject> objectPool = new();
     public static SoundWaveGenerator instance = null;
     private int soundWaveCount;
-    private Color sneakColor = new Color(1f, 1f, 1f, 0.5f);
-
 
     private void Awake()
     {
@@ -41,7 +39,7 @@ public class SoundWaveGenerator : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
-            for (var i = 0; i < 400; i++) objectPool.Enqueue(CreateNewSoundWave());
+            for (var i = 0; i < 500; i++) objectPool.Enqueue(CreateNewSoundWave());
         }
         else if (instance != this)
         {
@@ -58,14 +56,14 @@ public class SoundWaveGenerator : MonoBehaviour
         return soundWave;
     }
 
-    public void SpawnSoundWave(bool isSneaking, bool isClap, Vector3 position)
+    public void SpawnSoundWave(bool isSneaking, bool isClapping, Vector3 position)
     {
         if (objectPool.Count == 0)
             for (var i = 0; i < 100; i++)
                 objectPool.Enqueue(CreateNewSoundWave());
 
-        if (isSneaking) soundWaveCount = 10;
-        else if (isClap) soundWaveCount = 80;
+        if (isSneaking) soundWaveCount = 15;
+        else if (isClapping) soundWaveCount = 60;
         else soundWaveCount = 20;
 
         for (var i = 1; i <= soundWaveCount; i++)
@@ -76,17 +74,12 @@ public class SoundWaveGenerator : MonoBehaviour
             var angle = (360 / (float)soundWaveCount * i + 5) * Mathf.Deg2Rad;
             var direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
             soundWave.GetComponent<SoundWave>().SetMoveDir(direction);
-
-            if (isSneaking)
-            {
-                soundWave.GetComponent<TrailRenderer>().startColor = sneakColor;
-                soundWave.GetComponent<TrailRenderer>().endColor = sneakColor;
-                soundWave.GetComponent<SoundWave>().fadeDuration = 0.5f;
-            }
+            
             soundWave.transform.SetParent(null);
             soundWave.SetActive(true);
         }
     }
+    
 
     public void RemoveSoundWave(GameObject soundWave)
     {

@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 851921992}
   - component: {fileID: 851921991}
   m_Layer: 0
-  m_Name: dddd
+  m_Name: SoundWave Generator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
