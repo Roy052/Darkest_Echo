@@ -52,12 +52,16 @@ public class StageSM : Singleton
     public IEnumerator _SetUp()
     {
         StartCoroutine(LoadStageData());
+        endImage.color = Color.black;
+        endImage.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(FadeManager.FadeIn(textNumber, 1));
         StartCoroutine(FadeManager.FadeIn(textTitle, 1));
         yield return new WaitForSeconds(3);
         StartCoroutine(FadeManager.FadeOut(textNumber, 1));
         StartCoroutine(FadeManager.FadeOut(textTitle, 1));
+        yield return new WaitForSeconds(1);
+        StartCoroutine(FadeManager.FadeOut(endImage, 1));
         yield return new WaitForSeconds(1);
 
         player.SetActive(true);
@@ -73,6 +77,7 @@ public class StageSM : Singleton
         StartCoroutine(FadeManager.FadeIn(endImage, 1));
         yield return new WaitForSeconds(1);
         gm.stageNum += 1;
+        PlayerPrefs.SetInt("UnlockedStage", gm.stageNum);
         SetUp(gm.stageNum);
     }
 

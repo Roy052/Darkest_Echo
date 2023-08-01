@@ -58,6 +58,7 @@ public class SoundWave : MonoBehaviour
         else
         {
             SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+            currentTime = 0;
         }
 
         // Move the sound wave

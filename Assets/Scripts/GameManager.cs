@@ -37,6 +37,11 @@ public class GameManager : Singleton
     public int unlockedStageNum = 10;
     public int stageNum = 1;
 
+    private void Start()
+    {
+        unlockedStageNum = PlayerPrefs.GetInt("UnlockedStage", 1);
+    }
+
     public void LoadLobby()
     {
         SceneManager.LoadScene("Lobby");

@@ -28,7 +28,6 @@ public class SoundWaveGenerator : MonoBehaviour
     }
     */
 
-
     [SerializeField] private GameObject soundWavePrefab;
     public Queue<GameObject> objectPool = new();
     public static SoundWaveGenerator instance = null;
