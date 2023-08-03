@@ -58,24 +58,24 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = 3.5f;
             isSneaking = false;
         }
-
+        
         // Clap logic with space bar
         if (!isSneaking)
         {
             if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
             {
                 clapPower += Time.deltaTime;
-                isClapping = true;
             }
-            else if (Input.GetKeyUp(KeyCode.Space))
+            else if (Input.GetKeyUp(KeyCode.Space) && !isClapping)
             {
+                isClapping = true;
                 clapPower = Mathf.Clamp(clapPower, 0f, 1f);
                 audioSrc.volume = Mathf.Lerp(0.5f, 1f, clapPower);
                 clapPower = Mathf.Lerp(1f, 3f, clapPower);
                 SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, isClapping, transform.position);
                 audioSrc.Play();
                 clapPower = 0;
-                isClapping = false;
+                StartCoroutine(ClapDelay());
             }
         }
 
@@ -187,6 +187,12 @@ public class PlayerMovement : MonoBehaviour
         SpawnDecal(prefab, stepWidth);
     }
 
+    private IEnumerator ClapDelay()
+    {
+        yield return new WaitForSeconds(0.5f);
+        isClapping = false;
+    }
+    
     public bool IsStop()
     {
         if (isStop) return true;

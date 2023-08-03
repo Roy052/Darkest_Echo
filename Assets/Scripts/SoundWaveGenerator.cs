@@ -63,7 +63,7 @@ public class SoundWaveGenerator : MonoBehaviour
                 objectPool.Enqueue(CreateNewSoundWave());
 
         if (isSneaking) soundWaveCount = 15;
-        else if (isClapping) soundWaveCount = 60;
+        else if (isClapping) soundWaveCount = 80;
         else soundWaveCount = 20;
 
         for (var i = 1; i <= soundWaveCount; i++)
