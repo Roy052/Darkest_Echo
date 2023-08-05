@@ -19,6 +19,7 @@ public class SoundWave : MonoBehaviour
     private bool isSneaking;
     private bool isClapping;
     
+    
     private void Awake()
     {
         currentTime = 0;
@@ -38,7 +39,7 @@ public class SoundWave : MonoBehaviour
         trailStartTime = Time.time;
         
         // Player sneaking logic
-        if (player.GetComponent<PlayerMovement>().IsSneaking())
+        if (player.GetComponent<PlayerMovement>().isSneaking)
         {
             var sneakingColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
             trailRenderer.startColor = sneakingColor;
@@ -48,9 +49,9 @@ public class SoundWave : MonoBehaviour
             fadeDuration = 0.7f;
         }
         // Player clapping logic
-        else if (player.GetComponent<PlayerMovement>().IsClapping())
+        else if (player.GetComponent<PlayerMovement>().isClapping)
         {
-            fadeDuration = player.GetComponent<PlayerMovement>().GetFadeDuration();
+            fadeDuration = player.GetComponent<PlayerMovement>().clapPower;
             trailRenderer.time = fadeDuration * 0.5f;
         }
         originalColor = trailRenderer.startColor;

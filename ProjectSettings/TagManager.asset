@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SoundWave
   - Wall
+  - Water
   layers:
   - Default
   - TransparentFX
@@ -13,8 +14,8 @@ TagManager:
   - Wall
   - Water
   - UI
-  - 
-  - 
+  - Player Trace
+  - Obstacle
   - 
   - 
   - 
@@ -45,4 +46,10 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 3157650481
+    locked: 0
+  - name: Player Trace
+    uniqueID: 2026590769
+    locked: 0
+  - name: Obstacle
+    uniqueID: 1614444615
     locked: 0

@@ -3,17 +3,17 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public enum EnumFoot
+    public enum EnumFloor
     {
-        Left,
-        Right
+        Tile,
+        Water
     }
 
     private Camera mainCamera;
     private Vector3 targetPosition;
     private Vector3 moveDir = Vector3.zero;
     private float moveSpeed;
-    private float clapPower;
+    public float clapPower;
     public GameObject leftPrefab;
     public GameObject rightPrefab;
     public GameObject stopPrefab;
@@ -21,11 +21,12 @@ public class PlayerMovement : MonoBehaviour
     private float footprintSpacer;
     private float movementTimer;
     private float stopTime;
-    private bool isMoving;
-    private bool isStop;
-    private bool isSneaking;
-    private bool isClapping;
-    private EnumFoot whichFoot;
+    public bool isMoving;
+    public bool isStop;
+    public bool isSneaking;
+    public bool isClapping;
+    public EnumFloor currentFloor;
+    private string whichFoot; 
     private AudioSource audioSrc;
 
 
@@ -41,7 +42,8 @@ public class PlayerMovement : MonoBehaviour
         isStop = false;
         isSneaking = false;
         isClapping = false;
-        whichFoot = EnumFoot.Left;
+        currentFloor = EnumFloor.Tile;
+        whichFoot = "Left";
         audioSrc = GetComponent<AudioSource>();
     }
 
@@ -58,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
             moveSpeed = 3.5f;
             isSneaking = false;
         }
-        
+
         // Clap logic with space bar
         if (!isSneaking)
         {
@@ -88,15 +90,15 @@ public class PlayerMovement : MonoBehaviour
             if (movementTimer >= footprintSpacer)
             {
                 movementTimer = 0;
-                if (whichFoot == EnumFoot.Left)
+                if (whichFoot == "Left")
                 {
                     SpawnDecal(leftPrefab, 0.1f);
-                    whichFoot = EnumFoot.Right;
+                    whichFoot = "Right";
                 }
-                else if (whichFoot == EnumFoot.Right)
+                else if (whichFoot == "Right")
                 {
                     SpawnDecal(rightPrefab, 0.1f);
-                    whichFoot = EnumFoot.Left;
+                    whichFoot = "Left";
                 }
             }
         }
@@ -168,7 +170,7 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             //Stop
-            if (whichFoot == EnumFoot.Left)
+            if (whichFoot == "Left")
             {
                 SpawnDecal(leftPrefab, stepWidth);
                 StartCoroutine(DelayedStep(rightPrefab, stepWidth));
@@ -192,27 +194,35 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         isClapping = false;
     }
-    
-    public bool IsStop()
+
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (isStop) return true;
-        return false;
+        // When Player collides with water, create a sound wave 
+        if (other.gameObject.CompareTag("Water"))
+        {
+            SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, isClapping, transform.position);
+            moveSpeed = 1.5f;
+            footprintSpacer = 1f;
+            currentFloor = EnumFloor.Water;
+        }
     }
 
-    public bool IsSneaking()
+    private void OnTriggerStay2D(Collider2D other)
     {
-        if (isSneaking) return true;
-        return false;
+        // If Player is on water, he can't sneak and make player slow
+        if (other.gameObject.CompareTag("Water"))
+            isSneaking = false;
     }
 
-    public bool IsClapping()
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (isClapping) return true;
-        return false;
-    }
-
-    public float GetFadeDuration()
-    {
-        return clapPower;
+        // If Player is not on water, he can sneak and make player fast
+        if (other.gameObject.CompareTag("Water"))
+        {
+            SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, isClapping, transform.position);
+            moveSpeed = 3.5f;
+            footprintSpacer = 0.5f;
+            currentFloor = EnumFloor.Tile;
+        }
     }
 }

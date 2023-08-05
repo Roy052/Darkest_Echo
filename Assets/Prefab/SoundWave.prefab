@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3664782133341431241}
   - component: {fileID: 7085621164642641313}
   - component: {fileID: 8604750668777309482}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SoundWave
   m_TagString: SoundWave
   m_Icon: {fileID: 0}
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 6482488101695510294}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}

@@ -15,20 +15,21 @@ public class Footprint : MonoBehaviour
     private bool isSneaking;
     private GameObject player;
     private AudioSource audioSrc;
+    [SerializeField] private AudioClip[] footstepSounds;
 
-    private void Start()
+    private void Awake()
     {
         Footprintrenderer = GetComponent<Renderer>();
         player = GameObject.Find("Player");
-        isStop = player.GetComponent<PlayerMovement>().IsStop();
         isFading = false;
         originalColor = Footprintrenderer.material.color;
         fadeStartTime = Time.time;
         fadeDuration = 2f;
         visibleDuration = 10f;
         audioSrc = GetComponent<AudioSource>();
+        isStop = player.GetComponent<PlayerMovement>().isStop;
         
-        isSneaking = player.GetComponent<PlayerMovement>().IsSneaking();
+        isSneaking = player.GetComponent<PlayerMovement>().isSneaking;
         // Player sneaking logic
         if (isSneaking)
         {
@@ -38,6 +39,15 @@ public class Footprint : MonoBehaviour
         }
         else if (isStop) 
             audioSrc.mute = true;
+        
+        var currentFloor = (int) player.GetComponent<PlayerMovement>().currentFloor;
+        // Select sound depending on current floor
+        if (currentFloor == 0)
+            audioSrc.clip = footstepSounds[0];
+        else if (currentFloor == 1)
+            audioSrc.clip = footstepSounds[1];
+        
+        audioSrc.Play();
     }
 
 
@@ -90,7 +100,7 @@ public class Footprint : MonoBehaviour
         else
         {
             // When player move again, start fading
-            if (player.GetComponent<PlayerMovement>().IsStop() == false)
+            if (player.GetComponent<PlayerMovement>().isStop == false)
             {
                 isStop = false;
                 fadeStartTime = Time.time;
