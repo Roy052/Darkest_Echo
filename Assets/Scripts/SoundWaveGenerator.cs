@@ -34,13 +34,14 @@ public class SoundWaveGenerator : MonoBehaviour
 
     public void SpawnSoundWave(bool isSneaking, bool isClapping, Vector3 position)
     {
-        if (objectPool.Count == 0)
-            for (var i = 0; i < 100; i++)
-                objectPool.Enqueue(CreateNewSoundWave());
 
         if (isSneaking) soundWaveCount = 15;
         else if (isClapping) soundWaveCount = 80;
         else soundWaveCount = 20;
+
+        if (objectPool.Count < soundWaveCount)
+            for (var i = 0; i < 100; i++)
+                objectPool.Enqueue(CreateNewSoundWave());
 
         for (var i = 1; i <= soundWaveCount; i++)
         {
