@@ -123,6 +123,51 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &81996339
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 81996341}
+  - component: {fileID: 81996340}
+  m_Layer: 0
+  m_Name: dddd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &81996340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81996339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d91ee2a5c79cabc40bcd894b1ea301f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soundWavePrefab: {fileID: 6482488101695510294, guid: 97a57d0094ee9f249b1126009fdfbdfc, type: 3}
+--- !u!4 &81996341
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 81996339}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.02, y: -0, z: -0.23449713}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &181141689
 GameObject:
   m_ObjectHideFlags: 0
@@ -371,10 +416,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9780eef9e2e3a45acd09ecdf561133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 2147314516}
+  enemyType: 3
+  target: {fileID: 2147314516}
+  pathfinding: {fileID: 1827196054}
   speed: 3
-  detectionRadius: 10
+  detectionRadius: 1
   smoothTime: 0.1
+  pointA: {x: 7, y: 3}
+  pointB: {x: 7, y: -3}
 --- !u!212 &1193203338
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -435,7 +484,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1193203336}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.211, y: 0.006, z: 0}
+  m_LocalPosition: {x: 7.2, y: 2.91, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

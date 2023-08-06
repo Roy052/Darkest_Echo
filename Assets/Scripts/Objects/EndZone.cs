@@ -5,27 +5,36 @@ using UnityEngine.SceneManagement;
 
 public class EndZone : MonoBehaviour
 {
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log(collision);
-        if (SceneManager.GetActiveScene().name == "StageGenerator")
-        {
-            UnityEditor.EditorApplication.isPlaying = false;
-            return;
-        }
-
         if (collision.collider.tag == "Player")
         {
-            Singleton.stageSM.StageEnd();
+#if UNITY_EDITOR
+            if (SceneManager.GetActiveScene().name == "StageGenerator")
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+                return;
+            }
+            else
+#endif
+                Singleton.stageSM.StageEnd();
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log(collision);
         if (collision.tag == "Player")
         {
-            Singleton.stageSM.StageEnd();
+#if UNITY_EDITOR
+            if (SceneManager.GetActiveScene().name == "StageGenerator")
+            {
+                UnityEditor.EditorApplication.isPlaying = false;
+                return;
+            }
+            else
+#endif
+                Singleton.stageSM.StageEnd();
         }
     }
 }
