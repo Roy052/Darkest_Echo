@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LobbySM : MonoBehaviour
+public class LobbySM : Singleton
 {
     public GameObject btnPlay;
     public GameObject btnStage;
@@ -19,12 +19,12 @@ public class LobbySM : MonoBehaviour
             Destroy(this);
 
         Set();
-        Singleton.lobbySM = this;
+        lobbySM = this;
     }
 
     private void OnDestroy()
     {
-        Singleton.lobbySM = null;
+        lobbySM = null;
     }
     public void Set()
     {

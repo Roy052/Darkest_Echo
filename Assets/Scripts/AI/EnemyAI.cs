@@ -33,7 +33,7 @@ public class EnemyAI : MonoBehaviour
     protected UnityAction findPath;
     protected UnityAction funcEnter;
 
-    private void Start()
+    public virtual void Start()
     {
         switch (enemyType)
         {
@@ -60,16 +60,12 @@ public class EnemyAI : MonoBehaviour
                 if (Singleton.stageSM != null)
                     funcEnter = Singleton.stageSM.StageRestart;
                 break;
-            case EnemyType.Assassin:
-                break;
-            case EnemyType.Shooter:
-                break;
             default:
                 break;
         }
     }
 
-    private void Update()
+    public virtual void Update()
     {
         // Check if the target is within the detection radius
         if (Vector2.Distance(transform.position, target.position) < detectionRadius)
@@ -107,7 +103,7 @@ public class EnemyAI : MonoBehaviour
         currentTime += Time.deltaTime;
     }
 
-    void Chase()
+    protected void Chase()
     {
         // Calculate a new path to the player
         path = pathfinding.FindPath(transform.position, target.position);
