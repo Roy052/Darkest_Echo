@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SelectStageSM : Singleton
+public class SelectStageUISM : Singleton
 {
     public GameObject stagePrefab;
     public GameObject linePrefab;
@@ -12,17 +12,16 @@ public class SelectStageSM : Singleton
 
     public CameraDragController cameraDragController;
 
-    List<StageElt> stageEltList = new List<StageElt>();
-    List<Line> lines = new List<Line>();
+    List<StageEltUI> stageEltList = new List<StageEltUI>();
 
     private void Awake()
     {
-        selectStageSM = this;
+        selectStageUISM = this;
     }
 
     private void OnDestroy()
     {
-        selectStageSM = null;
+        selectStageUISM = null;
     }
 
     private void Start()
@@ -34,42 +33,30 @@ public class SelectStageSM : Singleton
     {
         Vector3 pos = new Vector3(0, 0);
         int unlockedNum = gm.unlockedStageNum;
-        for (int i = 0; i < unlockedNum; i++)
+        for(int i = 0; i <= unlockedNum; i++)
         {
             GameObject temp = Instantiate(stagePrefab, stagePrefab.transform.parent);
             temp.transform.position = pos;
             temp.name = $"Stage Elt {i + 1}";
-            StageElt elt = temp.GetComponent<StageElt>();
+            StageEltUI elt = temp.GetComponent<StageEltUI>();
             elt.Set(i + 1, false);
             stageEltList.Add(elt);
             temp.SetActive(true);
+
             pos.x += 5;
         }
 
-        if (unlockedNum < MaxStage)
-        {
+        if (unlockedNum < MaxStage) {
             GameObject temp = Instantiate(stagePrefab, stagePrefab.transform.parent);
             temp.transform.position = pos;
             temp.name = $"Stage Elt {unlockedNum + 1}";
-            StageElt elt = temp.GetComponent<StageElt>();
-            elt.Set(unlockedNum + 1, true);
+            StageEltUI elt = temp.GetComponent<StageEltUI>();
+            elt.Set(unlockedNum + 2, true);
             stageEltList.Add(elt);
             temp.SetActive(true);
         }
-        
-        pos.x += 5;
 
         cameraDragController.SetCameraPosMax(gm.unlockedStageNum * 5);
-
-        for (int i = 0; i < unlockedNum; i++)
-        {
-            GameObject tempLine = Instantiate(linePrefab, linePrefab.transform.parent);
-            tempLine.name = $"Line {i + 1}";
-            Line line = tempLine.GetComponent<Line>();
-            line.Set(stageEltList[i].gameObject, stageEltList[i + 1].gameObject);
-            lines.Add(line);
-            tempLine.SetActive(true);
-        }
 
         for (int i = gm.stageNum; i < stageEltList.Count; i++)
             stageEltList[i].gameObject.SetActive(false);

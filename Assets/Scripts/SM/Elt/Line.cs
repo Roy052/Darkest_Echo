@@ -1,34 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Line : MonoBehaviour
 {
-    public RectTransform rectFirst, rectSecond;
-    RectTransform rect;
+    public Transform trFirst, trSecond;
 
     public void Set(GameObject first, GameObject second)
     {
-        rectFirst = first.GetComponent<RectTransform>();
-        rectSecond = second.GetComponent<RectTransform>();
-        rect = GetComponent<RectTransform>();
-        rect.position = new Vector3(rectFirst.position.x + 2.5f, 0);
-
-        Debug.Log($"{rectSecond.localPosition.x}, {rectSecond.localPosition.y}");
+        trFirst = first.GetComponent<Transform>();
+        trSecond = second.GetComponent<Transform>();
+        transform.position = new Vector3(trFirst.position.x + 2.5f, 0);
     }
 
     void Update()
     {
         if (this.gameObject.activeSelf)
         {
-            rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Distance());
-            rect.eulerAngles = new Vector3(0, 0, Mathf.Atan((rectSecond.localPosition.x - rectFirst.localPosition.x) / 600));
+            transform.eulerAngles = new Vector3(0, 0, 10 * (trSecond.position.y - trFirst.position.y));
+            transform.position = new Vector3(transform.position.x, trFirst.position.y + (trSecond.position.y - trFirst.position.y) / 2);
         }
     }
-
-   float Distance()
-   {
-        return Mathf.Sqrt((rectSecond.localPosition.y - rectFirst.localPosition.y) *
-            (rectSecond.localPosition.y - rectFirst.localPosition.y) +
-            (rectSecond.localPosition.x - rectFirst.localPosition.x) *
-            (rectSecond.localPosition.x - rectFirst.localPosition.x));
-   }
 }

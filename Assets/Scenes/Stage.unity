@@ -1045,8 +1045,8 @@ MonoBehaviour:
   textNumber: {fileID: 1046105243}
   textTitle: {fileID: 1396269897}
   endImage: {fileID: 785559372}
-  player: {fileID: 438331898}
-  endZone: {fileID: 1513147879}
+  objPlayer: {fileID: 438331898}
+  objEndZone: {fileID: 1513147879}
   wallPrefab: {fileID: 2115924195}
   enemyPrefab: []
   objectPrefab:

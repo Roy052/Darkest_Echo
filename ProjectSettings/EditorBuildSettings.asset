@@ -10,7 +10,7 @@ EditorBuildSettings:
     guid: c6676a480afeab54b9686804fcf0e842
   - enabled: 1
     path: Assets/Scenes/SelectStage.unity
-    guid: 039b74a37d25f8c4b8e15814598cfe0e
+    guid: b31eabafb22caa342a86a0af61e74c5c
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729

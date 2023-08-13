@@ -10,8 +10,8 @@ public class StageSM : Singleton
     public Image endImage;
     int stageNum = 1;
 
-    public GameObject player;
-    public GameObject endZone;
+    public GameObject objPlayer;
+    public GameObject objEndZone;
 
     public GameObject wallPrefab;
     public GameObject[] enemyPrefab;
@@ -35,7 +35,7 @@ public class StageSM : Singleton
     {
         textNumber.color = new Color(1, 1, 1, 0);
         textTitle.color = new Color(1, 1, 1, 0);
-        player.SetActive(false);
+        objPlayer.SetActive(false);
 
         SetUp(gm.stageNum);
     }
@@ -64,7 +64,7 @@ public class StageSM : Singleton
         StartCoroutine(FadeManager.FadeOut(endImage, 1));
         yield return new WaitForSeconds(1);
 
-        player.SetActive(true);
+        objPlayer.SetActive(true);
     }
 
     public void StageEnd()
@@ -98,13 +98,13 @@ public class StageSM : Singleton
         StageData data = gm.LoadStageData(stageNum);
 
         //Player
-        Transform trPlayer = player.transform;
+        Transform trPlayer = objPlayer.transform;
         trPlayer.position = data.player.position;
         trPlayer.eulerAngles = data.player.rotation;
         trPlayer.localScale = data.player.scale;
 
         //EndZone
-        Transform trEndZone = endZone.transform;
+        Transform trEndZone = objEndZone.transform;
         trEndZone.position = data.endZone.position;
         trEndZone.eulerAngles = data.endZone.rotation;
         trEndZone.localScale = data.endZone.scale;

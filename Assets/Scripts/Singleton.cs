@@ -4,6 +4,8 @@ using Random = System.Random;
 
 public class Singleton : MonoBehaviour
 {
+    public const int MaxStage = 10;
+
     public static GameManager gm;
 
     //Scene Manager
@@ -20,5 +22,5 @@ public class Singleton : MonoBehaviour
     public static GameInfos gameInfos = new GameInfos();
 
     //Test
-    public static SelectStageTestSM selectStageTestSM;
+    public static SelectStageUISM selectStageUISM;
 }
