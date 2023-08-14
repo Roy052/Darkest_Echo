@@ -10,87 +10,73 @@ public class SoundWave : MonoBehaviour
     private RaycastHit2D[] hitInfo;
     private Rigidbody2D rigid;
     private TrailRenderer trailRenderer;
-    private Renderer soundWaveRenderer;
     private float trailStartTime;
     private float fadeDuration;
     private Color originalColor;
     private GameObject player;
-    private float currentTime;
     private bool isSneaking;
     private bool isClapping;
+    private ContactFilter2D wallFilter;
+    private readonly Color normalStartColor = new Color(1f, 1f, 1f, 1f);
+    private readonly Color normalEndColor = new Color(1f, 1f, 1f, 0f);
+    private readonly Color sneakingStartColor = new Color(1f, 1f, 1f, 0.5f);
+    private readonly Color dyingStartColor = new Color(1f, 0f, 0f, 1f);
+    private readonly Color dyingEndColor = new Color(1f, 0f, 0f, 0f);
     
     
     private void Awake()
     {
-        currentTime = 0;
-        moveSpeed = 7f;
         reflectDir = Vector3.zero;
         rigid = GetComponent<Rigidbody2D>();
         hitInfo = new RaycastHit2D[1];
+        wallFilter = new ContactFilter2D();
+        wallFilter.SetLayerMask(LayerMask.GetMask("Wall"));
         trailRenderer = GetComponent<TrailRenderer>();
-        soundWaveRenderer = GetComponent<Renderer>();
-        fadeDuration = 1.5f;
-        trailRenderer.time = 1f;
-        player = GameObject.Find("Player"); 
+        player = GameObject.Find("Player");
+        SetType(0);
     }
 
     private void OnEnable()
     {
-        trailStartTime = Time.time;
-        
-        // Player sneaking logic
-        if (player.GetComponent<PlayerMovement>().isSneaking)
-        {
-            var sneakingColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0.5f);
-            trailRenderer.startColor = sneakingColor;
-            soundWaveRenderer.material.color = sneakingColor;
-            moveSpeed = 4f;
-            trailRenderer.time = 0.6f;
-            fadeDuration = 0.7f;
-        }
-        // Player clapping logic
-        else if (player.GetComponent<PlayerMovement>().isClapping)
-        {
-            fadeDuration = player.GetComponent<PlayerMovement>().clapPower;
-            trailRenderer.time = fadeDuration * 0.5f;
-        }
+        trailStartTime = 0;
         originalColor = trailRenderer.startColor;
     }
 
     private void Update()
     {
         // Cast a ray to detect the wall
-        rigid.Cast(moveDir, hitInfo);
+        rigid.Cast(moveDir, wallFilter, hitInfo);
         if (hitInfo[0].collider != null)
             reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
 
         // Fading sound wave and destroy it
-        if (currentTime < fadeDuration)
+        if (trailStartTime < fadeDuration)
         {
-            var t = currentTime / fadeDuration;
-            var fadingColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
-            trailRenderer.startColor = fadingColor;
-            soundWaveRenderer.material.color = fadingColor;
+            var t = trailStartTime / fadeDuration;
+            trailRenderer.startColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));;
+        } 
+        else if(fadeDuration == 0)
+        {
+            // Do nothing
         }
-        else
-        {
+        else 
             SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
-            currentTime = 0;
-        }
+    }
 
+    private void FixedUpdate()
+    {
         // Move the sound wave
         transform.position += moveSpeed * Time.deltaTime * moveDir;
-        currentTime += Time.deltaTime;
+        trailStartTime += Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         // When the sound wave trigger with a wall, it will reflect
-        if (other.gameObject.CompareTag("Wall"))
-        {
-            moveDir = reflectDir.normalized;
-            hitInfo = new RaycastHit2D[1];
-        }
+        if (!other.gameObject.CompareTag("Wall")) return;
+        reflectDir = reflectDir.normalized;
+        moveDir = reflectDir;
+        hitInfo = new RaycastHit2D[1];
     }
 
     public void SetMoveDir(Vector3 dir)
@@ -98,4 +84,38 @@ public class SoundWave : MonoBehaviour
         moveDir = dir.normalized;
     }
 
+    public void SetType(SoundWaveGenerator.WaveType type)
+    {
+        trailRenderer.startColor = normalStartColor;
+        trailRenderer.endColor = normalEndColor;
+        
+        switch ((int) type)
+        {
+            case 0: // Normal
+                moveSpeed = 8f;
+                fadeDuration = 1.5f;
+                trailRenderer.time = 1f;
+                break;
+            case 1: // Sneaking
+                trailRenderer.startColor = sneakingStartColor;
+                moveSpeed = 6f;
+                trailRenderer.time = 0.55f;
+                fadeDuration = 0.6f;
+                break;
+            case 2: // Clapping
+                fadeDuration = player.GetComponentInChildren<Clap>().clapPower;
+                trailRenderer.time = fadeDuration * 0.7f;
+                break;
+            case 3: // Diving
+                fadeDuration = 2.5f;
+                trailRenderer.time = 2f;
+                break;
+            case 4: // Death
+                fadeDuration = 10f;
+                trailRenderer.time = 1.5f;
+                trailRenderer.startColor = dyingStartColor;
+                trailRenderer.endColor = dyingEndColor;
+                break;
+        }
+    }
 }

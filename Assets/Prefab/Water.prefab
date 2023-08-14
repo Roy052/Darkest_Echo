@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5930772917635165459}
   - component: {fileID: 5930772917635165457}
   - component: {fileID: 5930772917635165456}
-  - component: {fileID: 5930772917635165463}
   - component: {fileID: 5930772917635165462}
   m_Layer: 7
   m_Name: Water
@@ -127,7 +126,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 5417785677750871812, guid: 1ecc7200567ac874fa13738f9e3be609, type: 2}
   m_audioClip: {fileID: 8300000, guid: 15af46f10b0129a499d31b23666943f9, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -223,18 +222,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa0506258046a94eb53f7be92bfe1cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!168 &5930772917635165463
-AudioEchoFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5930772917635165676}
-  m_Enabled: 1
-  m_Delay: 500
-  m_DecayRatio: 0.2
-  m_WetMix: 1
-  m_DryMix: 1
 --- !u!164 &5930772917635165462
 AudioReverbFilter:
   m_ObjectHideFlags: 0

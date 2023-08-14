@@ -13,7 +13,6 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 targetPosition;
     private Vector3 moveDir = Vector3.zero;
     private float moveSpeed;
-    public float clapPower;
     public GameObject leftPrefab;
     public GameObject rightPrefab;
     public GameObject stopPrefab;
@@ -24,9 +23,9 @@ public class PlayerMovement : MonoBehaviour
     public bool isMoving;
     public bool isStop;
     public bool isSneaking;
-    public bool isClapping;
+    public bool isDead;
     public EnumFloor currentFloor;
-    private string whichFoot; 
+    private string whichFoot;
     private AudioSource audioSrc;
 
 
@@ -36,12 +35,11 @@ public class PlayerMovement : MonoBehaviour
         moveSpeed = 3.5f;
         footprintSpacer = 0.5f;
         movementTimer = 0;
-        clapPower = 0;
         stopTime = 0;
         isMoving = false;
         isStop = false;
         isSneaking = false;
-        isClapping = false;
+        isDead = false;
         currentFloor = EnumFloor.Tile;
         whichFoot = "Left";
         audioSrc = GetComponent<AudioSource>();
@@ -59,26 +57,6 @@ public class PlayerMovement : MonoBehaviour
         {
             moveSpeed = 3.5f;
             isSneaking = false;
-        }
-
-        // Clap logic with space bar
-        if (!isSneaking)
-        {
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space))
-            {
-                clapPower += Time.deltaTime;
-            }
-            else if (Input.GetKeyUp(KeyCode.Space) && !isClapping)
-            {
-                isClapping = true;
-                clapPower = Mathf.Clamp(clapPower, 0f, 1f);
-                audioSrc.volume = Mathf.Lerp(0.5f, 1f, clapPower);
-                clapPower = Mathf.Lerp(1f, 3f, clapPower);
-                SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, isClapping, transform.position);
-                audioSrc.Play();
-                clapPower = 0;
-                StartCoroutine(ClapDelay());
-            }
         }
 
         // Footstep decal logic
@@ -164,8 +142,17 @@ public class PlayerMovement : MonoBehaviour
             decal.transform.rotation =
                 Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, stepOffset * 5f));
             if (Mathf.Approximately(stepWidth, 0.1f))
-                SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, false,
-                    transform.position + stepOffset * stepWidth * transform.right);
+            {
+                if (isSneaking)
+                    SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Sneaking,
+                        transform.position + stepOffset * stepWidth * transform.right);
+                else if (currentFloor == EnumFloor.Water)
+                    SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading,
+                        transform.position + stepOffset * stepWidth * transform.right);
+                else
+                    SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal,
+                        transform.position + stepOffset * stepWidth * transform.right);
+            }
         }
         else
         {
@@ -189,21 +176,22 @@ public class PlayerMovement : MonoBehaviour
         SpawnDecal(prefab, stepWidth);
     }
 
-    private IEnumerator ClapDelay()
-    {
-        yield return new WaitForSeconds(0.5f);
-        isClapping = false;
-    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         // When Player collides with water, create a sound wave 
         if (other.gameObject.CompareTag("Water"))
         {
-            SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, isClapping, transform.position);
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position);
             moveSpeed = 1.5f;
             footprintSpacer = 1f;
             currentFloor = EnumFloor.Water;
+        }
+        else if (other.gameObject.CompareTag("Trap"))
+        {
+            isDead = true;
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Dying, transform.position);
+            //Singleton.stageSM.StageRestart();
         }
     }
 
@@ -219,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
         // If Player is not on water, he can sneak and make player fast
         if (other.gameObject.CompareTag("Water"))
         {
-            SoundWaveGenerator.instance.SpawnSoundWave(isSneaking, isClapping, transform.position);
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position);
             moveSpeed = 3.5f;
             footprintSpacer = 0.5f;
             currentFloor = EnumFloor.Tile;

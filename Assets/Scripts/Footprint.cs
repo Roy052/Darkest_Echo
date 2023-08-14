@@ -42,10 +42,19 @@ public class Footprint : MonoBehaviour
         
         var currentFloor = (int) player.GetComponent<PlayerMovement>().currentFloor;
         // Select sound depending on current floor
-        if (currentFloor == 0)
-            audioSrc.clip = footstepSounds[0];
-        else if (currentFloor == 1)
-            audioSrc.clip = footstepSounds[1];
+        switch (currentFloor)
+        {
+            case 0:
+                audioSrc.clip = footstepSounds[0];
+                break;
+            case 1:
+                audioSrc.clip = footstepSounds[1];
+                audioSrc.volume = 0.6f;
+                break;
+            default:
+                Debug.Log("Error: Footprint.cs: Awake(): currentFloor is not 0 or 1");
+                break;
+        }
         
         audioSrc.Play();
     }

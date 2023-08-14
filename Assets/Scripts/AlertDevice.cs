@@ -17,7 +17,7 @@ public class AlertDevice : StageObject
     {
         if(deviceOn && time > 1)
         {
-            soundWaveGenerator.SpawnSoundWave(false, false, transform.position);
+            soundWaveGenerator.SpawnSoundWave(SoundWaveGenerator.WaveType.Sneaking, transform.position);
             time = 0;
         }
         time += Time.deltaTime;
