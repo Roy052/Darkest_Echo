@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class StageSM : Singleton
 {
+    const string StrStageFunc = "StageFuncSetup";
+
     public Text textNumber;
     public Text textTitle;
     public Image endImage;
@@ -20,6 +23,9 @@ public class StageSM : Singleton
     public Transform wallsParent;
     public Transform enemysParent;
     public Transform objectsParent;
+
+    //Area Func
+    public List<UnityAction<bool>> areaFunc = new List<UnityAction<bool>>();
 
     private void Awake()
     {
@@ -52,6 +58,7 @@ public class StageSM : Singleton
     public IEnumerator _SetUp()
     {
         StartCoroutine(LoadStageData());
+        Invoke(StrStageFunc + stageNum, 0);
         endImage.color = Color.black;
         endImage.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
@@ -150,6 +157,7 @@ public class StageSM : Singleton
         }
 
         //Object
+        int areaCount = 0;
         for (int i = 0; i < data.objects.Count; i++)
         {
             if (i > count - 1)
@@ -162,8 +170,60 @@ public class StageSM : Singleton
                 trObject.eulerAngles = data.objects[i].rotation;
                 trObject.localScale = data.objects[i].scale;
                 trObject.SetAsFirstSibling();
+
+                StageArea stageArea;
+                if(objObject.TryGetComponent(out stageArea))
+                {
+                    stageArea.areaNum = areaCount;
+                    areaCount++;
+                }
             }
         }
         yield return null;
+    }
+
+    
+    void StageFuncSetup1()
+    {
+        areaFunc.Clear();
+        areaFunc.Add(TutorialMove);
+        areaFunc.Add(TutorialClap);
+        areaFunc.Add(TutorialSneak);
+    }
+
+    public Image imgTutorialMove;
+    public Image imgTutorialClap;
+    public Image imgTutorialSneak;
+    void TutorialMove(bool isEnter)
+    {
+        if (isEnter)
+        {
+            imgTutorialMove.gameObject.SetActive(true);
+            StartCoroutine(FadeManager.FadeIn(imgTutorialMove, 1));
+        }
+        else
+            imgTutorialMove.gameObject.SetActive(false);
+    }
+
+    void TutorialClap(bool isEnter)
+    {
+        if (isEnter)
+        {
+            imgTutorialClap.gameObject.SetActive(true);
+            StartCoroutine(FadeManager.FadeIn(imgTutorialClap, 1));
+        }
+        else
+            imgTutorialClap.gameObject.SetActive(false);
+    }
+
+    void TutorialSneak(bool isEnter)
+    {
+        if (isEnter)
+        {
+            imgTutorialSneak.gameObject.SetActive(true);
+            StartCoroutine(FadeManager.FadeIn(imgTutorialSneak, 1));
+        }
+        else
+            imgTutorialSneak.gameObject.SetActive(false);
     }
 }

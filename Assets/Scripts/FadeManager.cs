@@ -38,6 +38,8 @@ public class FadeManager : MonoBehaviour
 
     public static IEnumerator FadeIn(Image image, float time)
     {
+        if (image.gameObject.activeSelf == false)
+            image.gameObject.SetActive(true);
         float timeCheck = 0;
         Color tempColor;
         tempColor = image.color;
