@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2926337392628200553}
   - component: {fileID: 8347400053485276465}
+  - component: {fileID: 4035391679167095564}
   - component: {fileID: 5662822979386995836}
   - component: {fileID: 8494637354384253470}
   m_Layer: 0
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d91fa593ee814e4cb5b1498129be363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSneaking: 0
+  clapPower: 0
+--- !u!114 &4035391679167095564
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8032226883808550089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56346107eb1a53c4599227df3cd750a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &5662822979386995836
 AudioSource:
   m_ObjectHideFlags: 0
@@ -195,7 +208,7 @@ Transform:
   m_GameObject: {fileID: 8127572245937137557}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2926337392628200553}
@@ -290,7 +303,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.5
 --- !u!114 &4934878602167162331
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,7 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8fc9736b087e4845be9b1304e52e6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clapPower: 0
   leftPrefab: {fileID: 7585566241875273743, guid: 22daef1447b1ea34db1b8cd9432db00e, type: 3}
   rightPrefab: {fileID: 5475340837298045659, guid: 43f09fba1b5cc1f40a4b55e49667e8cb, type: 3}
   stopPrefab: {fileID: 0}
@@ -311,5 +323,5 @@ MonoBehaviour:
   isMoving: 0
   isStop: 0
   isSneaking: 0
-  isClapping: 0
+  isDead: 0
   currentFloor: 0

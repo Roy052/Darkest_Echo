@@ -6,9 +6,9 @@ public class Clap : MonoBehaviour
 {
     private AudioSource audioSrc;
     public float clapPower;
-    public bool isClapping;
+    private bool isClapping;
     GameObject player;
-    public bool isSneaking;
+    private bool isSneaking;
     
     void Start()
     {

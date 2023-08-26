@@ -1,6 +1,5 @@
-using System;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.Pool;
 
 public class SoundWave : MonoBehaviour
 {
@@ -17,13 +16,13 @@ public class SoundWave : MonoBehaviour
     private bool isSneaking;
     private bool isClapping;
     private ContactFilter2D wallFilter;
-    private readonly Color normalStartColor = new Color(1f, 1f, 1f, 1f);
-    private readonly Color normalEndColor = new Color(1f, 1f, 1f, 0f);
-    private readonly Color sneakingStartColor = new Color(1f, 1f, 1f, 0.5f);
-    private readonly Color dyingStartColor = new Color(1f, 0f, 0f, 1f);
-    private readonly Color dyingEndColor = new Color(1f, 0f, 0f, 0f);
-    
-    
+    private readonly Color normalStartColor = new(1f, 1f, 1f, 1f);
+    private readonly Color normalEndColor = new(1f, 1f, 1f, 0f);
+    private readonly Color sneakingStartColor = new(1f, 1f, 1f, 0.5f);
+    private readonly Color dyingStartColor = new(1f, 0f, 0f, 1f);
+    private readonly Color dyingEndColor = new(1f, 0f, 0f, 0f);
+
+
     private void Awake()
     {
         reflectDir = Vector3.zero;
@@ -49,18 +48,29 @@ public class SoundWave : MonoBehaviour
         if (hitInfo[0].collider != null)
             reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
 
+        if (hitInfo[0].distance < 0.1f && Mathf.Approximately(moveSpeed, 12f))
+        {
+            moveSpeed = 0f;
+            moveDir = Vector3.zero;
+            trailRenderer.startColor = normalEndColor;
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Clapping, transform.position);
+        }
+
         // Fading sound wave and destroy it
         if (trailStartTime < fadeDuration)
         {
             var t = trailStartTime / fadeDuration;
-            trailRenderer.startColor = new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));;
-        } 
-        else if(fadeDuration == 0)
+            trailRenderer.startColor =
+                new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
+        }
+        else if (fadeDuration == 0)
         {
             // Do nothing
         }
-        else 
+        else
+        {
             SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+        }
     }
 
     private void FixedUpdate()
@@ -86,36 +96,57 @@ public class SoundWave : MonoBehaviour
 
     public void SetType(SoundWaveGenerator.WaveType type)
     {
-        trailRenderer.startColor = normalStartColor;
-        trailRenderer.endColor = normalEndColor;
-        
-        switch ((int) type)
+        switch ((int)type)
         {
             case 0: // Normal
                 moveSpeed = 8f;
                 fadeDuration = 1.5f;
                 trailRenderer.time = 1f;
+                trailRenderer.startColor = normalStartColor;
+                trailRenderer.endColor = normalEndColor;
                 break;
             case 1: // Sneaking
-                trailRenderer.startColor = sneakingStartColor;
                 moveSpeed = 6f;
-                trailRenderer.time = 0.55f;
                 fadeDuration = 0.6f;
+                trailRenderer.time = 0.55f;
+                trailRenderer.startColor = sneakingStartColor;
+                trailRenderer.endColor = normalEndColor;
                 break;
             case 2: // Clapping
+                moveSpeed = 8f;
                 fadeDuration = player.GetComponentInChildren<Clap>().clapPower;
                 trailRenderer.time = fadeDuration * 0.7f;
+                trailRenderer.startColor = normalStartColor;
+                trailRenderer.endColor = normalEndColor;
                 break;
             case 3: // Diving
-                fadeDuration = 2.5f;
-                trailRenderer.time = 2f;
+                moveSpeed = 8f;
+                fadeDuration = 2f;
+                trailRenderer.time = 1.8f;
+                trailRenderer.startColor = normalStartColor;
+                trailRenderer.endColor = normalEndColor;
                 break;
             case 4: // Death
+                moveSpeed = 8f;
                 fadeDuration = 10f;
                 trailRenderer.time = 1.5f;
                 trailRenderer.startColor = dyingStartColor;
                 trailRenderer.endColor = dyingEndColor;
                 break;
+            case 5: // Throwing
+                moveSpeed = 12f;
+                fadeDuration = 2.5f;
+                trailRenderer.time = 2.4f;
+                trailRenderer.startColor = normalStartColor;
+                trailRenderer.endColor = normalEndColor;
+                break;
         }
+    }
+
+    private IEnumerator DelayedStep()
+    {
+        yield return new WaitForSeconds(0.1f);
+        trailRenderer.startColor = normalEndColor;
+        SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal, transform.position);
     }
 }

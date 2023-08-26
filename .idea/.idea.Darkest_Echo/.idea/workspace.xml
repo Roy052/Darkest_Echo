@@ -6,22 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="c48b409c-9534-4ff8-a6d7-d6e2cbfb10a5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Darkest_Echo/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Darkest_Echo/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/LeftFootstep.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/LeftFootstep.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/RightFootstep.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/RightFootstep.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefab/SoundWave.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/SoundWave.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Wall.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Wall.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Water.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Water.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/reverb.mixer" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/reverb.mixer" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/AlertDevice.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/AlertDevice.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Footprint.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Footprint.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Clap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Clap.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerMovement.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/SoundWave.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SoundWave.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/SoundWaveGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/SoundWaveGenerator.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Water.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Water.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,8 +28,7 @@
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Clap.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Footprint.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/SoundWave.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Trap.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Water.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Throw.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProjectColorInfo">{
@@ -106,10 +97,10 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="9784">
+    <configuration name="Unity 에디터에 연결" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="9784" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -181,6 +172,13 @@
       <workItem from="1691842312861" duration="6924000" />
       <workItem from="1692014959700" duration="824000" />
       <workItem from="1692035388923" duration="7316000" />
+      <workItem from="1692210538961" duration="2113000" />
+      <workItem from="1692363123717" duration="24000" />
+      <workItem from="1692363776407" duration="3752000" />
+      <workItem from="1692417335917" duration="1709000" />
+      <workItem from="1692858389880" duration="1879000" />
+      <workItem from="1692871027303" duration="33000" />
+      <workItem from="1692871127131" duration="2698000" />
     </task>
     <servers />
   </component>
