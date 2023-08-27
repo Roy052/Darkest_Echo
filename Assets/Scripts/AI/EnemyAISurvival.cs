@@ -52,7 +52,7 @@ public class EnemyAISurvival : EnemyAI
             currentGrenade = maxGrenade;
 
         reactionTime = UnityEngine.Random.Range(1.5f, 2.5f);
-        target.position = Singleton.survivalSM.movePoints[Singleton.random.Next(0, Singleton.survivalSM.movePoints.Length - 1)];
+        targetPos = Singleton.survivalSM.movePoints[Singleton.random.Next(0, Singleton.survivalSM.movePoints.Length - 1)];
     }
 
 

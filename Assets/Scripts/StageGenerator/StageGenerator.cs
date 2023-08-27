@@ -122,7 +122,7 @@ public class StageGenerator : MonoBehaviour
         {
             if (enemysParent.GetChild(i).gameObject.activeSelf)
             {
-                stageData.enemyTypes[i] = 0;
+                stageData.enemyTypes.Add(0);
                 stageData.enemys.Add(new SerializableTransform(enemysParent.GetChild(i).transform));
             }
                 

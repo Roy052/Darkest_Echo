@@ -1144,6 +1144,73 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &595378797
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1478444931}
+    m_Modifications:
+    - target: {fileID: 9195764298280913874, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_Name
+      value: Enemy (Chase)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 116.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+--- !u!4 &595378798 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9195764298280913886, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+  m_PrefabInstance: {fileID: 595378797}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &595378799 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9195764298280913874, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
+  m_PrefabInstance: {fileID: 595378797}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &669053030
 GameObject:
   m_ObjectHideFlags: 0
@@ -2378,7 +2445,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 595378798}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3159,9 +3227,12 @@ MonoBehaviour:
     - position: {x: 132.41, y: -0.72, z: 0}
       rotation: {x: -0, y: -0, z: 90}
       scale: {x: 0.39599568, y: 21.247505, z: 1}
-    enemyTypes: 
+    enemyTypes: 00000000
     objectTypes: 00000000010000000100000001000000
-    enemys: []
+    enemys:
+    - position: {x: 116.04, y: 0.22, z: 0}
+      rotation: {x: -0, y: 0, z: 0}
+      scale: {x: 1, y: 1, z: 1}
     objects:
     - position: {x: 0, y: 8, z: 0}
       rotation: {x: -0, y: 0, z: 0}
@@ -3181,7 +3252,8 @@ MonoBehaviour:
   enemysParent: {fileID: 1478444931}
   objectsParent: {fileID: 669053031}
   wallPrefab: {fileID: 2051360868}
-  enemyPrefab: []
+  enemyPrefab:
+  - {fileID: 595378799}
   objectPrefab:
   - {fileID: 926334931}
 --- !u!4 &1887889058

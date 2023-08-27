@@ -15,17 +15,19 @@ public enum EnemyType
 
 public class EnemyAI : MonoBehaviour
 {
+    const float FoundDetectRadius = 0.5f;
+
     readonly float ChangeTime = 1;
 
     public EnemyType enemyType;
 
-    public Transform target;
+    public Vector2 targetPos;
     public Pathfinding pathfinding;
     public float speed = 5f;
     public float detectionRadius = 10f;
     public float smoothTime = 0.1f;
 
-    protected List<Vector2> path;
+    protected List<Vector2> path = new List<Vector2>();
     protected int currentWaypoint = 0;
     protected float currentTime = 0;
 
@@ -33,8 +35,12 @@ public class EnemyAI : MonoBehaviour
     protected UnityAction findPath;
     protected UnityAction funcEnter;
 
+    protected bool isFinding;
+
     public virtual void Start()
     {
+        isFinding = false;
+
         switch (enemyType)
         {
             case EnemyType.None:
@@ -67,8 +73,18 @@ public class EnemyAI : MonoBehaviour
 
     public virtual void Update()
     {
-        // Check if the target is within the detection radius
-        if (Vector2.Distance(transform.position, target.position) < detectionRadius)
+        if (isFinding == false)
+        {
+            if (enemyType == EnemyType.Scout)
+            {
+                isScout = true;
+                if (enemyType == EnemyType.Scout && (path == null || currentWaypoint >= path.Count))
+                    findPath?.Invoke();
+            }
+            else
+                return;
+        }
+        else
         {
             isScout = false;
 
@@ -79,24 +95,18 @@ public class EnemyAI : MonoBehaviour
 
             //If No Path
             if (path == null) return;
-        }
-        else
-        {
-            isScout = true;
-            if(path == null || currentWaypoint >= path.Count)
-                findPath?.Invoke();
-        }
 
-        // Move towards the next waypoint on the path
-        if (path != null && currentWaypoint < path.Count)
-        {
-            Vector2 direction = (path[currentWaypoint] - (Vector2)transform.position).normalized;
-            transform.position += (Vector3)direction * speed * Time.deltaTime;
-
-            // Check if the enemy has reached the current waypoint
-            if (Vector2.Distance(transform.position, path[currentWaypoint]) < 0.1f)
+            // Move towards the next waypoint on the path
+            if (path != null && currentWaypoint < path.Count)
             {
-                currentWaypoint++;
+                Vector2 direction = (path[currentWaypoint] - (Vector2)transform.position).normalized;
+                transform.position += (Vector3)direction * speed * Time.deltaTime;
+
+                // Check if the enemy has reached the current waypoint
+                if (Vector2.Distance(transform.position, path[currentWaypoint]) < 0.1f)
+                {
+                    currentWaypoint++;
+                }
             }
         }
 
@@ -106,7 +116,7 @@ public class EnemyAI : MonoBehaviour
     protected void Chase()
     {
         // Calculate a new path to the player
-        path = pathfinding.FindPath(transform.position, target.position);
+        path = pathfinding.FindPath(transform.position, targetPos);
         currentWaypoint = 0;
         currentTime = 0;
     }
@@ -139,7 +149,7 @@ public class EnemyAI : MonoBehaviour
 
     void SmashChase()
     {
-        path = new List<Vector2>() { target.position };
+        path = new List<Vector2>() { targetPos };
         currentWaypoint = 0;
         currentTime = 0;
     }
@@ -150,6 +160,13 @@ public class EnemyAI : MonoBehaviour
         {
             Debug.Log("Enter Target");
             funcEnter?.Invoke();
+        }
+
+        if(collision.tag == "SoundWave")
+        {
+            detectionRadius = FoundDetectRadius;
+            targetPos = collision.GetComponent<SoundWave>().originPos;
+            isFinding = true;
         }
     }
 }

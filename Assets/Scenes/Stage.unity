@@ -190,6 +190,22 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8127572245937137583, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8127572245937137583, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8127572245937137583, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8127572245937137583, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
 --- !u!1 &438331898 stripped
@@ -280,7 +296,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &554073957
 MonoBehaviour:
@@ -562,7 +578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7775779698203087916, guid: 69391a6774d4d2640a3c39fb1a5f56a7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -709,7 +725,7 @@ GameObject:
   - component: {fileID: 1283002819}
   - component: {fileID: 1283002818}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: StageCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -795,7 +811,7 @@ RectTransform:
   - {fileID: 1642956638}
   - {fileID: 1905390213}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1271,7 +1287,8 @@ MonoBehaviour:
   objPlayer: {fileID: 438331898}
   objEndZone: {fileID: 1513147879}
   wallPrefab: {fileID: 2115924195}
-  enemyPrefab: []
+  enemyPrefab:
+  - {fileID: 9195764298280913874, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
   objectPrefab:
   - {fileID: 1637429571}
   - {fileID: 1270771761}
@@ -1294,7 +1311,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1905390212
 GameObject:
@@ -1438,7 +1455,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2115924195 stripped
 GameObject:
@@ -1478,15 +1495,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5934169669879144487, guid: 01cda918e05f70c40b3f5fd2258eebca, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5934169669879144487, guid: 01cda918e05f70c40b3f5fd2258eebca, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5934169669879144487, guid: 01cda918e05f70c40b3f5fd2258eebca, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5934169669879144487, guid: 01cda918e05f70c40b3f5fd2258eebca, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

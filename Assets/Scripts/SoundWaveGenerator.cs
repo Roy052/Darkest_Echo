@@ -71,6 +71,7 @@ public class SoundWaveGenerator : MonoBehaviour
             var soundWave = objectPool.Dequeue();
             soundWave.transform.position = position;
             var soundWaveScript = soundWave.GetComponent<SoundWave>();
+            soundWaveScript.originPos = position;
 
             var angle = (360 / (float)soundWaveCount * i + offset) * Mathf.Deg2Rad;
             var direction = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);

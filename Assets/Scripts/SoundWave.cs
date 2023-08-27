@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class SoundWave : MonoBehaviour
 {
+    public Vector2 originPos;
+
     private Vector3 reflectDir;
     private Vector3 moveDir;
     private float moveSpeed;
@@ -21,7 +23,6 @@ public class SoundWave : MonoBehaviour
     private readonly Color sneakingStartColor = new(1f, 1f, 1f, 0.5f);
     private readonly Color dyingStartColor = new(1f, 0f, 0f, 1f);
     private readonly Color dyingEndColor = new(1f, 0f, 0f, 0f);
-
 
     private void Awake()
     {
@@ -114,7 +115,8 @@ public class SoundWave : MonoBehaviour
                 break;
             case 2: // Clapping
                 moveSpeed = 8f;
-                fadeDuration = player.GetComponentInChildren<Clap>().clapPower;
+                float tempValue = player.GetComponentInChildren<Clap>().clapPower;
+                fadeDuration = tempValue == 0 ? 1 : tempValue;
                 trailRenderer.time = fadeDuration * 0.7f;
                 trailRenderer.startColor = normalStartColor;
                 trailRenderer.endColor = normalEndColor;
