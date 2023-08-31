@@ -15,7 +15,7 @@ public enum EnemyType
 
 public class EnemyAI : MonoBehaviour
 {
-    const float FoundDetectRadius = 0.5f;
+    const float FoundDetectRadius = 3;
 
     readonly float ChangeTime = 1;
 
@@ -26,12 +26,12 @@ public class EnemyAI : MonoBehaviour
     public float speed = 5f;
     public float detectionRadius = 10f;
     public float smoothTime = 0.1f;
+    public string targetTag;
 
     protected List<Vector2> path = new List<Vector2>();
     protected int currentWaypoint = 0;
     protected float currentTime = 0;
 
-    protected string targetTag;
     protected UnityAction findPath;
     protected UnityAction funcEnter;
 
@@ -40,6 +40,7 @@ public class EnemyAI : MonoBehaviour
     public virtual void Start()
     {
         isFinding = false;
+        pathfinding = Singleton.pathFinding;
 
         switch (enemyType)
         {
@@ -156,15 +157,16 @@ public class EnemyAI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == targetTag)
+        if (collision.tag == targetTag && Vector2.Distance(transform.position, collision.transform.position) < FoundDetectRadius)
         {
             Debug.Log("Enter Target");
             funcEnter?.Invoke();
         }
 
-        if(collision.tag == "SoundWave")
+        if (collision.tag == "SoundWave")
         {
-            detectionRadius = FoundDetectRadius;
+            if (targetPos == collision.GetComponent<SoundWave>().originPos) return;
+
             targetPos = collision.GetComponent<SoundWave>().originPos;
             isFinding = true;
         }

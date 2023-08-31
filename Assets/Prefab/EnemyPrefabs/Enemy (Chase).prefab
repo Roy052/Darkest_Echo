@@ -99,11 +99,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyType: 2
-  target: {fileID: 0}
+  targetPos: {x: 0, y: 0}
   pathfinding: {fileID: 0}
   speed: 5
   detectionRadius: 1
   smoothTime: 0.1
+  targetTag: Player
   pointA: {x: 7, y: 3}
   pointB: {x: 7, y: -3}
 --- !u!58 &9195764298280913873
@@ -121,4 +122,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 1.5

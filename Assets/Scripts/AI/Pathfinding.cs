@@ -1,13 +1,19 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Pathfinding : MonoBehaviour
+public class Pathfinding : Singleton
 {
     public Grid grid;
 
     private void Awake()
     {
         grid = GetComponent<Grid>();
+        pathFinding = this;
+    }
+
+    private void OnDestroy()
+    {
+        pathFinding = null;
     }
 
     public List<Vector2> FindPath(Vector2 startPos, Vector2 targetPos)

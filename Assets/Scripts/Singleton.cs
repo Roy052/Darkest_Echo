@@ -21,6 +21,9 @@ public class Singleton : MonoBehaviour
     public static Random random = new Random();
     public static GameInfos gameInfos = new GameInfos();
 
+    //Objects
+    public static Pathfinding pathFinding;
+
     //Test
     public static SelectStageUISM selectStageUISM;
 }
