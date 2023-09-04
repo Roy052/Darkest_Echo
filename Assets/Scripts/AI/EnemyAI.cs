@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 public enum EnemyType
 {
-    None = 0,
-    Fugitive = 1,
-    Chase = 2,
-    Scout = 3,
-    Smasher = 4,
-    Assassin = 5,
-    Shooter = 6,
+    None = -1,
+    Fugitive = 0,
+    Chase = 1,
+    Scout = 2,
+    Smasher = 3,
+    Assassin = 4,
+    Shooter = 5,
 }
 
 public class EnemyAI : MonoBehaviour
@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour
     public EnemyType enemyType;
 
     public Vector2 targetPos;
-    public Pathfinding pathfinding;
+    
     public float speed = 5f;
     public float detectionRadius = 10f;
     public float smoothTime = 0.1f;
@@ -35,11 +35,14 @@ public class EnemyAI : MonoBehaviour
     protected UnityAction findPath;
     protected UnityAction funcEnter;
 
-    protected bool isFinding;
+    protected bool isFinding = false;
+    protected Pathfinding pathfinding;
+
+    bool isEntered = false;
+    List<Vector2> soundWaveStorage = new List<Vector2>();
 
     public virtual void Start()
     {
-        isFinding = false;
         pathfinding = Singleton.pathFinding;
 
         switch (enemyType)
@@ -157,18 +160,21 @@ public class EnemyAI : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == targetTag && Vector2.Distance(transform.position, collision.transform.position) < FoundDetectRadius)
+        if (collision.tag == targetTag && isEntered == false 
+            && Vector2.Distance(transform.position, collision.transform.position) < FoundDetectRadius)
         {
             Debug.Log("Enter Target");
             funcEnter?.Invoke();
+            isEntered = true;
         }
 
         if (collision.tag == "SoundWave")
         {
-            if (targetPos == collision.GetComponent<SoundWave>().originPos) return;
+            if (Vector2.Distance(targetPos, collision.GetComponent<SoundWave>().originPos) < Singleton.RangeOfError) return;
 
             targetPos = collision.GetComponent<SoundWave>().originPos;
             isFinding = true;
+            path = null;
         }
     }
 }

@@ -43,6 +43,13 @@ public class PlayerMovement : MonoBehaviour
         currentFloor = EnumFloor.Tile;
         whichFoot = "Left";
         audioSrc = GetComponent<AudioSource>();
+
+        Singleton.player = this;
+    }
+
+    private void OnDestroy()
+    {
+        Singleton.player = null;
     }
 
     private void Update()

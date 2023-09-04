@@ -886,7 +886,7 @@ GameObject:
   - component: {fileID: 1331799879}
   - component: {fileID: 1331799878}
   m_Layer: 0
-  m_Name: dddd
+  m_Name: SoundWaveGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1157,6 +1157,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1278342203411133116, guid: f8d4c142d3c9fb540a2d7c1ffe02ef2b, type: 3}
+      propertyPath: gridSize.x
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 1278342203411133116, guid: f8d4c142d3c9fb540a2d7c1ffe02ef2b, type: 3}
+      propertyPath: gridSize.y
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 1278342203411133118, guid: f8d4c142d3c9fb540a2d7c1ffe02ef2b, type: 3}
       propertyPath: m_Name
       value: Grid
@@ -1340,11 +1348,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textNumber: {fileID: 1046105243}
   textTitle: {fileID: 1396269897}
-  endImage: {fileID: 785559372}
+  imageEnd: {fileID: 0}
   objPlayer: {fileID: 438331898}
   objEndZone: {fileID: 1513147879}
   wallPrefab: {fileID: 2115924195}
   enemyPrefab:
+  - {fileID: 8313591167436657878, guid: b0df8275e0430a44ba4a7e5fb64f8baf, type: 3}
   - {fileID: 9195764298280913874, guid: 771cefeb9e25a0240b749024ca51d480, type: 3}
   objectPrefab:
   - {fileID: 1637429571}

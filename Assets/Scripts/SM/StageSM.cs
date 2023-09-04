@@ -10,7 +10,7 @@ public class StageSM : Singleton
 
     public Text textNumber;
     public Text textTitle;
-    public Image endImage;
+    public Image imageEnd;
     int stageNum = 1;
 
     public GameObject objPlayer;
@@ -59,8 +59,8 @@ public class StageSM : Singleton
     {
         StartCoroutine(LoadStageData());
         Invoke(StrStageFunc + stageNum, 0);
-        endImage.color = Color.black;
-        endImage.gameObject.SetActive(true);
+        imageEnd.color = Color.black;
+        imageEnd.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         StartCoroutine(FadeManager.FadeIn(textNumber, 1));
         StartCoroutine(FadeManager.FadeIn(textTitle, 1));
@@ -68,7 +68,7 @@ public class StageSM : Singleton
         StartCoroutine(FadeManager.FadeOut(textNumber, 1));
         StartCoroutine(FadeManager.FadeOut(textTitle, 1));
         yield return new WaitForSeconds(1);
-        StartCoroutine(FadeManager.FadeOut(endImage, 1));
+        StartCoroutine(FadeManager.FadeOut(imageEnd, 1));
         yield return new WaitForSeconds(1);
 
         objPlayer.SetActive(true);
@@ -81,7 +81,8 @@ public class StageSM : Singleton
 
     public IEnumerator _StageEnd()
     {
-        StartCoroutine(FadeManager.FadeIn(endImage, 1));
+        imageEnd.color = Color.white;
+        StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
         gm.stageNum += 1;
         PlayerPrefs.SetInt("UnlockedStage", gm.stageNum);
@@ -95,7 +96,8 @@ public class StageSM : Singleton
 
     public IEnumerator _StageRestart()
     {
-        StartCoroutine(FadeManager.FadeIn(endImage, 1));
+        imageEnd.color = Color.red;
+        StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
         SetUp(gm.stageNum);
     }
@@ -103,6 +105,8 @@ public class StageSM : Singleton
     IEnumerator LoadStageData()
     {
         StageData data = gm.LoadStageData(stageNum);
+
+        objPlayer.SetActive(false);
 
         //Player
         Transform trPlayer = objPlayer.transform;
@@ -154,6 +158,13 @@ public class StageSM : Singleton
                 trEnemy.eulerAngles = data.enemys[i].rotation;
                 trEnemy.localScale = data.enemys[i].scale;
             }
+            else
+            {
+                Transform trEnemy = enemysParent.GetChild(i);
+                trEnemy.position = data.enemys[i].position;
+                trEnemy.eulerAngles = data.enemys[i].rotation;
+                trEnemy.localScale = data.enemys[i].scale;
+            }
         }
 
         //Object
@@ -180,9 +191,11 @@ public class StageSM : Singleton
             }
         }
         yield return null;
+
+        Camera.main.transform.position = new Vector3(trPlayer.transform.position.x, trPlayer.transform.position.y, -10);
     }
 
-    
+    //Area Func
     void StageFuncSetup1()
     {
         areaFunc.Clear();

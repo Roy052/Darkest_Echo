@@ -6,6 +6,7 @@ using UnityEditor;
 [CustomEditor(typeof(StageGenerator))]
 public class StageGeneratorInspector : Editor
 {
+    public StageGenerator stageGenerator;
     public static int[] Stages;
     public static string[] StageNames;
 
@@ -13,6 +14,8 @@ public class StageGeneratorInspector : Editor
 
     private void OnEnable()
     {
+        stageGenerator = (StageGenerator)target;
+
         if (EditorApplication.isPlaying)
             InitPlaySet();
         else
@@ -62,6 +65,9 @@ public class StageGeneratorInspector : Editor
 
             if (GUILayout.Button("Load", style, GUILayout.Height(30)))
                 Load();
+
+            if (GUILayout.Button("Reset Objects", style, GUILayout.Height(30)))
+                ResetObjects();
         }
     }
 
@@ -89,8 +95,15 @@ public class StageGeneratorInspector : Editor
         AssetDatabase.Refresh();
     }
 
-    public void ResetExist()
+    public void ResetObjects()
     {
-        Debug.Log("Reset");
+        while (stageGenerator.wallsParent.childCount > 0)
+            DestroyImmediate(stageGenerator.wallsParent.GetChild(0).gameObject);
+
+        while (stageGenerator.enemysParent.childCount > 0)
+            DestroyImmediate(stageGenerator.enemysParent.GetChild(0).gameObject);
+
+        while (stageGenerator.objectsParent.childCount > 0)
+            DestroyImmediate(stageGenerator.objectsParent.GetChild(0).gameObject);
     }
 }

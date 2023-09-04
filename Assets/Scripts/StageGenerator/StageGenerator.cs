@@ -57,7 +57,7 @@ public class SerializableList<T>
     public List<T> list;
 }
 
-public class StageGenerator : MonoBehaviour
+public class StageGenerator : Singleton
 {
     string path;
     public static readonly string fileName = "StageData";
@@ -73,6 +73,16 @@ public class StageGenerator : MonoBehaviour
     public GameObject wallPrefab;
     public GameObject[] enemyPrefab;
     public GameObject[] objectPrefab;
+
+    private void Awake()
+    {
+        stageGenerator = this;
+    }
+
+    private void OnDestroy()
+    {
+        stageGenerator = null;
+    }
 
     public void SaveStageData(int stageNum)
     {
@@ -122,7 +132,7 @@ public class StageGenerator : MonoBehaviour
         {
             if (enemysParent.GetChild(i).gameObject.activeSelf)
             {
-                stageData.enemyTypes.Add(0);
+                stageData.enemyTypes.Add((int) enemysParent.GetChild(i).GetComponent<EnemyAI>().enemyType);
                 stageData.enemys.Add(new SerializableTransform(enemysParent.GetChild(i).transform));
             }
                 

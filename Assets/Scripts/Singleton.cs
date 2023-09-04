@@ -5,8 +5,11 @@ using Random = System.Random;
 public class Singleton : MonoBehaviour
 {
     public const int MaxStage = 10;
+    public const float RangeOfError = 0.0001f;
 
     public static GameManager gm;
+
+    public static StageGenerator stageGenerator;
 
     //Scene Manager
     public static LobbySM lobbySM;
