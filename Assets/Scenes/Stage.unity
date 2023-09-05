@@ -1348,7 +1348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   textNumber: {fileID: 1046105243}
   textTitle: {fileID: 1396269897}
-  imageEnd: {fileID: 0}
+  imageEnd: {fileID: 785559372}
   objPlayer: {fileID: 438331898}
   objEndZone: {fileID: 1513147879}
   wallPrefab: {fileID: 2115924195}
