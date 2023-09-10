@@ -9,24 +9,30 @@ public class PlayerMovement : MonoBehaviour
         Water
     }
 
-    private Camera mainCamera;
-    private Vector3 targetPosition;
-    private Vector3 moveDir = Vector3.zero;
-    private float moveSpeed;
+    
     public GameObject leftPrefab;
     public GameObject rightPrefab;
     public GameObject stopPrefab;
     public GameObject soundWavePrefab;
-    private float footprintSpacer;
-    private float movementTimer;
-    private float stopTime;
+    
     public bool isMoving;
     public bool isStop;
     public bool isSneaking;
     public bool isDead;
+    public bool canThrow;
+
     public EnumFloor currentFloor;
+
+    private Camera mainCamera;
+    private Vector3 targetPosition;
+    private Vector3 moveDir = Vector3.zero;
+    private float moveSpeed;
+
     private string whichFoot;
     private AudioSource audioSrc;
+    private float footprintSpacer;
+    private float movementTimer;
+    private float stopTime;
 
 
     public void Awake()

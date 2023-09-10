@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Clap : MonoBehaviour
 {
@@ -40,7 +41,7 @@ public class Clap : MonoBehaviour
             }
         }
     }
-    
+
     private IEnumerator ClapDelay()
     {
         yield return new WaitForSeconds(0.3f);

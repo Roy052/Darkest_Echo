@@ -114,6 +114,8 @@ public class StageSM : Singleton
         trPlayer.eulerAngles = data.player.rotation;
         trPlayer.localScale = data.player.scale;
 
+        player.canThrow = PlayerPrefs.GetInt("UnlockedStage") >= 4;
+
         //EndZone
         Transform trEndZone = objEndZone.transform;
         trEndZone.position = data.endZone.position;
@@ -165,6 +167,8 @@ public class StageSM : Singleton
                 trEnemy.eulerAngles = data.enemys[i].rotation;
                 trEnemy.localScale = data.enemys[i].scale;
             }
+
+            enemysParent.GetChild(i).GetComponent<EnemyAI>().SetEnemy();
         }
 
         //Object

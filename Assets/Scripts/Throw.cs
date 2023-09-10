@@ -15,6 +15,8 @@ public class Throw : MonoBehaviour
 
     private void Update()
     {
+        if (Singleton.player.canThrow == false) return;
+
         targetPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
         var sqrLen = Vector3.SqrMagnitude(targetPosition - transform.position);
 

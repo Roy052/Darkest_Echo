@@ -44,35 +44,7 @@ public class EnemyAI : MonoBehaviour
     public virtual void Start()
     {
         pathfinding = Singleton.pathFinding;
-
-        switch (enemyType)
-        {
-            case EnemyType.None:
-                break;
-            case EnemyType.Fugitive:
-                findPath = Chase;
-                if(Singleton.stageSM != null)
-                    funcEnter = Singleton.stageSM.StageEnd ;
-                break;
-            case EnemyType.Chase:
-                findPath = Chase;
-                if (Singleton.stageSM != null)
-                    funcEnter = Singleton.stageSM.StageRestart;
-                break;
-            case EnemyType.Scout:
-                isScout = true;
-                findPath = Scout;
-                if (Singleton.stageSM != null)
-                    funcEnter = Singleton.stageSM.StageRestart;
-                break;
-            case EnemyType.Smasher:
-                findPath = SmashChase;
-                if (Singleton.stageSM != null)
-                    funcEnter = Singleton.stageSM.StageRestart;
-                break;
-            default:
-                break;
-        }
+        SetEnemy();
     }
 
     public virtual void Update()
@@ -115,6 +87,44 @@ public class EnemyAI : MonoBehaviour
         }
 
         currentTime += Time.deltaTime;
+    }
+
+    public void SetEnemy()
+    {
+        path = new List<Vector2>();
+        currentWaypoint = 0;
+        currentTime = 0;
+        isFinding = false;
+        isEntered = false;
+
+        switch (enemyType)
+        {
+            case EnemyType.None:
+                break;
+            case EnemyType.Fugitive:
+                findPath = Chase;
+                if (Singleton.stageSM != null)
+                    funcEnter = Singleton.stageSM.StageEnd;
+                break;
+            case EnemyType.Chase:
+                findPath = Chase;
+                if (Singleton.stageSM != null)
+                    funcEnter = Singleton.stageSM.StageRestart;
+                break;
+            case EnemyType.Scout:
+                isScout = true;
+                findPath = Scout;
+                if (Singleton.stageSM != null)
+                    funcEnter = Singleton.stageSM.StageRestart;
+                break;
+            case EnemyType.Smasher:
+                findPath = SmashChase;
+                if (Singleton.stageSM != null)
+                    funcEnter = Singleton.stageSM.StageRestart;
+                break;
+            default:
+                break;
+        }
     }
 
     protected void Chase()
