@@ -222,6 +222,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaa0506258046a94eb53f7be92bfe1cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  type: 3
 --- !u!164 &5930772917635165462
 AudioReverbFilter:
   m_ObjectHideFlags: 0
