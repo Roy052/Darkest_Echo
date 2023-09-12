@@ -49,6 +49,12 @@ public class EnemyAI : MonoBehaviour
 
     public virtual void Update()
     {
+        if(enemyType == EnemyType.Fugitive && currentTime >= 1)
+        {
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal,
+                        transform.position);
+        }
+
         if (isFinding == false)
         {
             if (enemyType == EnemyType.Scout)

@@ -186,11 +186,22 @@ public class StageSM : Singleton
                 trObject.localScale = data.objects[i].scale;
                 trObject.SetAsFirstSibling();
 
-                StageArea stageArea;
-                if(objObject.TryGetComponent(out stageArea))
+                if (data.objectTypes[i] == (int)StageObjectType.StageArea)
                 {
-                    stageArea.areaNum = areaCount;
-                    areaCount++;
+                    StageArea stageArea;
+                    if (objObject.TryGetComponent(out stageArea))
+                    {
+                        stageArea.areaNum = areaCount;
+                        areaCount++;
+                    }
+                }
+                else if (data.objectTypes[i] == (int)StageObjectType.Trap)
+                {
+                    Obstacles obstacles;
+                    if (objObject.TryGetComponent(out obstacles))
+                    {
+                        obstacles.funcEnter = StageRestart;
+                    }
                 }
             }
         }

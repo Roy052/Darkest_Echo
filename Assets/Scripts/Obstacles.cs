@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Obstacles : StageObject
 {
+    public UnityAction funcEnter;
+    public UnityAction funcExit;
+
     AudioSource audioSrc;
     
     private void Awake()
@@ -15,6 +19,7 @@ public class Obstacles : StageObject
         if (other.gameObject.CompareTag("Player"))
         {
             audioSrc.Play();
+            funcEnter?.Invoke();
         }
             
     }
@@ -24,6 +29,7 @@ public class Obstacles : StageObject
         if (other.gameObject.CompareTag("Player"))
         {
             audioSrc.Play();
+            funcExit?.Invoke();
         }
     }
 }
