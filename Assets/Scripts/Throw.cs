@@ -18,8 +18,9 @@ public class Throw : MonoBehaviour
         if (Singleton.player.canThrow == false) return;
 
         targetPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        var sqrLen = Vector3.SqrMagnitude(targetPosition - transform.position);
-
+        targetPosition.z = 0;
+        var sqrLen = Vector3.Distance(targetPosition, transform.position);
+        Debug.Log(sqrLen);
         // when mouse is clicked on player
         if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && !isThrowing && sqrLen < 1.2f)
         {

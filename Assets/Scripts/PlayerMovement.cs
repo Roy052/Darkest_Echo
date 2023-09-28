@@ -123,16 +123,16 @@ public class PlayerMovement : MonoBehaviour
             transform.up = moveDir;
             transform.position += moveSpeed * Time.deltaTime * moveDir;
         }
-        else if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && targetPosition != transform.position)
-        {
-            // Player is moving with mouse input
-            isMoving = true;
-            targetPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-            targetPosition.z = transform.position.z;
-            moveDir = (targetPosition - transform.position).normalized;
-            transform.up = moveDir;
-            transform.position += moveSpeed * Time.deltaTime * moveDir;
-        }
+        //else if ((Input.GetMouseButtonDown(0) || Input.GetMouseButton(0)) && targetPosition != transform.position)
+        //{
+        //    // Player is moving with mouse input
+        //    isMoving = true;
+        //    targetPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        //    targetPosition.z = transform.position.z;
+        //    moveDir = (targetPosition - transform.position).normalized;
+        //    transform.up = moveDir;
+        //    transform.position += moveSpeed * Time.deltaTime * moveDir;
+        //}
         else
         {
             isMoving = false;
