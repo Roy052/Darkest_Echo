@@ -32,6 +32,7 @@ public class LobbySM : Singleton
         line.SetActive(false);
         btnStage.SetActive(false);
         btnSurvival.SetActive(false);
+        StartCoroutine(_Set());
     }
 
     public void OnPlay()
@@ -66,16 +67,30 @@ public class LobbySM : Singleton
         //
     }
 
-    public void DisableBtns()
+    public Transform pointsParent;
+    List<Vector2> points = new List<Vector2>();
+    IEnumerator _Set()
+    {
+        var pointCount = pointsParent.childCount;
+        for(int i = 0; i < pointCount; i++)
+            points.Add(pointsParent.GetChild(i).position);
+        yield return new WaitForSeconds(0.5f);  
+        foreach(Vector2 point in points)
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Eternal, point);
+    }
+
+    void DisableBtns()
     {
         StartCoroutine(FadeManager.FadeOut(labelStage, 1));
         StartCoroutine(FadeManager.FadeOut(line.GetComponent<Image>(), 1));
         StartCoroutine(FadeManager.FadeOut(labelSurvival, 1));
     }
 
-    public IEnumerator _OnStage()
+    IEnumerator _OnStage()
     {
         yield return new WaitForSeconds(1);
         Singleton.gm.LoadSelectStage();
     }
+
+    
 }

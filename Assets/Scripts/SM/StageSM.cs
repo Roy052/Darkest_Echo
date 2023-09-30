@@ -219,9 +219,16 @@ public class StageSM : Singleton
         areaFunc.Add(TutorialSneak);
     }
 
+    void StageFuncSetup4()
+    {
+        areaFunc.Clear();
+        areaFunc.Add(TutorialThrow);
+    }
+
     public Image imgTutorialMove;
     public Image imgTutorialClap;
     public Image imgTutorialSneak;
+    public Image imgTutorialThrow;
     void TutorialMove(bool isEnter)
     {
         if (isEnter)
@@ -253,5 +260,16 @@ public class StageSM : Singleton
         }
         else
             imgTutorialSneak.gameObject.SetActive(false);
+    }
+
+    void TutorialThrow(bool isEnter)
+    {
+        if (isEnter)
+        {
+            imgTutorialThrow.gameObject.SetActive(true);
+            StartCoroutine(FadeManager.FadeIn(imgTutorialThrow, 1));
+        }
+        else
+            imgTutorialThrow.gameObject.SetActive(false);
     }
 }

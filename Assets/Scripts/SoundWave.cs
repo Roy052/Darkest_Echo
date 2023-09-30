@@ -24,11 +24,12 @@ public class SoundWave : MonoBehaviour
     private readonly Color dyingStartColor = new(1f, 0f, 0f, 1f);
     private readonly Color dyingEndColor = new(1f, 0f, 0f, 0f);
 
+    private bool isReflecting = false;
     private void Awake()
     {
         reflectDir = Vector3.zero;
         rigid = GetComponent<Rigidbody2D>();
-        hitInfo = new RaycastHit2D[1];
+        hitInfo = new RaycastHit2D[2];
         wallFilter = new ContactFilter2D();
         wallFilter.SetLayerMask(LayerMask.GetMask("Wall"));
         trailRenderer = GetComponent<TrailRenderer>();
@@ -45,8 +46,11 @@ public class SoundWave : MonoBehaviour
     private void Update()
     {
         // Cast a ray to detect the wall
-        rigid.Cast(moveDir, wallFilter, hitInfo);
-        if (hitInfo[0].collider != null)
+        //if (isReflecting) return;
+        int result = rigid.Cast(moveDir, wallFilter, hitInfo);
+        if(result >= 2 && hitInfo[1].collider != null)
+            reflectDir = new Vector2(-moveDir.x, -moveDir.y);
+        else if (hitInfo[0].collider != null)
             reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
 
         if (hitInfo[0].distance < 0.1f && Mathf.Approximately(moveSpeed, 12f))
@@ -85,9 +89,17 @@ public class SoundWave : MonoBehaviour
     {
         // When the sound wave trigger with a wall, it will reflect
         if (!other.gameObject.CompareTag("Wall")) return;
+        //if (isReflecting) return;
+        isReflecting = true;
         reflectDir = reflectDir.normalized;
         moveDir = reflectDir;
-        hitInfo = new RaycastHit2D[1];
+        hitInfo = new RaycastHit2D[2];
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!other.gameObject.CompareTag("Wall")) return;
+        isReflecting = false;
     }
 
     public void SetMoveDir(Vector3 dir)
@@ -139,6 +151,13 @@ public class SoundWave : MonoBehaviour
                 moveSpeed = 12f;
                 fadeDuration = 2.5f;
                 trailRenderer.time = 2.4f;
+                trailRenderer.startColor = normalStartColor;
+                trailRenderer.endColor = normalEndColor;
+                break;
+            case 6:
+                moveSpeed = 8f;
+                fadeDuration = 3600f;
+                trailRenderer.time = 1f;
                 trailRenderer.startColor = normalStartColor;
                 trailRenderer.endColor = normalEndColor;
                 break;

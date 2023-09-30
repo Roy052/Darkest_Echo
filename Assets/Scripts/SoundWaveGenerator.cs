@@ -17,7 +17,8 @@ public class SoundWaveGenerator : MonoBehaviour
         Clapping = 2,
         Wading = 3,
         Dying = 4,
-        Throwing = 5
+        Throwing = 5,
+        Eternal = 6,
     }
     
     private void Awake()
@@ -46,6 +47,7 @@ public class SoundWaveGenerator : MonoBehaviour
         switch (type)
         {
             case WaveType.Normal:
+            case WaveType.Eternal:
                 soundWaveCount = 20;
                 break;
             case WaveType.Sneaking:
