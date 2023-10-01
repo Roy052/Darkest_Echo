@@ -47,7 +47,6 @@ public class SoundWaveGenerator : MonoBehaviour
         switch (type)
         {
             case WaveType.Normal:
-            case WaveType.Eternal:
                 soundWaveCount = 20;
                 break;
             case WaveType.Sneaking:
@@ -60,6 +59,9 @@ public class SoundWaveGenerator : MonoBehaviour
                 break;
             case WaveType.Wading:
                 soundWaveCount = 30;
+                break;
+            case WaveType.Eternal:
+                soundWaveCount = 10;
                 break;
         }
 

@@ -155,7 +155,7 @@ public class SoundWave : MonoBehaviour
                 trailRenderer.endColor = normalEndColor;
                 break;
             case 6:
-                moveSpeed = 8f;
+                moveSpeed = 3f;
                 fadeDuration = 3600f;
                 trailRenderer.time = 1f;
                 trailRenderer.startColor = normalStartColor;
