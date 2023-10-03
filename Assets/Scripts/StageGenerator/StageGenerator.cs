@@ -159,6 +159,10 @@ public class StageGenerator : Singleton
     public void LoadStageData(int stageNum)
     {
         path = Application.dataPath + "/StageDatas";
+        if(File.Exists(path + "/" + fileName + (stageNum + 1)) == false){
+            Debug.LogError("No File Exists");
+            return;
+        }
         string data = File.ReadAllText(path + "/" + fileName + (stageNum + 1));
         Debug.Log(data);
         StageData stageData = JsonUtility.FromJson<StageData>(data);
@@ -209,47 +213,46 @@ public class StageGenerator : Singleton
             }
         }
 
+        while(wallsParent.childCount > stageData.walls.Count)
+        {
+            DestroyImmediate(wallsParent.GetChild(wallsParent.childCount - 1).gameObject);
+        }
+
         //Enemy
         while(enemysParent.childCount > 1)
         {
-            Destroy(enemysParent.GetChild(0).gameObject);
+            DestroyImmediate(enemysParent.GetChild(0).gameObject);
         }
 
         for(int i = 0; i < stageData.enemys.Count; i++)
         {
-            if (i > count - 1)
-            {
-                GameObject objEnemy = Instantiate(enemyPrefab[stageData.enemyTypes[i]], enemysParent);
-                objEnemy.name = $"Enemy {i}";
-                objEnemy.SetActive(true);
+            GameObject objEnemy = Instantiate(enemyPrefab[stageData.enemyTypes[i]], enemysParent);
+            objEnemy.name = $"Enemy {i}";
+            objEnemy.SetActive(true);
 
-                Transform trEnemy = objEnemy.transform;
-                trEnemy.position = stageData.enemys[i].position;
-                trEnemy.eulerAngles = stageData.enemys[i].rotation;
-                trEnemy.localScale = stageData.enemys[i].scale;
-                trEnemy.SetAsFirstSibling();
-            }
+            Transform trEnemy = objEnemy.transform;
+            trEnemy.position = stageData.enemys[i].position;
+            trEnemy.eulerAngles = stageData.enemys[i].rotation;
+            trEnemy.localScale = stageData.enemys[i].scale;
+            trEnemy.SetAsFirstSibling();
         }
 
         //Object
         while (objectsParent.childCount > 1)
         {
-            Destroy(objectsParent.GetChild(0).gameObject);
+            DestroyImmediate(objectsParent.GetChild(0).gameObject);
         }
 
         for (int i = stageData.objects.Count - 1; i >= 0; i--)
         {
-            if (i >= count - 1)
-            {
-                GameObject objObject = Instantiate(objectPrefab[stageData.objectTypes[i]], objectsParent);
-                objObject.SetActive(true);
+            GameObject objObject = Instantiate(objectPrefab[stageData.objectTypes[i]], objectsParent);
+            objObject.SetActive(true);
 
-                Transform trObject = objObject.transform;
-                trObject.position = stageData.objects[i].position;
-                trObject.eulerAngles = stageData.objects[i].rotation;
-                trObject.localScale = stageData.objects[i].scale;
-                trObject.SetAsFirstSibling();
-            }
+            Transform trObject = objObject.transform;
+            trObject.position = stageData.objects[i].position;
+            trObject.eulerAngles = stageData.objects[i].rotation;
+            trObject.localScale = stageData.objects[i].scale;
+            trObject.SetAsFirstSibling();
         }
     }
 

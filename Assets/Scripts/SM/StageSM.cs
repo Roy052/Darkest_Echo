@@ -200,7 +200,16 @@ public class StageSM : Singleton
                     Obstacles obstacles;
                     if (objObject.TryGetComponent(out obstacles))
                     {
+                        obstacles.color = Color.red;
                         obstacles.funcEnter = StageRestart;
+                    }
+                }
+                else if(data.objectTypes[i] == (int)StageObjectType.Water)
+                {
+                    Obstacles obstacles;
+                    if (objObject.TryGetComponent(out obstacles))
+                    {
+                        obstacles.color = Color.blue;
                     }
                 }
             }
@@ -216,6 +225,11 @@ public class StageSM : Singleton
         areaFunc.Clear();
         areaFunc.Add(TutorialMove);
         areaFunc.Add(TutorialClap);
+    }
+
+    void StageFuncSetup2()
+    {
+        areaFunc.Clear();
         areaFunc.Add(TutorialSneak);
     }
 
@@ -271,5 +285,13 @@ public class StageSM : Singleton
         }
         else
             imgTutorialThrow.gameObject.SetActive(false);
+    }
+
+    EnemyAI enemyAi;
+    void MoveFugitiveZone21()
+    {
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2();
     }
 }

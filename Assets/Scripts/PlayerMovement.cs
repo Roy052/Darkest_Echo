@@ -193,14 +193,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // When Player collides with water, create a sound wave 
-        if (other.gameObject.CompareTag("Water"))
+        if (other.gameObject.CompareTag(Str.TagWater))
         {
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position);
             moveSpeed = 1.5f;
             footprintSpacer = 1f;
             currentFloor = EnumFloor.Water;
         }
-        else if (other.gameObject.CompareTag("Trap"))
+        else if (other.gameObject.CompareTag(Str.TagTrap))
         {
             isDead = true;
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Dying, transform.position);
@@ -211,14 +211,14 @@ public class PlayerMovement : MonoBehaviour
     private void OnTriggerStay2D(Collider2D other)
     {
         // If Player is on water, he can't sneak and make player slow
-        if (other.gameObject.CompareTag("Water"))
+        if (other.gameObject.CompareTag(Str.TagWater))
             isSneaking = false;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         // If Player is not on water, he can sneak and make player fast
-        if (other.gameObject.CompareTag("Water"))
+        if (other.gameObject.CompareTag(Str.TagWater))
         {
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position);
             moveSpeed = 3.5f;

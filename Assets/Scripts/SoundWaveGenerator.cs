@@ -61,7 +61,7 @@ public class SoundWaveGenerator : MonoBehaviour
                 soundWaveCount = 30;
                 break;
             case WaveType.Eternal:
-                soundWaveCount = 10;
+                soundWaveCount = 1;
                 break;
         }
 
@@ -106,6 +106,7 @@ public class SoundWaveGenerator : MonoBehaviour
     {
         soundWave.transform.SetParent(instance.transform);
         soundWave.SetActive(false);
+        soundWave.GetComponent<SoundWave>().ChangeColor(Color.white);
         instance.objectPool.Enqueue(soundWave);
     }
 }
