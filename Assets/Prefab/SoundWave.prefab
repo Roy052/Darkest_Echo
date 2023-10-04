@@ -138,7 +138,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.07
+  m_Radius: 0.09
 --- !u!96 &8604750668777309482
 TrailRenderer:
   serializedVersion: 2
@@ -189,8 +189,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
-        value: 0.070092775
+        time: 0.0058937073
+        value: 0.09145508
         inSlope: 0
         outSlope: 0
         tangentMode: 0
