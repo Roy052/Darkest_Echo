@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class AlertDevice : StageObject
 {
-    public SoundWaveGenerator soundWaveGenerator;
+    SoundWaveGenerator soundWaveGenerator;
     bool deviceOn = false;
     float time = 0;
 
     private void Awake()
     {
-        type = StageObjectType.AlertDevice;
+        soundWaveGenerator = SoundWaveGenerator.instance;
+        funcEnterPlayer = (other) => { deviceOn = true; };
+        funcExitPlayer = (other) => { deviceOn = false; };
     }
 
     void Update()
@@ -21,17 +23,5 @@ public class AlertDevice : StageObject
             time = 0;
         }
         time += Time.deltaTime;
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.CompareTag("Player"))
-            deviceOn = true;
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-            deviceOn = false;
     }
 }

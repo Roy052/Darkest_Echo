@@ -16,8 +16,7 @@ public enum EnemyType
 public class EnemyAI : MonoBehaviour
 {
     const float FoundDetectRadius = 3;
-
-    readonly float ChangeTime = 1;
+    const float ChangeTime = 1;
 
     public EnemyType enemyType;
 
@@ -27,15 +26,17 @@ public class EnemyAI : MonoBehaviour
     public float detectionRadius = 10f;
     public float smoothTime = 0.1f;
     public string targetTag;
+    public bool isSneak = false;
+    public bool isFinding = false;
 
     protected List<Vector2> path = new List<Vector2>();
     protected int currentWaypoint = 0;
     protected float currentTime = 0;
+    protected float currentSoundWaveTime = 0;
 
     protected UnityAction findPath;
     protected UnityAction funcEnter;
 
-    protected bool isFinding = false;
     protected Pathfinding pathfinding;
 
     bool isEntered = false;
@@ -49,11 +50,18 @@ public class EnemyAI : MonoBehaviour
 
     public virtual void Update()
     {
-        if(enemyType == EnemyType.Fugitive && currentTime >= 1)
+        if(enemyType == EnemyType.Fugitive && currentSoundWaveTime >= 1)
         {
-            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal,
+            if (isSneak)
+                SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Sneaking,
                         transform.position);
+            else
+                SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal,
+                        transform.position);
+            currentSoundWaveTime = 0;
         }
+
+        currentSoundWaveTime += Time.deltaTime;
 
         if (isFinding == false)
         {
@@ -187,6 +195,7 @@ public class EnemyAI : MonoBehaviour
         if (collision.tag == "SoundWave")
         {
             if (Vector2.Distance(targetPos, collision.GetComponent<SoundWave>().originPos) < Singleton.RangeOfError) return;
+            if (enemyType == EnemyType.Fugitive) return;
 
             targetPos = collision.GetComponent<SoundWave>().originPos;
             isFinding = true;

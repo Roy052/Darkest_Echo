@@ -8,10 +8,11 @@ public class StageSM : Singleton
 {
     const string StrStageFunc = "StageFuncSetup";
 
+    int stageNum = 1;
+
     public Text textNumber;
     public Text textTitle;
     public Image imageEnd;
-    int stageNum = 1;
 
     public GameObject objPlayer;
     public GameObject objEndZone;
@@ -43,7 +44,11 @@ public class StageSM : Singleton
         textTitle.color = new Color(1, 1, 1, 0);
         objPlayer.SetActive(false);
 
+#if UNITY_EDITOR
+        SetUp(StageSMInspector.currentStageIdx);
+#else
         SetUp(gm.stageNum);
+#endif
     }
 
     public void SetUp(int num)
@@ -85,6 +90,7 @@ public class StageSM : Singleton
         StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
         gm.stageNum += 1;
+        StageSMInspector.currentStageIdx += 1;
         PlayerPrefs.SetInt("UnlockedStage", gm.stageNum);
         SetUp(gm.stageNum);
     }
@@ -146,71 +152,73 @@ public class StageSM : Singleton
             }
         }
 
+        while (wallsParent.childCount > data.walls.Count)
+        {
+            DestroyImmediate(wallsParent.GetChild(wallsParent.childCount - 1).gameObject);
+        }
+
         //Enemy
+        while (enemysParent.childCount > 1)
+        {
+            DestroyImmediate(enemysParent.GetChild(0).gameObject);
+        }
+
         for (int i = 0; i < data.enemys.Count; i++)
         {
-            if (i > count - 1)
-            {
-                GameObject objEnemy = Instantiate(enemyPrefab[data.enemyTypes[i]], enemysParent);
-                objEnemy.name = $"Enemy {i}";
-                objEnemy.SetActive(true);
+            GameObject objEnemy = Instantiate(enemyPrefab[data.enemyTypes[i]], enemysParent);
+            objEnemy.name = $"Enemy {i}";
+            objEnemy.SetActive(true);
 
-                Transform trEnemy = objEnemy.transform;
-                trEnemy.position = data.enemys[i].position;
-                trEnemy.eulerAngles = data.enemys[i].rotation;
-                trEnemy.localScale = data.enemys[i].scale;
-            }
-            else
-            {
-                Transform trEnemy = enemysParent.GetChild(i);
-                trEnemy.position = data.enemys[i].position;
-                trEnemy.eulerAngles = data.enemys[i].rotation;
-                trEnemy.localScale = data.enemys[i].scale;
-            }
+            Transform trEnemy = objEnemy.transform;
+            trEnemy.position = data.enemys[i].position;
+            trEnemy.eulerAngles = data.enemys[i].rotation;
+            trEnemy.localScale = data.enemys[i].scale;
 
             enemysParent.GetChild(i).GetComponent<EnemyAI>().SetEnemy();
         }
 
         //Object
+        while (objectsParent.childCount > 1)
+        {
+            DestroyImmediate(objectsParent.GetChild(0).gameObject);
+        }
+
         int areaCount = 0;
         for (int i = 0; i < data.objects.Count; i++)
         {
-            if (i > count - 1)
+            GameObject objObject = Instantiate(objectPrefab[data.objectTypes[i]], objectsParent);
+            objObject.SetActive(true);
+
+            Transform trObject = objObject.transform;
+            trObject.position = data.objects[i].position;
+            trObject.eulerAngles = data.objects[i].rotation;
+            trObject.localScale = data.objects[i].scale;
+            trObject.SetAsFirstSibling();
+
+            if (data.objectTypes[i] == (int)StageObjectType.StageArea)
             {
-                GameObject objObject = Instantiate(objectPrefab[data.objectTypes[i]], objectsParent);
-                objObject.SetActive(true);
-
-                Transform trObject = objObject.transform;
-                trObject.position = data.objects[i].position;
-                trObject.eulerAngles = data.objects[i].rotation;
-                trObject.localScale = data.objects[i].scale;
-                trObject.SetAsFirstSibling();
-
-                if (data.objectTypes[i] == (int)StageObjectType.StageArea)
+                StageArea stageArea;
+                if (objObject.TryGetComponent(out stageArea))
                 {
-                    StageArea stageArea;
-                    if (objObject.TryGetComponent(out stageArea))
-                    {
-                        stageArea.areaNum = areaCount;
-                        areaCount++;
-                    }
+                    stageArea.areaNum = areaCount;
+                    areaCount++;
                 }
-                else if (data.objectTypes[i] == (int)StageObjectType.Trap)
+            }
+            else if (data.objectTypes[i] == (int)StageObjectType.Trap)
+            {
+                Obstacles obstacles;
+                if (objObject.TryGetComponent(out obstacles))
                 {
-                    Obstacles obstacles;
-                    if (objObject.TryGetComponent(out obstacles))
-                    {
-                        obstacles.color = Color.red;
-                        obstacles.funcEnter = StageRestart;
-                    }
+                    obstacles.color = Color.red;
+                    obstacles.funcEnterPlayer = (other) => { StageRestart(); };
                 }
-                else if(data.objectTypes[i] == (int)StageObjectType.Water)
+            }
+            else if(data.objectTypes[i] == (int)StageObjectType.Water)
+            {
+                Obstacles obstacles;
+                if (objObject.TryGetComponent(out obstacles))
                 {
-                    Obstacles obstacles;
-                    if (objObject.TryGetComponent(out obstacles))
-                    {
-                        obstacles.color = Color.blue;
-                    }
+                    obstacles.color = Color.blue;
                 }
             }
         }
@@ -230,7 +238,11 @@ public class StageSM : Singleton
     void StageFuncSetup2()
     {
         areaFunc.Clear();
-        areaFunc.Add(TutorialSneak);
+        areaFunc.Add(MoveFugitiveZone21);
+        areaFunc.Add(MoveFugitiveZone22);
+        areaFunc.Add(MoveFugitiveZone23);
+        areaFunc.Add((isEnter) => { TutorialSneak(isEnter); MoveFugitiveZone24(isEnter); });
+        areaFunc.Add(MoveFugitiveZone25);
     }
 
     void StageFuncSetup4()
@@ -288,10 +300,47 @@ public class StageSM : Singleton
     }
 
     EnemyAI enemyAi;
-    void MoveFugitiveZone21()
+    void MoveFugitiveZone21(bool isEnter)
     {
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2();
+        enemyAi.targetPos = new Vector2(-13.5f,2.4f);
+        enemyAi.isFinding = true;
+    }
+
+    void MoveFugitiveZone22(bool isEnter)
+    {
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(3.55f, -7.2f);
+    }
+
+    void MoveFugitiveZone23(bool isEnter)
+    {
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(8.2f, 1.86f);
+    }
+
+    void MoveFugitiveZone24(bool isEnter)
+    {
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(37.91f, 9.67f);
+        enemyAi.isSneak = true;
+    }
+
+    void MoveFugitiveZone25(bool isEnter)
+    {
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.isSneak = false;
+        StartCoroutine(WaitForMove());
+    }
+
+    IEnumerator WaitForMove()
+    {
+        yield return new WaitForSeconds(1);
+        enemyAi.targetPos = new Vector2(60.17f, 9.67f);
     }
 }

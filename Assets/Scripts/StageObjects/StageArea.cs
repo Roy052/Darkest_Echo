@@ -4,27 +4,34 @@ using UnityEngine.SceneManagement;
 public class StageArea : StageObject
 {
     public int areaNum;
-    private void OnTriggerEnter2D(Collider2D collision)
+
+    private void Awake()
     {
-        if (collision.CompareTag("Player"))
+        funcEnterPlayer = OnEnterPlayer;
+        funcExitPlayer = OnExitPlayer;
+    }
+
+    void OnEnterPlayer(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
             Debug.Log($"Area {areaNum} Enter");
 #if UNITY_EDITOR
         if (SceneManager.GetActiveScene().name == "StageGenerator")
             return;
 #endif
-        if (collision.CompareTag("Player") == false || Singleton.stageSM.areaFunc.Count <= areaNum) return;
+        if (other.CompareTag("Player") == false || Singleton.stageSM.areaFunc.Count <= areaNum) return;
         Singleton.stageSM.areaFunc[areaNum]?.Invoke(true);
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    void OnExitPlayer(Collider2D other)
     {
-        if (collision.CompareTag("Player"))
+        if (other.CompareTag("Player"))
             Debug.Log($"Area {areaNum} Exit");
 #if UNITY_EDITOR
         if (SceneManager.GetActiveScene().name == "StageGenerator")
             return;
 #endif
-        if (collision.CompareTag("Player") == false || Singleton.stageSM.areaFunc.Count <= areaNum) return;
+        if (other.CompareTag("Player") == false || Singleton.stageSM.areaFunc.Count <= areaNum) return;
         Singleton.stageSM.areaFunc[areaNum]?.Invoke(false);
     }
 }

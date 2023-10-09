@@ -1313,12 +1313,16 @@ MonoBehaviour:
   objectPrefab:
   - {fileID: 1637429571}
   - {fileID: 1270771761}
+  - {fileID: 1120417352302933079, guid: 7aa3aa0755968b14bbafa8e71149a00c, type: 3}
+  - {fileID: 5930772917635165676, guid: cbb3a0f7b162f80459e6468513eda240, type: 3}
+  - {fileID: 1923532887156505220, guid: 40d8ef50559b2fb429e88672f761dd47, type: 3}
   wallsParent: {fileID: 1524659261}
   enemysParent: {fileID: 1821307327}
   objectsParent: {fileID: 803334563}
   imgTutorialMove: {fileID: 1230969006}
   imgTutorialClap: {fileID: 1642956639}
   imgTutorialSneak: {fileID: 1905390214}
+  imgTutorialThrow: {fileID: 0}
 --- !u!4 &1843217283
 Transform:
   m_ObjectHideFlags: 0

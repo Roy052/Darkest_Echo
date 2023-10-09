@@ -38,7 +38,7 @@ public class EndZone : MonoBehaviour
         }
         else if (collision.tag == "SoundWave")
         {
-            collision.transform.GetComponent<TrailRenderer>().startWidth = 0.2f;
+            collision.transform.GetComponent<TrailRenderer>().startWidth = 0.14f;
         }
     }
 }
