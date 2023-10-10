@@ -70,6 +70,22 @@ public class EnemyAI : MonoBehaviour
                 isScout = true;
                 if (enemyType == EnemyType.Scout && (path == null || currentWaypoint >= path.Count))
                     findPath?.Invoke();
+
+                //If No Path
+                if (path == null) return;
+
+                // Move towards the next waypoint on the path
+                if (path != null && currentWaypoint < path.Count)
+                {
+                    Vector2 direction = (path[currentWaypoint] - (Vector2)transform.position).normalized;
+                    transform.position += (Vector3)direction * speed * Time.deltaTime;
+
+                    // Check if the enemy has reached the current waypoint
+                    if (Vector2.Distance(transform.position, path[currentWaypoint]) < 0.1f)
+                    {
+                        currentWaypoint++;
+                    }
+                }
             }
             else
                 return;
