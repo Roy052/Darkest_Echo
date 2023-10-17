@@ -14,6 +14,7 @@ public class StageData
     public List<int> enemyTypes = new List<int>();
     public List<int> objectTypes = new List<int>();
     public List<SerializableTransform> enemys = new List<SerializableTransform>();
+    public List<SerializableScoutPos> scoutPoses = new List<SerializableScoutPos>();
     public List<SerializableTransform> objects = new List<SerializableTransform>();
 }
 
@@ -43,6 +44,39 @@ public class SerializableTransform
         this.position = transform.position;
         this.rotation = transform.eulerAngles;
         this.scale = transform.localScale;
+    }
+}
+
+[System.Serializable]
+public class SerializableScoutPos
+{
+    public float posAX;
+    public float posAY;
+    public float posBX;
+    public float posBY;
+
+    public SerializableScoutPos()
+    {
+        posAX = 0;
+        posAY = 0;
+        posBX = 0;
+        posBY = 0;
+    }
+
+    public SerializableScoutPos(Vector2 pointA, Vector2 pointB)
+    {
+        posAX = pointA.x;
+        posAY = pointA.y;
+        posBX = pointB.x;
+        posBY = pointB.y;
+    }
+
+    public SerializableScoutPos(float posAX, float posAY, float posBX, float posBY)
+    {
+        this.posAX = posAX;
+        this.posAY = posAY;
+        this.posBX = posBX;
+        this.posBY = posBY;
     }
 }
 
@@ -132,8 +166,11 @@ public class StageGenerator : Singleton
         {
             if (enemysParent.GetChild(i).gameObject.activeSelf)
             {
-                stageData.enemyTypes.Add((int) enemysParent.GetChild(i).GetComponent<EnemyAI>().enemyType);
+                EnemyAI enemyAI = enemysParent.GetChild(i).GetComponent<EnemyAI>();
+                stageData.enemyTypes.Add((int) enemyAI.enemyType);
                 stageData.enemys.Add(new SerializableTransform(enemysParent.GetChild(i).transform));
+                if(enemyAI.enemyType == EnemyType.Scout)
+                    stageData.scoutPoses.Add(new SerializableScoutPos(enemyAI.pointA, enemyAI.pointB));
             }
                 
         }
@@ -224,6 +261,7 @@ public class StageGenerator : Singleton
             DestroyImmediate(enemysParent.GetChild(0).gameObject);
         }
 
+        int scoutCount = 0;
         for(int i = 0; i < stageData.enemys.Count; i++)
         {
             GameObject objEnemy = Instantiate(enemyPrefab[stageData.enemyTypes[i]], enemysParent);
@@ -235,6 +273,14 @@ public class StageGenerator : Singleton
             trEnemy.eulerAngles = stageData.enemys[i].rotation;
             trEnemy.localScale = stageData.enemys[i].scale;
             trEnemy.SetAsFirstSibling();
+
+            if(stageData.enemyTypes[i] == (int)EnemyType.Scout)
+            {
+                EnemyAI enemyAI = objEnemy.GetComponent<EnemyAI>();
+                enemyAI.pointA = new Vector2(stageData.scoutPoses[scoutCount].posAX, stageData.scoutPoses[scoutCount].posAY);
+                enemyAI.pointB = new Vector2(stageData.scoutPoses[scoutCount].posBX, stageData.scoutPoses[scoutCount].posBY);
+                scoutCount++;
+            }
         }
 
         //Object

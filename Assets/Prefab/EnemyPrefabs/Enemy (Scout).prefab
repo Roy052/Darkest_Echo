@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9195764298280913872}
   - component: {fileID: 9195764298280913873}
   m_Layer: 0
-  m_Name: Enemy (Chase)
+  m_Name: Enemy (Scout)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98,9 +98,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9780eef9e2e3a45acd09ecdf561133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: 1
+  enemyType: 2
   targetPos: {x: 0, y: 0}
-  speed: 3
+  speed: 4
   detectionRadius: 1
   smoothTime: 0.1
   targetTag: Player

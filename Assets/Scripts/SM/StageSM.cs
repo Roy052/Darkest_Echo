@@ -163,6 +163,7 @@ public class StageSM : Singleton
             DestroyImmediate(enemysParent.GetChild(0).gameObject);
         }
 
+        int scoutCount = 0;
         for (int i = 0; i < data.enemys.Count; i++)
         {
             GameObject objEnemy = Instantiate(enemyPrefab[data.enemyTypes[i]], enemysParent);
@@ -174,7 +175,14 @@ public class StageSM : Singleton
             trEnemy.eulerAngles = data.enemys[i].rotation;
             trEnemy.localScale = data.enemys[i].scale;
 
-            enemysParent.GetChild(i).GetComponent<EnemyAI>().SetEnemy();
+            EnemyAI enemyAI = enemysParent.GetChild(i).GetComponent<EnemyAI>();
+            enemyAI.SetEnemy();
+            if(enemyAI.enemyType == EnemyType.Scout)
+            {
+                enemyAI.pointA = new Vector2(data.scoutPoses[scoutCount].posAX, data.scoutPoses[scoutCount].posAY);
+                enemyAI.pointB = new Vector2(data.scoutPoses[scoutCount].posBX, data.scoutPoses[scoutCount].posBY);
+                scoutCount++;
+            }
         }
 
         //Object
