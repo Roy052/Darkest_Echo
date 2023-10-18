@@ -192,6 +192,7 @@ public class StageSM : Singleton
         }
 
         int areaCount = 0;
+        int movingObjectCount = 0;
         for (int i = 0; i < data.objects.Count; i++)
         {
             GameObject objObject = Instantiate(objectPrefab[data.objectTypes[i]], objectsParent);
@@ -227,6 +228,15 @@ public class StageSM : Singleton
                 if (objObject.TryGetComponent(out obstacles))
                 {
                     obstacles.color = Color.blue;
+                }
+            }
+            else if (data.objectTypes[i] == (int)StageObjectType.MovingObject)
+            {
+                MovingObject movingObject;
+                if (objObject.TryGetComponent(out movingObject))
+                {
+                    movingObject.enterPos = new Vector2(data.movingObjectPoses[movingObjectCount].posX, data.movingObjectPoses[movingObjectCount].posY);
+                    movingObjectCount++;
                 }
             }
         }

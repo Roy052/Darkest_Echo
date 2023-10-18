@@ -16,6 +16,7 @@ public class StageData
     public List<SerializableTransform> enemys = new List<SerializableTransform>();
     public List<SerializableScoutPos> scoutPoses = new List<SerializableScoutPos>();
     public List<SerializableTransform> objects = new List<SerializableTransform>();
+    public List<SerializableVector2> movingObjectPoses = new List<SerializableVector2>();
 }
 
 [System.Serializable]
@@ -77,6 +78,31 @@ public class SerializableScoutPos
         this.posAY = posAY;
         this.posBX = posBX;
         this.posBY = posBY;
+    }
+}
+
+[System.Serializable]
+public class SerializableVector2
+{
+    public float posX;
+    public float posY;
+
+    public SerializableVector2()
+    {
+        posX = 0;
+        posY = 0;
+    }
+
+    public SerializableVector2(Vector2 point)
+    {
+        posX = point.x;
+        posY = point.y;
+    }
+
+    public SerializableVector2(float posX, float posY)
+    {
+        this.posX = posX;
+        this.posY = posY;
     }
 }
 
@@ -180,8 +206,11 @@ public class StageGenerator : Singleton
         {
             if (objectsParent.GetChild(i).gameObject.activeSelf)
             {
-                stageData.objectTypes.Add((int) objectsParent.GetChild(i).gameObject.GetComponent<StageObject>().type);
+                StageObject stageObject = objectsParent.GetChild(i).gameObject.GetComponent<StageObject>();
+                stageData.objectTypes.Add((int) stageObject.type);
                 stageData.objects.Add(new SerializableTransform(objectsParent.GetChild(i).transform));
+                if (stageObject.type == StageObjectType.MovingObject)
+                    stageData.movingObjectPoses.Add(new SerializableVector2((stageObject as MovingObject).enterPos));
             }
                 
         }
@@ -289,6 +318,7 @@ public class StageGenerator : Singleton
             DestroyImmediate(objectsParent.GetChild(0).gameObject);
         }
 
+        int movingObjectCount = 0;
         for (int i = stageData.objects.Count - 1; i >= 0; i--)
         {
             GameObject objObject = Instantiate(objectPrefab[stageData.objectTypes[i]], objectsParent);
@@ -299,6 +329,13 @@ public class StageGenerator : Singleton
             trObject.eulerAngles = stageData.objects[i].rotation;
             trObject.localScale = stageData.objects[i].scale;
             trObject.SetAsFirstSibling();
+
+            if (stageData.objectTypes[i] == (int)StageObjectType.MovingObject)
+            {
+                MovingObject movingObject = objObject.GetComponent<MovingObject>();
+                movingObject.enterPos = new Vector2(stageData.movingObjectPoses[movingObjectCount].posX, stageData.movingObjectPoses[movingObjectCount].posY);
+                movingObjectCount++;
+            }
         }
     }
 
