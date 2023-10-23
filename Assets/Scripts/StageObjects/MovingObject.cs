@@ -1,22 +1,19 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MovingObject : StageObject
 {
     public Vector2 enterPos;
     public Vector2 exitPos;
-
     Vector2 startPos;
     float time = 0;
 
     private void Awake()
     {
         startPos = transform.position;
-        funcEnterPlayer = (other) => { StartCoroutine(OnEnterPos()); };
     }
 
-    IEnumerator OnEnterPos()
+    public IEnumerator OnEnterPos()
     {
         while(time <= 1)
         {

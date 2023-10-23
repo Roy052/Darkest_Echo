@@ -28,6 +28,9 @@ public class StageSM : Singleton
     //Area Func
     public List<UnityAction<bool>> areaFunc = new List<UnityAction<bool>>();
 
+    //Moving Objects
+    List<MovingObject> movingObjects = new List<MovingObject>();
+
     private void Awake()
     {
         stageSM = this;
@@ -89,6 +92,7 @@ public class StageSM : Singleton
         imageEnd.color = Color.white;
         StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
+        stageNum += 1;
         gm.stageNum += 1;
         StageSMInspector.currentStageIdx += 1;
         PlayerPrefs.SetInt("UnlockedStage", gm.stageNum);
@@ -186,6 +190,7 @@ public class StageSM : Singleton
         }
 
         //Object
+        movingObjects.Clear();
         while (objectsParent.childCount > 1)
         {
             DestroyImmediate(objectsParent.GetChild(0).gameObject);
@@ -237,6 +242,7 @@ public class StageSM : Singleton
                 {
                     movingObject.enterPos = new Vector2(data.movingObjectPoses[movingObjectCount].posX, data.movingObjectPoses[movingObjectCount].posY);
                     movingObjectCount++;
+                    movingObjects.Add(movingObject);
                 }
             }
         }
@@ -353,6 +359,7 @@ public class StageSM : Singleton
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
         enemyAi.isSneak = false;
+        movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
         StartCoroutine(WaitForMove());
     }
 
