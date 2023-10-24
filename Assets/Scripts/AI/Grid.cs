@@ -2,7 +2,7 @@ using System.Text;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Grid : MonoBehaviour
+public class Grid : Singleton
 {
     public LayerMask unwalkableMask;
     public Vector2 gridSize;
@@ -18,10 +18,15 @@ public class Grid : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridSize.y / nodeDiameter);
-        CreateGrid();
+        gridInstance = this;
     }
 
-    private void CreateGrid()
+    private void OnDestroy()
+    {
+        gridInstance = null;
+    }
+
+    public void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridSize.x / 2 - Vector2.up * gridSize.y / 2;
@@ -33,6 +38,10 @@ public class Grid : MonoBehaviour
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
                 bool walkable = !Physics2D.OverlapCircle(worldPoint, objectRadius, unwalkableMask);
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
+                if(walkable == false)
+                {
+                    Debug.Log($"Pos : {x}, {y}");
+                }
             }
         }
 

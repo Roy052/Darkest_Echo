@@ -26,6 +26,7 @@ public class Singleton : MonoBehaviour
 
     //Objects
     public static Pathfinding pathFinding;
+    public static Grid gridInstance;
 
     //Test
     public static SelectStageUISM selectStageUISM;

@@ -249,6 +249,8 @@ public class StageSM : Singleton
         yield return null;
 
         Camera.main.transform.position = new Vector3(trPlayer.transform.position.x, trPlayer.transform.position.y, -10);
+
+        gridInstance.CreateGrid();
     }
 
     //Area Func

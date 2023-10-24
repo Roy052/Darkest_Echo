@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isMoving;
     public bool isStop;
     public bool isSneaking;
+    public bool isWater;
     public bool isDead;
     public bool canThrow;
 
@@ -60,15 +61,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (isWater || isSneaking) moveSpeed = 1.5f;
+        else moveSpeed = 3.5f;
+
         // Player sneaking logic with left shift
         if (Input.GetKey(KeyCode.LeftShift))
         {
-            moveSpeed = 1.5f;
             isSneaking = true;
         }
         else if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            moveSpeed = 3.5f;
             isSneaking = false;
         }
 
@@ -196,7 +198,7 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag(Str.TagWater))
         {
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position);
-            moveSpeed = 1.5f;
+            isWater = true;
             footprintSpacer = 1f;
             currentFloor = EnumFloor.Water;
         }
@@ -221,7 +223,7 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag(Str.TagWater))
         {
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position);
-            moveSpeed = 3.5f;
+            isWater = false;
             footprintSpacer = 0.5f;
             currentFloor = EnumFloor.Tile;
         }
