@@ -124,6 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78a209b58583e7847bf5ed52993765ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  type: 4
   enterPos: {x: 40.77, y: 12.8}
   exitPos: {x: 0, y: 0}

@@ -274,6 +274,7 @@ public class StageSM : Singleton
     void StageFuncSetup4()
     {
         areaFunc.Clear();
+        areaFunc.Add(MoveWallZone41);
         areaFunc.Add(TutorialThrow);
     }
 
@@ -363,6 +364,11 @@ public class StageSM : Singleton
         enemyAi.isSneak = false;
         movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
         StartCoroutine(WaitForMove());
+    }
+
+    void MoveWallZone41(bool isEnter)
+    {
+        movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
     }
 
     IEnumerator WaitForMove()
