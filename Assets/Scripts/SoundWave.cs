@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class SoundWave : MonoBehaviour
 {
+    public bool isTemp = false;
     public Vector2 originPos;
 
     private Vector3 reflectDir;
@@ -62,6 +63,11 @@ public class SoundWave : MonoBehaviour
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Clapping, transform.position);
         }
 
+        if (isTemp)
+        {
+            Debug.Log("A");
+        }
+
         // Fading sound wave and destroy it
         if (trailStartTime < fadeDuration)
         {
@@ -72,11 +78,15 @@ public class SoundWave : MonoBehaviour
         else if (fadeDuration == 0)
         {
             // Do nothing
-            ChangeColor(Color.white);
+            if(isTemp == false)
+                ChangeColor(Color.white);
         }
         else
         {
-            SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+            if (isTemp == false)
+                SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+            else
+                Destroy(this.gameObject);
         }
     }
 
@@ -90,6 +100,19 @@ public class SoundWave : MonoBehaviour
     public int colliderCount = 0;
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // When Touch Wall, Split
+        if (isTemp == false && (other.gameObject.CompareTag(Str.TagTrap) || other.gameObject.CompareTag(Str.TagWater)))
+        {
+            GameObject temp = Instantiate(gameObject, transform.parent);
+            SoundWave tempSoundwave = temp.GetComponent<SoundWave>();
+            tempSoundwave.isTemp = true;
+            tempSoundwave.ChangeColor(other.gameObject.GetComponent<Obstacles>().color);
+            tempSoundwave.moveDir = moveDir;
+            //ChangeColor(new Color(0, 0, 0, 0));
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
+            //ChangeColor(other.gameObject.GetComponent<Obstacles>().color);
+        }
+
         // When the sound wave trigger with a wall, it will reflect
         if (!other.gameObject.CompareTag(Str.TagWall)) return;
         reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
@@ -101,6 +124,9 @@ public class SoundWave : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D other)
     {
+        // If Temp SoundWave, Destroy At Exit2D
+        if (isTemp && (other.gameObject.CompareTag(Str.TagTrap) || other.gameObject.CompareTag(Str.TagWater)))
+            Destroy(gameObject);
         if (!other.gameObject.CompareTag(Str.TagWall)) return;
     }
 

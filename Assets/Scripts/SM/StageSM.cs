@@ -49,6 +49,7 @@ public class StageSM : Singleton
 
 #if UNITY_EDITOR
         SetUp(StageSMInspector.currentStageIdx);
+        gm.stageNum = StageSMInspector.currentStageIdx;
 #else
         SetUp(gm.stageNum);
 #endif
