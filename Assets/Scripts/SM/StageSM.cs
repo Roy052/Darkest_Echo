@@ -372,6 +372,11 @@ public class StageSM : Singleton
         movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
     }
 
+    void Hungry()
+    {
+        player.isHungry = true;
+    }
+
     IEnumerator WaitForMove()
     {
         yield return new WaitForSeconds(1);

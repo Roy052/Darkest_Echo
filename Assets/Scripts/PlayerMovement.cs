@@ -9,7 +9,6 @@ public class PlayerMovement : MonoBehaviour
         Water
     }
 
-    
     public GameObject leftPrefab;
     public GameObject rightPrefab;
     public GameObject stopPrefab;
@@ -19,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public bool isStop;
     public bool isSneaking;
     public bool isWater;
+    public bool isHungry;
     public bool isDead;
     public bool canThrow;
 
@@ -47,11 +47,19 @@ public class PlayerMovement : MonoBehaviour
         isStop = false;
         isSneaking = false;
         isDead = false;
+        isHungry = false;
         currentFloor = EnumFloor.Tile;
         whichFoot = "Left";
         audioSrc = GetComponent<AudioSource>();
 
         Singleton.player = this;
+    }
+
+    public IEnumerator TemporaryHungry()
+    {
+        isHungry = true;
+        yield return new WaitForSeconds(1);
+        isHungry = false;
     }
 
     private void OnDestroy()
@@ -61,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isWater || isSneaking) moveSpeed = 1.5f;
+        if (isWater || isSneaking || isHungry) moveSpeed = 1.5f;
         else moveSpeed = 3.5f;
 
         // Player sneaking logic with left shift
@@ -190,7 +198,6 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(0.2f);
         SpawnDecal(prefab, stepWidth);
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {

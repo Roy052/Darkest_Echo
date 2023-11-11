@@ -285,7 +285,7 @@ public class StageGenerator : Singleton
         }
 
         //Enemy
-        while(enemysParent.childCount > 1)
+        while(enemysParent.childCount > 0)
         {
             DestroyImmediate(enemysParent.GetChild(0).gameObject);
         }
@@ -313,7 +313,7 @@ public class StageGenerator : Singleton
         }
 
         //Object
-        while (objectsParent.childCount > 1)
+        while (objectsParent.childCount > 0)
         {
             DestroyImmediate(objectsParent.GetChild(0).gameObject);
         }
