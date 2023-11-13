@@ -31,6 +31,10 @@ public class StageSM : Singleton
     //Moving Objects
     List<MovingObject> movingObjects = new List<MovingObject>();
 
+    //Status
+    int zoneCount = 0;
+    bool isTemporaryHungry = false;
+
     private void Awake()
     {
         stageSM = this;
@@ -67,6 +71,7 @@ public class StageSM : Singleton
     public IEnumerator _SetUp()
     {
         StartCoroutine(LoadStageData());
+        areaFunc.Clear();
         Invoke(StrStageFunc + stageNum, 0);
         imageEnd.color = Color.black;
         imageEnd.gameObject.SetActive(true);
@@ -96,6 +101,7 @@ public class StageSM : Singleton
         stageNum += 1;
         gm.stageNum += 1;
         StageSMInspector.currentStageIdx += 1;
+        ResetStatus();
         PlayerPrefs.SetInt("UnlockedStage", gm.stageNum);
         SetUp(gm.stageNum);
     }
@@ -110,7 +116,19 @@ public class StageSM : Singleton
         imageEnd.color = Color.red;
         StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
+        ResetStatus();
         SetUp(gm.stageNum);
+    }
+
+    public void StageExit()
+    {
+        ResetStatus();
+    }
+
+    void ResetStatus()
+    {
+        zoneCount = 0;
+        isTemporaryHungry = false;
     }
 
     IEnumerator LoadStageData()
@@ -257,14 +275,12 @@ public class StageSM : Singleton
     //Area Func
     void StageFuncSetup1()
     {
-        areaFunc.Clear();
         areaFunc.Add(TutorialMove);
         areaFunc.Add(TutorialClap);
     }
 
     void StageFuncSetup2()
     {
-        areaFunc.Clear();
         areaFunc.Add(MoveFugitiveZone21);
         areaFunc.Add(MoveFugitiveZone22);
         areaFunc.Add(MoveFugitiveZone23);
@@ -274,9 +290,13 @@ public class StageSM : Singleton
 
     void StageFuncSetup4()
     {
-        areaFunc.Clear();
-        areaFunc.Add(MoveWallZone41);
+        areaFunc.Add(MoveWallZone);
         areaFunc.Add(TutorialThrow);
+    }
+
+    void StageFuncSetup5()
+    {
+        areaFunc.Add(TemporaryHungry);
     }
 
     public Image imgTutorialMove;
@@ -367,9 +387,23 @@ public class StageSM : Singleton
         StartCoroutine(WaitForMove());
     }
 
-    void MoveWallZone41(bool isEnter)
+    void MoveWallZone(bool isEnter)
     {
-        movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
+        movingObjects[zoneCount].StartCoroutine(movingObjects[zoneCount].OnEnterPos());
+        zoneCount++;
+    }
+
+    void TemporaryHungry(bool isEnter)
+    {
+        isTemporaryHungry = true;
+        StartCoroutine(_TemporaryHungry());
+    }
+
+    IEnumerator _TemporaryHungry()
+    {
+        player.isHungry = true;
+        yield return new WaitForSeconds(1);
+        player.isHungry = false;
     }
 
     void Hungry()
