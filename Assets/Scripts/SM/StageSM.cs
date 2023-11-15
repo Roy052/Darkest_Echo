@@ -129,6 +129,9 @@ public class StageSM : Singleton
     {
         zoneCount = 0;
         isTemporaryHungry = false;
+        player.isSneaking = false;
+        player.isWater = false;
+        player.isHungry = false;
     }
 
     IEnumerator LoadStageData()
@@ -297,6 +300,30 @@ public class StageSM : Singleton
     void StageFuncSetup5()
     {
         areaFunc.Add(TemporaryHungry);
+        areaFunc.Add(Hungry);
+    }
+
+    void StageFuncSetup6()
+    {
+
+    }
+
+    void StageFuncSetup7()
+    {
+
+    }
+
+    void StageFuncSetup8()
+    {
+
+    }
+    void StageFuncSetup9()
+    {
+
+    }
+    void StageFuncSetup10()
+    {
+
     }
 
     public Image imgTutorialMove;
@@ -406,7 +433,7 @@ public class StageSM : Singleton
         player.isHungry = false;
     }
 
-    void Hungry()
+    void Hungry(bool isEnter)
     {
         player.isHungry = true;
     }
