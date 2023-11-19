@@ -24,4 +24,18 @@ public class MovingObject : StageObject
             yield return null;
         }
     }
+
+    public IEnumerator OnExitPos()
+    {
+        if (Vector2.Distance(enterPos, exitPos) < 0.01f) yield break;
+
+        while (time <= 1)
+        {
+            Vector3 currentValue = Vector3.Lerp(startPos, enterPos, time);
+            currentValue.z = 0;
+            transform.position = currentValue;
+            time += Time.deltaTime;
+            yield return null;
+        }
+    }
 }

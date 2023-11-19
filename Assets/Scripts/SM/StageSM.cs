@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class StageSM : Singleton
 {
     const string StrStageFunc = "StageFuncSetup";
+    WaitForSeconds WaitForOneSecond = new WaitForSeconds(1);
 
     int stageNum = 1;
 
@@ -32,7 +33,6 @@ public class StageSM : Singleton
     List<MovingObject> movingObjects = new List<MovingObject>();
 
     //Status
-    int zoneCount = 0;
     bool isTemporaryHungry = false;
 
     private void Awake()
@@ -127,7 +127,6 @@ public class StageSM : Singleton
 
     void ResetStatus()
     {
-        zoneCount = 0;
         isTemporaryHungry = false;
         player.isSneaking = false;
         player.isWater = false;
@@ -262,7 +261,8 @@ public class StageSM : Singleton
                 MovingObject movingObject;
                 if (objObject.TryGetComponent(out movingObject))
                 {
-                    movingObject.enterPos = new Vector2(data.movingObjectPoses[movingObjectCount].posX, data.movingObjectPoses[movingObjectCount].posY);
+                    movingObject.enterPos = new Vector2(data.movingObjectEnterPoses[movingObjectCount].posX, data.movingObjectEnterPoses[movingObjectCount].posY);
+                    movingObject.exitPos = new Vector2(data.movingObjectExitPoses[movingObjectCount].posX, data.movingObjectExitPoses[movingObjectCount].posY);
                     movingObjectCount++;
                     movingObjects.Add(movingObject);
                 }
@@ -293,7 +293,7 @@ public class StageSM : Singleton
 
     void StageFuncSetup4()
     {
-        areaFunc.Add(MoveWallZone);
+        areaFunc.Add(MoveWallZone41);
         areaFunc.Add(TutorialThrow);
     }
 
@@ -305,12 +305,27 @@ public class StageSM : Singleton
 
     void StageFuncSetup6()
     {
-
+        areaFunc.Add(Hungry);
+        areaFunc.Add(MoveFugitiveZone61);
+        areaFunc.Add(MoveFugitiveZone62);
+        areaFunc.Add(MoveFugitiveZone63);
+        areaFunc.Add(MoveFugitiveZone64);
+        areaFunc.Add(MoveFugitiveZone65);
+        areaFunc.Add(MoveFugitiveZone66);
+        areaFunc.Add(MoveFugitiveZone67);
+        areaFunc.Add(MoveFugitiveZone68);
+        areaFunc.Add(MoveFugitiveZone69);
+        areaFunc.Add(MoveFugitiveZone69_1);
+        areaFunc.Add(MoveFugitiveZone69_2);
+        areaFunc.Add(MoveFugitiveZone69_3);
+        areaFunc.Add(MoveFugitiveZone69_4);
+        areaFunc.Add(MoveFugitiveZone69_5);
     }
 
     void StageFuncSetup7()
     {
-
+        areaFunc.Add(HungryToFull);
+        areaFunc.Add(MoveWallZone71);
     }
 
     void StageFuncSetup8()
@@ -407,6 +422,8 @@ public class StageSM : Singleton
 
     void MoveFugitiveZone25(bool isEnter)
     {
+        if (isEnter == false) return;
+
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
         enemyAi.isSneak = false;
@@ -414,10 +431,166 @@ public class StageSM : Singleton
         StartCoroutine(WaitForMove());
     }
 
-    void MoveWallZone(bool isEnter)
+    void MoveFugitiveZone61(bool isEnter)
     {
-        movingObjects[zoneCount].StartCoroutine(movingObjects[zoneCount].OnEnterPos());
-        zoneCount++;
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(-12.11f, 11.13f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone62(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(4.12f, 11.13f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone63(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(4.12f, 27.8f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone64(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(37f, 27.8f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone65(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(37f, -1.3f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone66(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(84.2f, -1.3f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone67(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(84.2f, 20.5f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone68(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(102.8f, 20.5f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone69(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(102.8f, 0f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone69_1(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(112f, 0f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone69_2(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(112f, 4.3f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone69_3(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(125.23f, 4.3f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone69_4(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(125.23f, 21f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveFugitiveZone69_5(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        if (enemyAi == null)
+            enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
+        enemyAi.targetPos = new Vector2(142.56f, 21f);
+        StartCoroutine(WaitForMove());
+    }
+
+    void MoveWallZone41(bool isEnter)
+    {
+        if(isEnter)
+            movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
+        else
+            movingObjects[0].StartCoroutine(movingObjects[0].OnExitPos());
+    }
+
+    void MoveWallZone71(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        movingObjects[0].StartCoroutine(movingObjects[0].OnExitPos());
+    }
+
+    void MoveWallZone72(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        movingObjects[0].StartCoroutine(movingObjects[1].OnExitPos());
     }
 
     void TemporaryHungry(bool isEnter)
@@ -436,6 +609,24 @@ public class StageSM : Singleton
     void Hungry(bool isEnter)
     {
         player.isHungry = true;
+    }
+
+    void HungryToFull(bool isEnter)
+    {
+        StartCoroutine(_HungryToFull());
+    }
+
+    IEnumerator _HungryToFull()
+    {
+        Color temp = Color.red;
+
+        while(temp.b >= 1)
+        {
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal, transform.localPosition, temp);
+            temp.b += 0.34f;
+            temp.g += 0.34f;
+            yield return new WaitForSeconds(0.34f);
+        }
     }
 
     IEnumerator WaitForMove()

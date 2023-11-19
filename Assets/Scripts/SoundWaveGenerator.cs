@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Drawing;
 using Random = UnityEngine.Random;
+using Color = UnityEngine.Color;
 
 public class SoundWaveGenerator : MonoBehaviour
 {
@@ -42,7 +44,7 @@ public class SoundWaveGenerator : MonoBehaviour
         return soundWave;
     }
 
-    public void SpawnSoundWave(WaveType type, Vector3 position)
+    public void SpawnSoundWave(WaveType type, Vector3 position, Color? color = null)
     {
         switch (type)
         {
@@ -84,6 +86,9 @@ public class SoundWaveGenerator : MonoBehaviour
             soundWaveScript.SetType(type == WaveType.Throwing ? WaveType.Normal : type);
             soundWave.transform.SetParent(null);
             soundWave.SetActive(true);
+
+            if(color != null)
+                soundWaveScript.ChangeColor(color ?? Color.white);
         }
     }
     

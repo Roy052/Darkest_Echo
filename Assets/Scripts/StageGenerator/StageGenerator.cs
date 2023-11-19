@@ -16,7 +16,8 @@ public class StageData
     public List<SerializableTransform> enemys = new List<SerializableTransform>();
     public List<SerializableScoutPos> scoutPoses = new List<SerializableScoutPos>();
     public List<SerializableTransform> objects = new List<SerializableTransform>();
-    public List<SerializableVector2> movingObjectPoses = new List<SerializableVector2>();
+    public List<SerializableVector2> movingObjectEnterPoses = new List<SerializableVector2>();
+    public List<SerializableVector2> movingObjectExitPoses = new List<SerializableVector2>();
 }
 
 [System.Serializable]
@@ -210,9 +211,11 @@ public class StageGenerator : Singleton
                 stageData.objectTypes.Add((int) stageObject.type);
                 stageData.objects.Add(new SerializableTransform(objectsParent.GetChild(i).transform));
                 if (stageObject.type == StageObjectType.MovingObject)
-                    stageData.movingObjectPoses.Add(new SerializableVector2((stageObject as MovingObject).enterPos));
-            }
-                
+                {
+                    stageData.movingObjectEnterPoses.Add(new SerializableVector2((stageObject as MovingObject).enterPos));
+                    stageData.movingObjectExitPoses.Add(new SerializableVector2((stageObject as MovingObject).exitPos));
+                }
+            }  
         }
 
         string json = JsonUtility.ToJson(stageData);
@@ -333,7 +336,8 @@ public class StageGenerator : Singleton
             if (stageData.objectTypes[i] == (int)StageObjectType.MovingObject)
             {
                 MovingObject movingObject = objObject.GetComponent<MovingObject>();
-                movingObject.enterPos = new Vector2(stageData.movingObjectPoses[movingObjectCount].posX, stageData.movingObjectPoses[movingObjectCount].posY);
+                movingObject.enterPos = new Vector2(stageData.movingObjectEnterPoses[movingObjectCount].posX, stageData.movingObjectEnterPoses[movingObjectCount].posY);
+                //movingObject.exitPos = new Vector2(stageData.movingObjectExitPoses[movingObjectCount].posX, stageData.movingObjectExitPoses[movingObjectCount].posY);
                 movingObjectCount++;
             }
         }
