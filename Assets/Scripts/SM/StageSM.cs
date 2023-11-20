@@ -326,6 +326,7 @@ public class StageSM : Singleton
     {
         areaFunc.Add(HungryToFull);
         areaFunc.Add(MoveWallZone71);
+        areaFunc.Add(MoveWallZone72);
     }
 
     void StageFuncSetup8()
@@ -338,7 +339,9 @@ public class StageSM : Singleton
     }
     void StageFuncSetup10()
     {
-
+        areaFunc.Add(MoveWallZone101);
+        areaFunc.Add(MoveWallZone102);
+        areaFunc.Add(MoveWallZone103);
     }
 
     public Image imgTutorialMove;
@@ -590,7 +593,31 @@ public class StageSM : Singleton
     {
         if (isEnter == false) return;
 
-        movingObjects[0].StartCoroutine(movingObjects[1].OnExitPos());
+        movingObjects[1].StartCoroutine(movingObjects[1].OnExitPos());
+    }
+
+    void MoveWallZone101(bool isEnter)
+    {
+        if (isEnter)
+            movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
+        else
+            movingObjects[0].StartCoroutine(movingObjects[0].OnExitPos());
+    }
+
+    void MoveWallZone102(bool isEnter)
+    {
+        if (isEnter)
+            movingObjects[1].StartCoroutine(movingObjects[1].OnEnterPos());
+        else
+            movingObjects[1].StartCoroutine(movingObjects[1].OnExitPos());
+    }
+
+    void MoveWallZone103(bool isEnter)
+    {
+        if (isEnter)
+            movingObjects[2].StartCoroutine(movingObjects[2].OnEnterPos());
+        else
+            movingObjects[2].StartCoroutine(movingObjects[2].OnExitPos());
     }
 
     void TemporaryHungry(bool isEnter)
