@@ -100,7 +100,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 3
   targetPos: {x: 0, y: 0}
-  speed: 3
+  speed: 2
   detectionRadius: 1
   smoothTime: 0.1
   targetTag: Player

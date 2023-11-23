@@ -63,11 +63,6 @@ public class SoundWave : MonoBehaviour
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Clapping, transform.position);
         }
 
-        if (isTemp)
-        {
-            Debug.Log("A");
-        }
-
         // Fading sound wave and destroy it
         if (trailStartTime < fadeDuration)
         {

@@ -40,7 +40,7 @@ public class Grid : Singleton
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
                 if(walkable == false)
                 {
-                    Debug.Log($"Pos : {x}, {y}");
+                    //Debug.Log($"Pos : {x}, {y}");
                 }
             }
         }

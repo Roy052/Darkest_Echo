@@ -387,6 +387,7 @@ public class StageSM : Singleton
         {
             imgTutorialThrow.gameObject.SetActive(true);
             StartCoroutine(FadeManager.FadeIn(imgTutorialThrow, 1));
+            player.canThrow = true;
         }
         else
             imgTutorialThrow.gameObject.SetActive(false);
@@ -622,6 +623,7 @@ public class StageSM : Singleton
 
     void TemporaryHungry(bool isEnter)
     {
+        if (isTemporaryHungry) return;
         isTemporaryHungry = true;
         StartCoroutine(_TemporaryHungry());
     }
