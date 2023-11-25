@@ -337,7 +337,7 @@ public class StageGenerator : Singleton
             {
                 MovingObject movingObject = objObject.GetComponent<MovingObject>();
                 movingObject.enterPos = new Vector2(stageData.movingObjectEnterPoses[movingObjectCount].posX, stageData.movingObjectEnterPoses[movingObjectCount].posY);
-                //movingObject.exitPos = new Vector2(stageData.movingObjectExitPoses[movingObjectCount].posX, stageData.movingObjectExitPoses[movingObjectCount].posY);
+                movingObject.exitPos = new Vector2(stageData.movingObjectExitPoses[movingObjectCount].posX, stageData.movingObjectExitPoses[movingObjectCount].posY);
                 movingObjectCount++;
             }
         }

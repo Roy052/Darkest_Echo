@@ -95,6 +95,7 @@ public class StageSM : Singleton
 
     public IEnumerator _StageEnd()
     {
+        soundManager.PlaySound(SoundEffectType.EndZone);
         imageEnd.color = Color.white;
         StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
@@ -113,7 +114,9 @@ public class StageSM : Singleton
 
     public IEnumerator _StageRestart()
     {
+        soundManager.PlaySound(SoundEffectType.Dead);
         imageEnd.color = Color.red;
+        SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Dying, player.transform.position, Color.red);
         StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
         ResetStatus();
@@ -387,7 +390,7 @@ public class StageSM : Singleton
         {
             imgTutorialThrow.gameObject.SetActive(true);
             StartCoroutine(FadeManager.FadeIn(imgTutorialThrow, 1));
-            player.canThrow = true;
+            player.canThrow = true; 
         }
         else
             imgTutorialThrow.gameObject.SetActive(false);

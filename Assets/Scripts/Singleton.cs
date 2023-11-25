@@ -11,6 +11,8 @@ public class Singleton : MonoBehaviour
 
     public static StageGenerator stageGenerator;
 
+    public static SoundManager soundManager;
+
     //Scene Manager
     public static LobbySM lobbySM;
     public static SelectStageSM selectStageSM;
