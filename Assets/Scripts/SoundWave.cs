@@ -4,6 +4,7 @@ using UnityEngine;
 public class SoundWave : MonoBehaviour
 {
     public bool isTemp = false;
+    public bool isTempEndZone = false;
     public Vector2 originPos;
 
     private Vector3 reflectDir;
@@ -103,9 +104,17 @@ public class SoundWave : MonoBehaviour
             tempSoundwave.isTemp = true;
             tempSoundwave.ChangeColor(other.gameObject.GetComponent<Obstacles>().color);
             tempSoundwave.moveDir = moveDir;
-            //ChangeColor(new Color(0, 0, 0, 0));
             temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
-            //ChangeColor(other.gameObject.GetComponent<Obstacles>().color);
+        }
+        else if (isTemp == false && other.gameObject.CompareTag(Str.TagEndZone))
+        {
+            GameObject temp = Instantiate(gameObject, transform.parent);
+            SoundWave tempSoundwave = temp.GetComponent<SoundWave>();
+            tempSoundwave.isTemp = true;
+            tempSoundwave.isTempEndZone = true;
+            tempSoundwave.moveDir = moveDir;
+            tempSoundwave.trailRenderer.startWidth *= 2;
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
         }
 
         // When the sound wave trigger with a wall, it will reflect
@@ -122,6 +131,20 @@ public class SoundWave : MonoBehaviour
         // If Temp SoundWave, Destroy At Exit2D
         if (isTemp && (other.gameObject.CompareTag(Str.TagTrap) || other.gameObject.CompareTag(Str.TagWater)))
             Destroy(gameObject);
+        else if (other.gameObject.CompareTag(Str.TagEndZone))
+        {
+            if (isTempEndZone == false)
+            {
+                trailStartTime = fadeDuration;
+                return;
+            }
+
+            reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
+            reflectDir = reflectDir.normalized;
+            beforeMoveDir = moveDir;
+            moveDir = reflectDir;
+            hitInfo = new RaycastHit2D[2];
+        }
         if (!other.gameObject.CompareTag(Str.TagWall)) return;
     }
 
@@ -135,49 +158,49 @@ public class SoundWave : MonoBehaviour
         switch ((int)type)
         {
             case 0: // Normal
-                moveSpeed = 8f;
-                fadeDuration = 1.5f;
+                moveSpeed = 5f;
+                fadeDuration = 2.4f;
                 trailRenderer.time = 1f;
                 trailRenderer.startColor = normalStartColor;
                 trailRenderer.endColor = normalEndColor;
                 break;
             case 1: // Sneaking
-                moveSpeed = 6f;
+                moveSpeed = 5f;
                 fadeDuration = 0.6f;
                 trailRenderer.time = 0.55f;
                 trailRenderer.startColor = sneakingStartColor;
                 trailRenderer.endColor = normalEndColor;
                 break;
             case 2: // Clapping
-                moveSpeed = 8f;
+                moveSpeed = 5f;
                 float tempValue = player.GetComponentInChildren<Clap>().clapPower;
-                fadeDuration = tempValue == 0 ? 1 : tempValue;
+                fadeDuration = tempValue == 0 ? 3 : 1.5f * tempValue;
                 trailRenderer.time = fadeDuration * 0.7f;
                 trailRenderer.startColor = normalStartColor;
                 trailRenderer.endColor = normalEndColor;
                 break;
             case 3: // Diving
-                moveSpeed = 8f;
-                fadeDuration = 2f;
+                moveSpeed = 5f;
+                fadeDuration = 5f;
                 trailRenderer.time = 1.8f;
                 trailRenderer.startColor = normalStartColor;
                 trailRenderer.endColor = normalEndColor;
                 break;
             case 4: // Death
-                moveSpeed = 8f;
+                moveSpeed = 5f;
                 fadeDuration = 10f;
                 trailRenderer.time = 1.5f;
                 trailRenderer.startColor = dyingStartColor;
                 trailRenderer.endColor = dyingEndColor;
                 break;
             case 5: // Throwing
-                moveSpeed = 12f;
-                fadeDuration = 2.5f;
+                moveSpeed = 11f;
+                fadeDuration = 3f;
                 trailRenderer.time = 2.4f;
                 trailRenderer.startColor = normalStartColor;
                 trailRenderer.endColor = normalEndColor;
                 break;
-            case 6:
+            case 6: //Eternal
                 moveSpeed = 1f;
                 fadeDuration = 3600f;
                 trailRenderer.time = 1f;

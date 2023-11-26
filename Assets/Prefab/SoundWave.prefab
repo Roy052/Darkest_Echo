@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5da6a7435ba40448834f5af1e53fd9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTemp: 0
   originPos: {x: 0, y: 0}
   colliderCount: 0
 --- !u!50 &3664782133341431241
@@ -189,8 +190,8 @@ TrailRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.0058937073
-        value: 0.09145508
+        time: 0
+        value: 0.104608156
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -233,7 +234,7 @@ TrailRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 0
-    shadowBias: 0.5
+    shadowBias: 0.3
     generateLightingData: 0
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0

@@ -35,6 +35,9 @@ public class StageSM : Singleton
     //Status
     bool isTemporaryHungry = false;
 
+    //
+    bool isEnding = false;
+
     private void Awake()
     {
         stageSM = this;
@@ -90,7 +93,10 @@ public class StageSM : Singleton
 
     public void StageEnd()
     {
+        if (isEnding) return;
+
         StartCoroutine(_StageEnd());
+        isEnding = true;
     }
 
     public IEnumerator _StageEnd()
@@ -109,7 +115,10 @@ public class StageSM : Singleton
 
     public void StageRestart()
     {
+        if (isEnding) return;
+
         StartCoroutine(_StageRestart());
+        isEnding = true;
     }
 
     public IEnumerator _StageRestart()
@@ -131,6 +140,7 @@ public class StageSM : Singleton
     void ResetStatus()
     {
         isTemporaryHungry = false;
+        isEnding = false;
         player.isSneaking = false;
         player.isWater = false;
         player.isHungry = false;
@@ -231,7 +241,6 @@ public class StageSM : Singleton
             trObject.position = data.objects[i].position;
             trObject.eulerAngles = data.objects[i].rotation;
             trObject.localScale = data.objects[i].scale;
-            trObject.SetAsFirstSibling();
 
             if (data.objectTypes[i] == (int)StageObjectType.StageArea)
             {
@@ -359,7 +368,8 @@ public class StageSM : Singleton
             StartCoroutine(FadeManager.FadeIn(imgTutorialMove, 1));
         }
         else
-            imgTutorialMove.gameObject.SetActive(false);
+            StartCoroutine(FadeManager.FadeOut(imgTutorialMove, 1));
+
     }
 
     void TutorialClap(bool isEnter)
@@ -370,7 +380,7 @@ public class StageSM : Singleton
             StartCoroutine(FadeManager.FadeIn(imgTutorialClap, 1));
         }
         else
-            imgTutorialClap.gameObject.SetActive(false);
+            StartCoroutine(FadeManager.FadeOut(imgTutorialClap, 1));
     }
 
     void TutorialSneak(bool isEnter)
@@ -380,8 +390,8 @@ public class StageSM : Singleton
             imgTutorialSneak.gameObject.SetActive(true);
             StartCoroutine(FadeManager.FadeIn(imgTutorialSneak, 1));
         }
-        else
-            imgTutorialSneak.gameObject.SetActive(false);
+        else 
+            StartCoroutine(FadeManager.FadeOut(imgTutorialSneak, 1));
     }
 
     void TutorialThrow(bool isEnter)
@@ -664,6 +674,7 @@ public class StageSM : Singleton
     IEnumerator WaitForMove()
     {
         yield return new WaitForSeconds(1);
+        gridInstance.RefreshGrid();
         enemyAi.targetPos = new Vector2(60.17f, 9.67f);
     }
 }

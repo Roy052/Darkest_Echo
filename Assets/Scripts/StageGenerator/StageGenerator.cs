@@ -247,14 +247,12 @@ public class StageGenerator : Singleton
         trPlayer.position = stageData.player.position;
         trPlayer.eulerAngles = stageData.player.rotation;
         trPlayer.localScale = stageData.player.scale;
-        trPlayer.SetAsFirstSibling();
 
         //EndZone
         Transform trEndZone = endZoneParent.GetChild(0).gameObject.transform;
         trEndZone.position = stageData.endZone.position;
         trEndZone.eulerAngles = stageData.endZone.rotation;
         trEndZone.localScale = stageData.endZone.scale;
-        trEndZone.SetAsFirstSibling();
 
         //Wall
         int count = wallsParent.childCount;
@@ -270,7 +268,6 @@ public class StageGenerator : Singleton
                 trWall.position = stageData.walls[i].position;
                 trWall.eulerAngles = stageData.walls[i].rotation;
                 trWall.localScale = stageData.walls[i].scale;
-                trWall.SetAsFirstSibling();
             }
             else
             {
@@ -278,7 +275,6 @@ public class StageGenerator : Singleton
                 trWall.position = stageData.walls[i].position;
                 trWall.eulerAngles = stageData.walls[i].rotation;
                 trWall.localScale = stageData.walls[i].scale;
-                trWall.SetAsFirstSibling();
             }
         }
 
@@ -304,7 +300,6 @@ public class StageGenerator : Singleton
             trEnemy.position = stageData.enemys[i].position;
             trEnemy.eulerAngles = stageData.enemys[i].rotation;
             trEnemy.localScale = stageData.enemys[i].scale;
-            trEnemy.SetAsFirstSibling();
 
             if(stageData.enemyTypes[i] == (int)EnemyType.Scout)
             {
@@ -331,7 +326,6 @@ public class StageGenerator : Singleton
             trObject.position = stageData.objects[i].position;
             trObject.eulerAngles = stageData.objects[i].rotation;
             trObject.localScale = stageData.objects[i].scale;
-            trObject.SetAsFirstSibling();
 
             if (stageData.objectTypes[i] == (int)StageObjectType.MovingObject)
             {

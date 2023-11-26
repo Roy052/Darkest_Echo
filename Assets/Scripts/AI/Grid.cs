@@ -59,6 +59,21 @@ public class Grid : Singleton
         return grid[x, y];
     }
 
+    public void RefreshGrid()
+    {
+        Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridSize.x / 2 - Vector2.up * gridSize.y / 2;
+
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int y = 0; y < gridSizeY; y++)
+            {
+                Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
+                bool walkable = !Physics2D.OverlapCircle(worldPoint, objectRadius, unwalkableMask);
+                grid[x, y] = new Node(walkable, worldPoint, x, y);
+            }
+        }
+    }
+
     public List<Node> GetNeighbors(Node node)
     {
         List<Node> neighbors = new List<Node>();

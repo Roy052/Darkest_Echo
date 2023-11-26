@@ -114,4 +114,12 @@ public class SoundWaveGenerator : MonoBehaviour
         soundWave.GetComponent<SoundWave>().ChangeColor(Color.white);
         instance.objectPool.Enqueue(soundWave);
     }
+
+    public void ClearAllSoundWave()
+    {
+        foreach(GameObject obj in objectPool)
+        {
+            Destroy(obj);
+        }
+    }
 }

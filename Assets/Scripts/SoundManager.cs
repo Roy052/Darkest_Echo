@@ -30,7 +30,8 @@ public class SoundManager : Singleton
 
     public void PlaySound(SoundEffectType type)
     {
-        if (sounds.Length >= (int)type) return;
+        if (sounds.Length <= (int)type) return;
         audioSource.clip = sounds[(int)type];
+        audioSource.Play();
     }
 }
