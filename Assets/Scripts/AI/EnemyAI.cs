@@ -42,9 +42,15 @@ public class EnemyAI : MonoBehaviour
     bool isEntered = false;
     List<Vector2> soundWaveStorage = new List<Vector2>();
 
+    SpriteRenderer spriteRenderer;
+    AudioSource audioSource;
+
     public virtual void Start()
     {
         pathfinding = Singleton.pathFinding;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        audioSource = GetComponent<AudioSource>();
+        spriteRenderer.color = new Color(1, 1, 1, enemyType == EnemyType.Scout ? 0 : 1);
         SetEnemy();
     }
 
@@ -94,13 +100,23 @@ public class EnemyAI : MonoBehaviour
         {
             isScout = false;
 
-            if (path == null || currentWaypoint >= path.Count || currentTime >= ChangeTime)
+            if (path == null || currentTime >= ChangeTime)
             {
                 findPath?.Invoke();
             }
 
             //If No Path
             if (path == null) return;
+
+            if(currentWaypoint >= path.Count)
+            {
+                isFinding = false;
+                if(enemyType != EnemyType.Scout)
+                    spriteRenderer.color = new Color(1, 1, 1, 0);
+
+                if(audioSource)
+                    audioSource.Stop();
+            }
 
             // Move towards the next waypoint on the path
             if (path != null && currentWaypoint < path.Count)
@@ -215,6 +231,7 @@ public class EnemyAI : MonoBehaviour
 
             targetPos = collision.GetComponent<SoundWave>().originPos;
             isFinding = true;
+            audioSource.Play();
             path = null;
         }
     }
