@@ -18,6 +18,8 @@ public class EnemyAI : MonoBehaviour
     const float FoundDetectRadius = 3;
     const float ChangeTime = 1;
 
+    public SpriteRenderer spriteRenderer;
+
     public EnemyType enemyType;
 
     public Vector2 targetPos;
@@ -41,14 +43,11 @@ public class EnemyAI : MonoBehaviour
 
     bool isEntered = false;
     List<Vector2> soundWaveStorage = new List<Vector2>();
-
-    SpriteRenderer spriteRenderer;
     AudioSource audioSource;
 
     public virtual void Start()
     {
         pathfinding = Singleton.pathFinding;
-        spriteRenderer = GetComponent<SpriteRenderer>();
         audioSource = GetComponent<AudioSource>();
         spriteRenderer.color = new Color(1, 1, 1, enemyType == EnemyType.Scout ? 0 : 1);
         SetEnemy();
@@ -100,13 +99,13 @@ public class EnemyAI : MonoBehaviour
         {
             isScout = false;
 
-            if (path == null || currentTime >= ChangeTime)
+            if (path == null || path.Count == 0)
             {
                 findPath?.Invoke();
             }
 
             //If No Path
-            if (path == null) return;
+            if (path == null || path.Count == 0) return;
 
             if(currentWaypoint >= path.Count)
             {
@@ -143,6 +142,8 @@ public class EnemyAI : MonoBehaviour
         isFinding = false;
         isEntered = false;
 
+        spriteRenderer.color = new Color(1, 1, 1, 0);
+
         switch (enemyType)
         {
             case EnemyType.None:
@@ -162,6 +163,7 @@ public class EnemyAI : MonoBehaviour
                 findPath = Scout;
                 if (Singleton.stageSM != null)
                     funcEnter = Singleton.stageSM.StageRestart;
+                spriteRenderer.color = new Color(1, 1, 1, 1);
                 break;
             case EnemyType.Smasher:
                 findPath = SmashChase;
@@ -232,7 +234,16 @@ public class EnemyAI : MonoBehaviour
             targetPos = collision.GetComponent<SoundWave>().originPos;
             isFinding = true;
             audioSource.Play();
+            spriteRenderer.color = new Color(1, 1, 1, 1);
             path = null;
         }
+    }
+
+    public void MoveFugitive(Vector2 pos)
+    {
+        currentWaypoint = 0;
+        currentTime = 0;
+        targetPos = pos;
+        isFinding = true;
     }
 }

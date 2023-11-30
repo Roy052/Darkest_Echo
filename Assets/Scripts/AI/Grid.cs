@@ -9,6 +9,7 @@ public class Grid : Singleton
     public float nodeRadius;
     public float objectRadius;
     public Node[,] grid;
+    public List<Vector2Int> movingWallPoint;
 
     private float nodeDiameter;
     private int gridSizeX, gridSizeY;
@@ -29,6 +30,7 @@ public class Grid : Singleton
     public void CreateGrid()
     {
         grid = new Node[gridSizeX, gridSizeY];
+        movingWallPoint = new List<Vector2Int>();
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridSize.x / 2 - Vector2.up * gridSize.y / 2;
 
         for (int x = 0; x < gridSizeX; x++)
@@ -36,12 +38,12 @@ public class Grid : Singleton
             for (int y = 0; y < gridSizeY; y++)
             {
                 Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
-                bool walkable = !Physics2D.OverlapCircle(worldPoint, objectRadius, unwalkableMask);
+                Collider2D col = Physics2D.OverlapCircle(worldPoint, objectRadius, unwalkableMask);
+                bool walkable = !col;
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
-                if(walkable == false)
-                {
-                    //Debug.Log($"Pos : {x}, {y}");
-                }
+                if (walkable) continue;
+                if (col.name.Contains("MovingWall"))
+                    movingWallPoint.Add(new Vector2Int(x, y));
             }
         }
 
@@ -61,16 +63,15 @@ public class Grid : Singleton
 
     public void RefreshGrid()
     {
+        return;
+
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridSize.x / 2 - Vector2.up * gridSize.y / 2;
 
-        for (int x = 0; x < gridSizeX; x++)
+        foreach(Vector2Int pos in movingWallPoint)
         {
-            for (int y = 0; y < gridSizeY; y++)
-            {
-                Vector2 worldPoint = worldBottomLeft + Vector2.right * (x * nodeDiameter + nodeRadius) + Vector2.up * (y * nodeDiameter + nodeRadius);
-                bool walkable = !Physics2D.OverlapCircle(worldPoint, objectRadius, unwalkableMask);
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
-            }
+            Vector2 worldPoint = worldBottomLeft + Vector2.right * (pos.x * nodeDiameter + nodeRadius) + Vector2.up * (pos.y * nodeDiameter + nodeRadius);
+            bool walkable = !Physics2D.OverlapCircle(worldPoint, objectRadius, unwalkableMask);
+            grid[pos.x, pos.y] = new Node(walkable, worldPoint, pos.x, pos.y);
         }
     }
 

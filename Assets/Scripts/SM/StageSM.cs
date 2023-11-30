@@ -411,7 +411,7 @@ public class StageSM : Singleton
     {
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(-13.5f,2.4f);
+        enemyAi.MoveFugitive(new Vector2(-13.5f,2.4f));
         enemyAi.isFinding = true;
     }
 
@@ -419,21 +419,21 @@ public class StageSM : Singleton
     {
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(3.55f, -7.2f);
+        enemyAi.MoveFugitive(new Vector2(3.55f, -7.2f));
     }
 
     void MoveFugitiveZone23(bool isEnter)
     {
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(8.2f, 1.86f);
+        enemyAi.MoveFugitive(new Vector2(8.2f, 1.86f));
     }
 
     void MoveFugitiveZone24(bool isEnter)
     {
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(37.91f, 9.67f);
+        enemyAi.MoveFugitive(new Vector2(37.91f, 9.67f));
         enemyAi.isSneak = true;
     }
 
@@ -454,8 +454,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(-12.11f, 11.13f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(-12.11f, 11.13f));
     }
 
     void MoveFugitiveZone62(bool isEnter)
@@ -464,8 +463,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(4.12f, 11.13f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(4.12f, 11.13f));
     }
 
     void MoveFugitiveZone63(bool isEnter)
@@ -474,8 +472,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(4.12f, 27.8f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(4.12f, 27.8f));
     }
 
     void MoveFugitiveZone64(bool isEnter)
@@ -484,8 +481,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(37f, 27.8f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(37f, 27.8f));
     }
 
     void MoveFugitiveZone65(bool isEnter)
@@ -494,8 +490,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(37f, -1.3f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(37f, -1.3f));
     }
 
     void MoveFugitiveZone66(bool isEnter)
@@ -504,8 +499,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(84.2f, -1.3f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(84.2f, -1.3f));
     }
 
     void MoveFugitiveZone67(bool isEnter)
@@ -514,8 +508,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(84.2f, 20.5f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(84.2f, 20.5f));
     }
 
     void MoveFugitiveZone68(bool isEnter)
@@ -524,8 +517,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(102.8f, 20.5f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(102.8f, 20.5f));
     }
 
     void MoveFugitiveZone69(bool isEnter)
@@ -534,8 +526,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(102.8f, 0f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(102.8f, 0f));
     }
 
     void MoveFugitiveZone69_1(bool isEnter)
@@ -544,8 +535,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(112f, 0f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(112f, 0f));
     }
 
     void MoveFugitiveZone69_2(bool isEnter)
@@ -554,8 +544,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(112f, 4.3f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(112f, 4.3f));
     }
 
     void MoveFugitiveZone69_3(bool isEnter)
@@ -564,8 +553,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(125.23f, 4.3f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(125.23f, 4.3f));
     }
 
     void MoveFugitiveZone69_4(bool isEnter)
@@ -574,8 +562,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(125.23f, 21f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(125.23f, 21f));
     }
 
     void MoveFugitiveZone69_5(bool isEnter)
@@ -584,8 +571,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.targetPos = new Vector2(142.56f, 21f);
-        StartCoroutine(WaitForMove());
+        enemyAi.MoveFugitive(new Vector2(142.56f, 21f));
     }
 
     void MoveWallZone41(bool isEnter)
@@ -675,6 +661,6 @@ public class StageSM : Singleton
     {
         yield return new WaitForSeconds(1);
         gridInstance.RefreshGrid();
-        enemyAi.targetPos = new Vector2(60.17f, 9.67f);
+        enemyAi.MoveFugitive(new Vector2(60.17f, 9.67f));
     }
 }

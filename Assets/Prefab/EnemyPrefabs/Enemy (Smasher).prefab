@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce9780eef9e2e3a45acd09ecdf561133, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 2957228695747331977}
   enemyType: 3
   targetPos: {x: 0, y: 0}
   speed: 2

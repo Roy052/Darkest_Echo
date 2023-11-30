@@ -1112,18 +1112,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1278342203411133116, guid: f8d4c142d3c9fb540a2d7c1ffe02ef2b, type: 3}
-      propertyPath: gridSize.x
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 1278342203411133116, guid: f8d4c142d3c9fb540a2d7c1ffe02ef2b, type: 3}
-      propertyPath: gridSize.y
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 1278342203411133116, guid: f8d4c142d3c9fb540a2d7c1ffe02ef2b, type: 3}
-      propertyPath: unwalkableMask.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 1278342203411133118, guid: f8d4c142d3c9fb540a2d7c1ffe02ef2b, type: 3}
       propertyPath: m_Name
       value: Grid
