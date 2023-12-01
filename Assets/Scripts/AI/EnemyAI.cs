@@ -105,9 +105,7 @@ public class EnemyAI : MonoBehaviour
             }
 
             //If No Path
-            if (path == null || path.Count == 0) return;
-
-            if(currentWaypoint >= path.Count)
+            if(path == null || path.Count == 0 || currentWaypoint >= path.Count)
             {
                 isFinding = false;
                 if(enemyType != EnemyType.Scout)
@@ -241,9 +239,10 @@ public class EnemyAI : MonoBehaviour
 
     public void MoveFugitive(Vector2 pos)
     {
+        targetPos = pos;
         currentWaypoint = 0;
         currentTime = 0;
-        targetPos = pos;
+        path = null;
         isFinding = true;
     }
 }

@@ -55,8 +55,8 @@ public class StageSM : Singleton
         objPlayer.SetActive(false);
 
 #if UNITY_EDITOR
-        SetUp(StageSMInspector.currentStageIdx);
-        gm.stageNum = StageSMInspector.currentStageIdx;
+        SetUp(StageSMInspector.currentStageIdx + 1);
+        gm.stageNum = StageSMInspector.currentStageIdx + 1;
 #else
         SetUp(gm.stageNum);
 #endif
@@ -359,7 +359,8 @@ public class StageSM : Singleton
     public Image imgTutorialMove;
     public Image imgTutorialClap;
     public Image imgTutorialSneak;
-    public Image imgTutorialThrow;
+    public Image imgTutorialThrow0;
+    public Image imgTutorialThrow1;
     void TutorialMove(bool isEnter)
     {
         if (isEnter)
@@ -394,21 +395,48 @@ public class StageSM : Singleton
             StartCoroutine(FadeManager.FadeOut(imgTutorialSneak, 1));
     }
 
+    Coroutine tutorialThrow;
     void TutorialThrow(bool isEnter)
     {
         if (isEnter)
         {
-            imgTutorialThrow.gameObject.SetActive(true);
-            StartCoroutine(FadeManager.FadeIn(imgTutorialThrow, 1));
+            tutorialThrow = StartCoroutine(_TutorialThrow());
             player.canThrow = true; 
         }
         else
-            imgTutorialThrow.gameObject.SetActive(false);
+        {
+            if (tutorialThrow != null)
+                StopCoroutine(tutorialThrow);
+        }
+    }
+
+    IEnumerator _TutorialThrow()
+    {
+        Vector3 origin = imgTutorialThrow1.transform.position;
+        Vector3 dest = origin + new Vector3(2, 2, 0);
+        while (true)
+        {
+            imgTutorialThrow0.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            imgTutorialThrow0.gameObject.SetActive(false);
+            imgTutorialThrow1.gameObject.SetActive(true);
+
+            while(imgTutorialThrow1.transform.position.x < dest.x)
+            {
+                imgTutorialThrow1.transform.position += new Vector3(1, 1, 0) * Time.deltaTime;
+                yield return null;
+            }
+
+            imgTutorialThrow1.gameObject.SetActive(false);
+            imgTutorialThrow1.transform.position = origin;
+        }
     }
 
     EnemyAI enemyAi;
     void MoveFugitiveZone21(bool isEnter)
     {
+        if (isEnter == false) return;
+
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
         enemyAi.MoveFugitive(new Vector2(-13.5f,2.4f));
@@ -417,6 +445,8 @@ public class StageSM : Singleton
 
     void MoveFugitiveZone22(bool isEnter)
     {
+        if (isEnter == false) return;
+
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
         enemyAi.MoveFugitive(new Vector2(3.55f, -7.2f));
@@ -424,6 +454,8 @@ public class StageSM : Singleton
 
     void MoveFugitiveZone23(bool isEnter)
     {
+        if (isEnter == false) return;
+
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
         enemyAi.MoveFugitive(new Vector2(8.2f, 1.86f));
@@ -431,6 +463,8 @@ public class StageSM : Singleton
 
     void MoveFugitiveZone24(bool isEnter)
     {
+        if (isEnter == false) return;
+
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
         enemyAi.MoveFugitive(new Vector2(37.91f, 9.67f));
@@ -576,8 +610,11 @@ public class StageSM : Singleton
 
     void MoveWallZone41(bool isEnter)
     {
-        if(isEnter)
+        if (isEnter)
+        {
             movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
+            soundManager.PlaySound(SoundEffectType.Switch);
+        }
         else
             movingObjects[0].StartCoroutine(movingObjects[0].OnExitPos());
     }

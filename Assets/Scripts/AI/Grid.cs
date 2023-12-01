@@ -63,8 +63,6 @@ public class Grid : Singleton
 
     public void RefreshGrid()
     {
-        return;
-
         Vector2 worldBottomLeft = (Vector2)transform.position - Vector2.right * gridSize.x / 2 - Vector2.up * gridSize.y / 2;
 
         foreach(Vector2Int pos in movingWallPoint)

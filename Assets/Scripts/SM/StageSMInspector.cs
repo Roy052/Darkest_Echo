@@ -28,7 +28,6 @@ public class StageSMInspector : Editor
 
         Stages = new int[Singleton.gameInfos.stageTitle.Count];
 
-        int previous = currentStageIdx;
         if (StageNames == null)
         {
             StageNames = new string[Singleton.gameInfos.stageTitle.Count];
@@ -38,15 +37,16 @@ public class StageSMInspector : Editor
             }
         }
 
+        int previous = currentStageIdx;
         currentStageIdx = EditorGUILayout.Popup("Stage", currentStageIdx, StageNames);
         if (previous != currentStageIdx)
         {
-            EditorPrefs.SetInt(Application.productName + "Stage", currentStageIdx + 1);
+            EditorPrefs.SetInt(Application.productName + "Stage", currentStageIdx);
         }
     }
 
     void InitStageSet()
     {
-        currentStageIdx = EditorPrefs.GetInt(Application.productName + "Stage", 1);
+        currentStageIdx = EditorPrefs.GetInt(Application.productName + "Stage", 0);
     }
 }
