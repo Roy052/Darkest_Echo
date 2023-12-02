@@ -144,6 +144,7 @@ public class StageSM : Singleton
         player.isSneaking = false;
         player.isWater = false;
         player.isHungry = false;
+        SoundWaveGenerator.instance.ClearAllSoundWave();
     }
 
     IEnumerator LoadStageData()
@@ -339,6 +340,10 @@ public class StageSM : Singleton
         areaFunc.Add(HungryToFull);
         areaFunc.Add(MoveWallZone71);
         areaFunc.Add(MoveWallZone72);
+        areaFunc.Add(MoveWallZone73);
+        areaFunc.Add(MoveWallZone74);
+        areaFunc.Add(MoveWallZone75);
+        areaFunc.Add(MoveWallZone76);
     }
 
     void StageFuncSetup8()
@@ -407,13 +412,17 @@ public class StageSM : Singleton
         {
             if (tutorialThrow != null)
                 StopCoroutine(tutorialThrow);
+            imgTutorialThrow0.gameObject.SetActive(false);
+            imgTutorialThrow1.gameObject.SetActive(false);
         }
     }
 
     IEnumerator _TutorialThrow()
     {
-        Vector3 origin = imgTutorialThrow1.transform.position;
-        Vector3 dest = origin + new Vector3(2, 2, 0);
+        RectTransform rect = imgTutorialThrow1.transform as RectTransform;
+        Vector3 currentPos = rect.anchoredPosition;
+        Vector3 origin = rect.anchoredPosition;
+        Vector3 dest = origin + new Vector3(80, 80, 0);
         while (true)
         {
             imgTutorialThrow0.gameObject.SetActive(true);
@@ -421,14 +430,16 @@ public class StageSM : Singleton
             imgTutorialThrow0.gameObject.SetActive(false);
             imgTutorialThrow1.gameObject.SetActive(true);
 
-            while(imgTutorialThrow1.transform.position.x < dest.x)
+            while(currentPos.x < dest.x)
             {
-                imgTutorialThrow1.transform.position += new Vector3(1, 1, 0) * Time.deltaTime;
+                currentPos += new Vector3(80, 80, 0) * Time.deltaTime;
+                rect.anchoredPosition = currentPos;
                 yield return null;
             }
 
             imgTutorialThrow1.gameObject.SetActive(false);
-            imgTutorialThrow1.transform.position = origin;
+            currentPos = origin;
+            rect.anchoredPosition = currentPos;
         }
     }
 
@@ -488,7 +499,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(-12.11f, 11.13f));
+        enemyAi.MoveFugitive(new Vector2(-64.4f, -7f));
     }
 
     void MoveFugitiveZone62(bool isEnter)
@@ -497,7 +508,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(4.12f, 11.13f));
+        enemyAi.MoveFugitive(new Vector2(-48.5f, -7f));
     }
 
     void MoveFugitiveZone63(bool isEnter)
@@ -506,7 +517,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(4.12f, 27.8f));
+        enemyAi.MoveFugitive(new Vector2(-48.5f, 9.2f));
     }
 
     void MoveFugitiveZone64(bool isEnter)
@@ -515,7 +526,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(37f, 27.8f));
+        enemyAi.MoveFugitive(new Vector2(-15.5f, 9.2f));
     }
 
     void MoveFugitiveZone65(bool isEnter)
@@ -524,7 +535,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(37f, -1.3f));
+        enemyAi.MoveFugitive(new Vector2(-15.5f, -19.3f));
     }
 
     void MoveFugitiveZone66(bool isEnter)
@@ -533,7 +544,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(84.2f, -1.3f));
+        enemyAi.MoveFugitive(new Vector2(31.6f, -19.3f));
     }
 
     void MoveFugitiveZone67(bool isEnter)
@@ -542,7 +553,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(84.2f, 20.5f));
+        enemyAi.MoveFugitive(new Vector2(31.6f, 1.4f));
     }
 
     void MoveFugitiveZone68(bool isEnter)
@@ -551,7 +562,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(102.8f, 20.5f));
+        enemyAi.MoveFugitive(new Vector2(50f, 1.4f));
     }
 
     void MoveFugitiveZone69(bool isEnter)
@@ -560,7 +571,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(102.8f, 0f));
+        enemyAi.MoveFugitive(new Vector2(50f, -19f));
     }
 
     void MoveFugitiveZone69_1(bool isEnter)
@@ -569,7 +580,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(112f, 0f));
+        enemyAi.MoveFugitive(new Vector2(59.5f, -19f));
     }
 
     void MoveFugitiveZone69_2(bool isEnter)
@@ -578,7 +589,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(112f, 4.3f));
+        enemyAi.MoveFugitive(new Vector2(59.5f, -15f));
     }
 
     void MoveFugitiveZone69_3(bool isEnter)
@@ -587,7 +598,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(125.23f, 4.3f));
+        enemyAi.MoveFugitive(new Vector2(72.5f, -15f));
     }
 
     void MoveFugitiveZone69_4(bool isEnter)
@@ -596,7 +607,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(125.23f, 21f));
+        enemyAi.MoveFugitive(new Vector2(72.5f, 1f));
     }
 
     void MoveFugitiveZone69_5(bool isEnter)
@@ -605,7 +616,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(142.56f, 21f));
+        enemyAi.MoveFugitive(new Vector2(88f, 1f));
     }
 
     void MoveWallZone41(bool isEnter)
@@ -613,7 +624,7 @@ public class StageSM : Singleton
         if (isEnter)
         {
             movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
-            soundManager.PlaySound(SoundEffectType.Switch);
+            StartCoroutine(PlayWallSound());
         }
         else
             movingObjects[0].StartCoroutine(movingObjects[0].OnExitPos());
@@ -623,14 +634,42 @@ public class StageSM : Singleton
     {
         if (isEnter == false) return;
 
-        movingObjects[0].StartCoroutine(movingObjects[0].OnExitPos());
+        movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
     }
 
     void MoveWallZone72(bool isEnter)
     {
         if (isEnter == false) return;
 
+        movingObjects[1].StartCoroutine(movingObjects[1].OnEnterPos());
+    }
+
+    void MoveWallZone73(bool isEnter)
+    {
+        if (isEnter == false) return;
+
         movingObjects[1].StartCoroutine(movingObjects[1].OnExitPos());
+    }
+
+    void MoveWallZone74(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        movingObjects[2].StartCoroutine(movingObjects[1].OnEnterPos());
+    }
+
+    void MoveWallZone75(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        movingObjects[2].StartCoroutine(movingObjects[1].OnExitPos());
+    }
+
+    void MoveWallZone76(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        movingObjects[2].StartCoroutine(movingObjects[1].OnEnterPos());
     }
 
     void MoveWallZone101(bool isEnter)
@@ -671,6 +710,14 @@ public class StageSM : Singleton
         player.isHungry = false;
     }
 
+    WaitForSeconds waitForHalfSecond = new WaitForSeconds(0.5f);
+    IEnumerator PlayWallSound()
+    {
+        soundManager.PlaySound(SoundEffectType.Switch);
+        yield return waitForHalfSecond;
+        soundManager.PlaySound(SoundEffectType.MovingWall);
+    }
+
     void Hungry(bool isEnter)
     {
         player.isHungry = true;
@@ -685,6 +732,7 @@ public class StageSM : Singleton
     {
         Color temp = Color.red;
 
+        yield return new WaitForSeconds(1);
         while(temp.b >= 1)
         {
             SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal, transform.localPosition, temp);

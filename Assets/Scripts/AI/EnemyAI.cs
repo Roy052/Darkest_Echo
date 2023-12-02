@@ -42,6 +42,8 @@ public class EnemyAI : MonoBehaviour
     protected Pathfinding pathfinding;
 
     bool isEntered = false;
+    bool isWater = false;
+
     List<Vector2> soundWaveStorage = new List<Vector2>();
     AudioSource audioSource;
 
@@ -57,7 +59,10 @@ public class EnemyAI : MonoBehaviour
     {
         if(enemyType == EnemyType.Fugitive && currentSoundWaveTime >= 1)
         {
-            if (isSneak)
+            if(isWater)
+                SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading,
+                        transform.position, Color.blue);
+            else if (isSneak)
                 SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Sneaking,
                         transform.position);
             else
@@ -102,6 +107,7 @@ public class EnemyAI : MonoBehaviour
             if (path == null || path.Count == 0)
             {
                 findPath?.Invoke();
+                Debug.Log($"Target Pos : ({targetPos.x}, {targetPos.y})");
             }
 
             //If No Path
@@ -113,6 +119,7 @@ public class EnemyAI : MonoBehaviour
 
                 if(audioSource)
                     audioSource.Stop();
+                Debug.Log("No Path");
             }
 
             // Move towards the next waypoint on the path
@@ -235,6 +242,16 @@ public class EnemyAI : MonoBehaviour
             spriteRenderer.color = new Color(1, 1, 1, 1);
             path = null;
         }
+
+        if(collision.tag == Str.TagWater)
+        {
+            isWater = true;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        isWater = false;   
     }
 
     public void MoveFugitive(Vector2 pos)

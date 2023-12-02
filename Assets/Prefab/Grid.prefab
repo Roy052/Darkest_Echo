@@ -48,9 +48,10 @@ MonoBehaviour:
   unwalkableMask:
     serializedVersion: 2
     m_Bits: 264
-  gridSize: {x: 100, y: 100}
+  gridSize: {x: 180, y: 100}
   nodeRadius: 0.1
   objectRadius: 0.5
+  movingWallPoint: []
 --- !u!114 &1278342203411133117
 MonoBehaviour:
   m_ObjectHideFlags: 0

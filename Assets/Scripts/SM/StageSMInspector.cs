@@ -11,6 +11,11 @@ public class StageSMInspector : Editor
 
     public static int currentStageIdx = 1;
 
+    private void Awake()
+    {
+        InitStageSet();
+    }
+
     private void OnEnable()
     {
         InitStageSet();

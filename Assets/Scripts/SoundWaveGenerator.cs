@@ -119,7 +119,8 @@ public class SoundWaveGenerator : MonoBehaviour
     {
         foreach(GameObject obj in objectPool)
         {
-            Destroy(obj);
+            if(obj != null)
+                RemoveSoundWave(obj);
         }
     }
 }

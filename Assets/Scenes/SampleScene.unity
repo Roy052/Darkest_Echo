@@ -358,6 +358,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4934878602167162331, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
+      propertyPath: canThrow
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8127572245937137552, guid: a68eb1cd47c0b9e47a7d8f4555f725a4, type: 3}
       propertyPath: m_Radius
       value: 0.5

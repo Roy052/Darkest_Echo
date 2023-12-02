@@ -15,6 +15,8 @@ public class MovingObject : StageObject
 
     public IEnumerator OnEnterPos()
     {
+        startPos = transform.position;
+        time = 0;
         while(time <= 1)
         {
             Vector3 currentValue = Vector3.Lerp(startPos, enterPos, time);
@@ -27,11 +29,11 @@ public class MovingObject : StageObject
 
     public IEnumerator OnExitPos()
     {
-        if (Vector2.Distance(enterPos, exitPos) < 0.01f) yield break;
-
+        startPos = transform.position;
+        time = 0;
         while (time <= 1)
         {
-            Vector3 currentValue = Vector3.Lerp(startPos, enterPos, time);
+            Vector3 currentValue = Vector3.Lerp(startPos, exitPos, time);
             currentValue.z = 0;
             transform.position = currentValue;
             time += Time.deltaTime;

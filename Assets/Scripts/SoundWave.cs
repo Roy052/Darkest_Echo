@@ -20,6 +20,7 @@ public class SoundWave : MonoBehaviour
     private GameObject player;
     private bool isSneaking;
     private bool isClapping;
+    private bool isThrowing;
     private ContactFilter2D wallFilter;
 
     private readonly Color normalStartColor = new(1f, 1f, 1f, 1f);
@@ -119,11 +120,15 @@ public class SoundWave : MonoBehaviour
 
         // When the sound wave trigger with a wall, it will reflect
         if (!other.gameObject.CompareTag(Str.TagWall)) return;
+
+        if (isTemp == false && isThrowing)
+            StartCoroutine(DelayedStep());
+
         reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
         reflectDir = reflectDir.normalized;
         beforeMoveDir = moveDir;
         moveDir = reflectDir;
-        hitInfo = new RaycastHit2D[2];
+        hitInfo = new RaycastHit2D[5];
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -155,6 +160,7 @@ public class SoundWave : MonoBehaviour
 
     public void SetType(SoundWaveGenerator.WaveType type)
     {
+        isThrowing = false;
         switch ((int)type)
         {
             case 0: // Normal
@@ -199,6 +205,7 @@ public class SoundWave : MonoBehaviour
                 trailRenderer.time = 2.4f;
                 trailRenderer.startColor = normalStartColor;
                 trailRenderer.endColor = normalEndColor;
+                isThrowing = true;
                 break;
             case 6: //Eternal
                 moveSpeed = 1f;
@@ -213,12 +220,15 @@ public class SoundWave : MonoBehaviour
     public void ChangeColor(Color color)
     {
         originalColor = color;
+        trailRenderer.endColor = new Color(color.r, color.g, color.b, 0);
     }
 
+    WaitForSeconds waitForOneTenthSeconds = new WaitForSeconds(0.1f);
     private IEnumerator DelayedStep()
     {
-        yield return new WaitForSeconds(0.1f);
+        yield return waitForOneTenthSeconds;
         trailRenderer.startColor = normalEndColor;
         SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal, transform.position);
+        SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
     }
 }

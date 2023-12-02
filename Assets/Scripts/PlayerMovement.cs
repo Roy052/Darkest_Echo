@@ -166,12 +166,12 @@ public class PlayerMovement : MonoBehaviour
                 Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, 0, stepOffset * 5f));
             if (Mathf.Approximately(stepWidth, 0.1f))
             {
-                if (isSneaking)
-                    SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Sneaking,
-                        transform.position + stepOffset * stepWidth * transform.right);
-                else if (currentFloor == EnumFloor.Water)
+                if (currentFloor == EnumFloor.Water)
                     SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading,
-                        transform.position + stepOffset * stepWidth * transform.right);
+                        transform.position + stepOffset * stepWidth * transform.right, Color.blue);
+                else if (isSneaking)
+                    SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Sneaking,
+                    transform.position + stepOffset * stepWidth * transform.right);
                 else
                     SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal,
                         transform.position + stepOffset * stepWidth * transform.right);
@@ -204,7 +204,7 @@ public class PlayerMovement : MonoBehaviour
         // When Player collides with water, create a sound wave 
         if (other.gameObject.CompareTag(Str.TagWater))
         {
-            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position);
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading, transform.position, Color.blue);
             isWater = true;
             footprintSpacer = 1f;
             currentFloor = EnumFloor.Water;
