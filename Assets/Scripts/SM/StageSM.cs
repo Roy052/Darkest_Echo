@@ -64,6 +64,12 @@ public class StageSM : Singleton
 
     public void SetUp(int num)
     {
+        if(num > MaxStage)
+        {
+            gm.LoadStageEnd();
+            return;
+        }
+
         stageNum = num;
         textNumber.text = $"- {Extended.ConvertToRoman(num)} -";
         textTitle.text = gameInfos.stageTitle[num];
@@ -107,7 +113,9 @@ public class StageSM : Singleton
         yield return new WaitForSeconds(1);
         stageNum += 1;
         gm.stageNum += 1;
+#if UNITY_EDITOR
         StageSMInspector.currentStageIdx += 1;
+#endif
         ResetStatus();
         PlayerPrefs.SetInt("UnlockedStage", gm.stageNum);
         SetUp(gm.stageNum);
@@ -145,6 +153,8 @@ public class StageSM : Singleton
         player.isWater = false;
         player.isHungry = false;
         SoundWaveGenerator.instance.ClearAllSoundWave();
+        foreach (Footprint fp in FindObjectsOfType<Footprint>())
+            Destroy(fp.gameObject);
     }
 
     IEnumerator LoadStageData()
@@ -197,7 +207,7 @@ public class StageSM : Singleton
         }
 
         //Enemy
-        while (enemysParent.childCount > 1)
+        while (enemysParent.childCount > 0)
         {
             DestroyImmediate(enemysParent.GetChild(0).gameObject);
         }
@@ -226,7 +236,7 @@ public class StageSM : Singleton
 
         //Object
         movingObjects.Clear();
-        while (objectsParent.childCount > 1)
+        while (objectsParent.childCount > 0)
         {
             DestroyImmediate(objectsParent.GetChild(0).gameObject);
         }
@@ -348,7 +358,7 @@ public class StageSM : Singleton
 
     void StageFuncSetup8()
     {
-
+        areaFunc.Add(MoveWallZone81);
     }
     void StageFuncSetup9()
     {
@@ -655,21 +665,28 @@ public class StageSM : Singleton
     {
         if (isEnter == false) return;
 
-        movingObjects[2].StartCoroutine(movingObjects[1].OnEnterPos());
+        movingObjects[2].StartCoroutine(movingObjects[2].OnEnterPos());
     }
 
     void MoveWallZone75(bool isEnter)
     {
         if (isEnter == false) return;
 
-        movingObjects[2].StartCoroutine(movingObjects[1].OnExitPos());
+        movingObjects[2].StartCoroutine(movingObjects[2].OnExitPos());
     }
 
     void MoveWallZone76(bool isEnter)
     {
         if (isEnter == false) return;
 
-        movingObjects[2].StartCoroutine(movingObjects[1].OnEnterPos());
+        movingObjects[3].StartCoroutine(movingObjects[3].OnEnterPos());
+    }
+
+    void MoveWallZone81(bool isEnter)
+    {
+        if (isEnter == false) return;
+
+        movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
     }
 
     void MoveWallZone101(bool isEnter)

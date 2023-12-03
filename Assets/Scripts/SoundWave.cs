@@ -223,6 +223,12 @@ public class SoundWave : MonoBehaviour
         trailRenderer.endColor = new Color(color.r, color.g, color.b, 0);
     }
 
+    public void ClearSoundWave()
+    {
+        trailRenderer.Clear();
+        ChangeColor(Color.white);
+    }
+
     WaitForSeconds waitForOneTenthSeconds = new WaitForSeconds(0.1f);
     private IEnumerator DelayedStep()
     {

@@ -63,7 +63,7 @@ public class SoundWaveGenerator : MonoBehaviour
                 soundWaveCount = 30;
                 break;
             case WaveType.Eternal:
-                soundWaveCount = 1;
+                soundWaveCount = 10;
                 break;
         }
 
@@ -111,16 +111,18 @@ public class SoundWaveGenerator : MonoBehaviour
     {
         soundWave.transform.SetParent(instance.transform);
         soundWave.SetActive(false);
-        soundWave.GetComponent<SoundWave>().ChangeColor(Color.white);
+        soundWave.GetComponent<SoundWave>().ClearSoundWave();
         instance.objectPool.Enqueue(soundWave);
     }
 
     public void ClearAllSoundWave()
     {
-        foreach(GameObject obj in objectPool)
+        while (objectPool.Count > 0)
+            objectPool.Dequeue();
+
+        foreach(SoundWave sw in FindObjectsOfType<SoundWave>())
         {
-            if(obj != null)
-                RemoveSoundWave(obj);
+            RemoveSoundWave(sw.gameObject);
         }
     }
 }

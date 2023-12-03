@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(StageGenerator))]
 public class StageGeneratorInspector : Editor
 {
@@ -107,3 +108,4 @@ public class StageGeneratorInspector : Editor
             DestroyImmediate(stageGenerator.objectsParent.GetChild(0).gameObject);
     }
 }
+#endif

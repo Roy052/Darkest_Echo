@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(StageSM))]
 public class StageSMInspector : Editor
 {
@@ -55,3 +56,4 @@ public class StageSMInspector : Editor
         currentStageIdx = EditorPrefs.GetInt(Application.productName + "Stage", 0);
     }
 }
+#endif

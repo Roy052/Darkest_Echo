@@ -44,15 +44,17 @@ public class LobbySM : Singleton
     {
         StartCoroutine(FadeManager.FadeOut(labelPlay, 1));
 
-        yield return new WaitForSeconds(1);
+        StartCoroutine(_OnStage());
 
-        btnPlay.SetActive(false);
-        btnStage.SetActive(true);
-        line.SetActive(true);
-        btnSurvival.SetActive(true);
-        StartCoroutine(FadeManager.FadeIn(labelStage, 1));
-        StartCoroutine(FadeManager.FadeIn(line.GetComponent<Image>(), 1));
-        StartCoroutine(FadeManager.FadeIn(labelSurvival, 1));
+        yield return null;
+        //yield return new WaitForSeconds(1);
+        //btnPlay.SetActive(false);
+        //btnStage.SetActive(true);
+        //line.SetActive(true);
+        //btnSurvival.SetActive(true);
+        //StartCoroutine(FadeManager.FadeIn(labelStage, 1));
+        //StartCoroutine(FadeManager.FadeIn(line.GetComponent<Image>(), 1));
+        //StartCoroutine(FadeManager.FadeIn(labelSurvival, 1));
     }
 
     public void OnStage()

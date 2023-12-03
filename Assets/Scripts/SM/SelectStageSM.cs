@@ -61,7 +61,7 @@ public class SelectStageSM : Singleton
 
         cameraDragController.SetCameraPosMax(gm.unlockedStageNum * 5);
 
-        for (int i = 0; i < unlockedNum; i++)
+        for (int i = 0; i < unlockedNum - 1; i++)
         {
             GameObject tempLine = Instantiate(linePrefab, linePrefab.transform.parent);
             tempLine.name = $"Line {i + 1}";

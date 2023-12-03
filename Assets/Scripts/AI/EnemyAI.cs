@@ -16,7 +16,7 @@ public enum EnemyType
 public class EnemyAI : MonoBehaviour
 {
     const float FoundDetectRadius = 3;
-    const float ChangeTime = 1;
+    const float ChangeTime = 0.01f;
 
     public SpriteRenderer spriteRenderer;
 
@@ -119,6 +119,7 @@ public class EnemyAI : MonoBehaviour
 
                 if(audioSource)
                     audioSource.Stop();
+                currentTime = 0;
                 Debug.Log("No Path");
             }
 
@@ -241,6 +242,7 @@ public class EnemyAI : MonoBehaviour
             audioSource.Play();
             spriteRenderer.color = new Color(1, 1, 1, 1);
             path = null;
+            currentTime = 0;
         }
 
         if(collision.tag == Str.TagWater)

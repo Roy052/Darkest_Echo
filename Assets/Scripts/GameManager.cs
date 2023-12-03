@@ -11,6 +11,7 @@ public enum GameState
     SelectSurvival = 2,
     Stage = 3,
     Survival = 4,
+    StageEnd = 5,
 }
 
 public class GameManager : Singleton
@@ -25,12 +26,12 @@ public class GameManager : Singleton
         {
             gm = this;
         }
-            
+
     }
 
     private void OnDestroy()
     {
-        if(gm == this)
+        if (gm == this)
             gm = null;
     }
 
@@ -47,9 +48,10 @@ public class GameManager : Singleton
         SceneManager.LoadScene("Lobby");
         currentState = GameState.Lobby;
     }
-    
+
     public void LoadSelectStage()
     {
+        Clear();
         SceneManager.LoadScene("SelectStage");
         currentState = GameState.SelectStage;
     }
@@ -62,12 +64,29 @@ public class GameManager : Singleton
 
     public StageData LoadStageData(int stageNum)
     {
+#if UNITY_EDITOR
         string path = Application.dataPath + "/StageDatas";
-        Debug.Log(path + "/" + StageGenerator.fileName + stageNum);   
+#else
+        string path = System.IO.Directory.GetCurrentDirectory() + "/StageDatas";
+#endif
+        Debug.Log(path + "/" + StageGenerator.fileName + stageNum);
         string data = File.ReadAllText(path + "/" + StageGenerator.fileName + stageNum);
         Debug.Log(data);
         StageData stageData = JsonUtility.FromJson<StageData>(data);
 
         return stageData;
+    }
+
+    public void LoadStageEnd()
+    {
+        SceneManager.LoadScene("StageEnd");
+        currentState = GameState.StageEnd;
+    }
+
+    public void Clear()
+    {
+        SoundWave[] waves = FindObjectsOfType<SoundWave>();
+        for (int i = 0; i < waves.Length; i++)
+            Destroy(waves[i].gameObject);
     }
 }

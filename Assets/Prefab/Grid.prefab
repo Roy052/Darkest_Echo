@@ -50,7 +50,7 @@ MonoBehaviour:
     m_Bits: 264
   gridSize: {x: 180, y: 100}
   nodeRadius: 0.1
-  objectRadius: 0.5
+  objectRadius: 0.2
   movingWallPoint: []
 --- !u!114 &1278342203411133117
 MonoBehaviour:
