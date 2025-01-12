@@ -1,4 +1,7 @@
 using System.Collections;
+using System.Linq;
+using UnityEditor;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class SoundWave : MonoBehaviour
@@ -7,13 +10,16 @@ public class SoundWave : MonoBehaviour
     public bool isTempEndZone = false;
     public Vector2 originPos;
 
+    public SpriteRenderer spriteRenderer;
+    public TrailRenderer trailRenderer;
+    public Rigidbody2D rigid;
+    public CircleCollider2D circleCollider;
+
     private Vector3 reflectDir;
     private Vector3 moveDir;
     private Vector3 beforeMoveDir;
     private float moveSpeed;
     private RaycastHit2D[] hitInfo;
-    private Rigidbody2D rigid;
-    private TrailRenderer trailRenderer;
     private float trailStartTime;
     private float fadeDuration;
     private Color originalColor;
@@ -22,6 +28,7 @@ public class SoundWave : MonoBehaviour
     private bool isClapping;
     private bool isThrowing;
     private ContactFilter2D wallFilter;
+    private ContactFilter2D wallEndZoneFilter;
 
     private readonly Color normalStartColor = new(1f, 1f, 1f, 1f);
     private readonly Color normalEndColor = new(1f, 1f, 1f, 0f);
@@ -29,14 +36,17 @@ public class SoundWave : MonoBehaviour
     private readonly Color dyingStartColor = new(1f, 0f, 0f, 1f);
     private readonly Color dyingEndColor = new(1f, 0f, 0f, 0f);
 
+    private float createTime = 0f;
+
     private void Awake()
     {
         reflectDir = Vector3.zero;
-        rigid = GetComponent<Rigidbody2D>();
         hitInfo = new RaycastHit2D[5];
         wallFilter = new ContactFilter2D();
         wallFilter.SetLayerMask(LayerMask.GetMask("Wall"));
-        trailRenderer = GetComponent<TrailRenderer>();
+        wallEndZoneFilter = new ContactFilter2D();
+        wallEndZoneFilter.SetLayerMask(LayerMask.GetMask("Wall"));
+        wallEndZoneFilter.SetLayerMask(LayerMask.GetMask("EndZone"));
         player = GameObject.Find("Player");
         SetType(0);
     }
@@ -50,12 +60,27 @@ public class SoundWave : MonoBehaviour
     private void Update()
     {
         // Cast a ray to detect the wall
-        int result = rigid.Cast(moveDir, wallFilter, hitInfo);
-       /*if(result >= 2 && hitInfo[1].collider != null)
-            reflectDir = new Vector2(-moveDir.x, -moveDir.y);
-        else*/ if (hitInfo[0].collider != null)
-            reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
-        Debug.DrawRay(transform.position, moveDir);
+        if (isTemp)
+        {
+            int count = rigid.Cast(moveDir, wallFilter, hitInfo);
+            if (count > 0)
+            {
+                if (hitInfo[0].collider != null)
+                    reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal).normalized;
+                Debug.DrawRay(transform.position, moveDir);
+            }
+        }
+
+        if (isTempEndZone)
+        {
+            int count = rigid.Cast(moveDir, wallEndZoneFilter, hitInfo);
+            if (count > 0)
+            {
+                if (hitInfo[0].collider != null)
+                    reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal).normalized;
+                Debug.DrawRay(transform.position, moveDir);
+            }
+        }
 
         if (hitInfo[0].distance < 0.1f && Mathf.Approximately(moveSpeed, 12f))
         {
@@ -69,8 +94,10 @@ public class SoundWave : MonoBehaviour
         if (trailStartTime < fadeDuration)
         {
             var t = trailStartTime / fadeDuration;
-            trailRenderer.startColor =
+            Color fadedColor =
                 new Color(originalColor.r, originalColor.g, originalColor.b, Mathf.Lerp(1f, 0f, t));
+            trailRenderer.startColor = fadedColor;
+            spriteRenderer.color = fadedColor;
         }
         else if (fadeDuration == 0)
         {
@@ -124,11 +151,70 @@ public class SoundWave : MonoBehaviour
         if (isTemp == false && isThrowing)
             StartCoroutine(DelayedStep());
 
-        reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
-        reflectDir = reflectDir.normalized;
+        reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal).normalized;
         beforeMoveDir = moveDir;
         moveDir = reflectDir;
         hitInfo = new RaycastHit2D[5];
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // When Touch Wall, Split
+        if (isTemp == false && (collision.gameObject.CompareTag(Str.TagTrap) || collision.gameObject.CompareTag(Str.TagWater)))
+        {
+            GameObject temp = Instantiate(gameObject, transform.parent);
+            SoundWave tempSoundwave = temp.GetComponent<SoundWave>();
+            tempSoundwave.isTemp = true;
+            tempSoundwave.ChangeColor(collision.gameObject.GetComponent<Obstacles>().color);
+            tempSoundwave.moveDir = moveDir;
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
+        }
+        else if (isTemp == false && collision.gameObject.CompareTag(Str.TagEndZone))
+        {
+            GameObject temp = Instantiate(gameObject, transform.parent);
+            SoundWave tempSoundwave = temp.GetComponent<SoundWave>();
+            tempSoundwave.isTemp = true;
+            tempSoundwave.isTempEndZone = true;
+            tempSoundwave.moveDir = moveDir;
+            tempSoundwave.trailRenderer.startWidth *= 2;
+            temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
+            tempSoundwave.circleCollider.isTrigger = true;
+            circleCollider.isTrigger = true;
+        }
+
+        // When the sound wave trigger with a wall, it will reflect
+        if (!collision.gameObject.CompareTag(Str.TagWall)) return;
+
+        if (isTemp == false && isThrowing)
+            StartCoroutine(DelayedStep());
+
+        Vector2 normal = collision.contacts[0].normal;
+        reflectDir = Vector2.Reflect(moveDir, normal).normalized;
+        beforeMoveDir = moveDir;
+        moveDir = reflectDir;
+        hitInfo = new RaycastHit2D[5];
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        // If Temp SoundWave, Destroy At Exit2D
+        if (isTemp && (collision.gameObject.CompareTag(Str.TagTrap) || collision.gameObject.CompareTag(Str.TagWater)))
+            Destroy(gameObject);
+        else if (collision.gameObject.CompareTag(Str.TagEndZone))
+        {
+            if (isTempEndZone == false)
+            {
+                trailStartTime = fadeDuration;
+                return;
+            }
+
+            reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
+            reflectDir = reflectDir.normalized;
+            beforeMoveDir = moveDir;
+            moveDir = reflectDir;
+            hitInfo = new RaycastHit2D[2];
+        }
+        if (!collision.gameObject.CompareTag(Str.TagWall)) return;
     }
 
     private void OnTriggerExit2D(Collider2D other)
@@ -144,7 +230,38 @@ public class SoundWave : MonoBehaviour
                 return;
             }
 
-            reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal);
+            Vector2 normal = Vector2.zero;
+            BoxCollider2D boxCollider = other.gameObject.GetComponent<BoxCollider2D>();
+            Bounds b = boxCollider.bounds;
+            Vector2 minBounds = b.min; // (왼쪽 아래)
+            Vector2 maxBounds = b.max; // (오른쪽 위)
+
+            //Top
+            if(transform.position.y > maxBounds.y)
+            {
+                normal = Vector2.up;
+            }
+
+            //Bottom
+            if (transform.position.y < minBounds.y)
+            {
+                normal = Vector2.down;
+            }
+
+            //Left
+            if (transform.position.x < minBounds.x)
+            {
+                normal = Vector2.left;
+            }
+
+            //Right
+            if (transform.position.x > maxBounds.x)
+            {
+                normal = Vector2.right;
+            }
+
+
+            reflectDir = Vector2.Reflect(moveDir, normal);
             reflectDir = reflectDir.normalized;
             beforeMoveDir = moveDir;
             moveDir = reflectDir;
@@ -217,6 +334,16 @@ public class SoundWave : MonoBehaviour
         }
     }
 
+    public void SetCreateTime(float time)
+    {
+        createTime = time;
+    }
+
+    public float GetCreateTime()
+    {
+        return createTime;
+    }
+
     public void ChangeColor(Color color)
     {
         originalColor = color;
@@ -227,6 +354,7 @@ public class SoundWave : MonoBehaviour
     {
         trailRenderer.Clear();
         ChangeColor(Color.white);
+        circleCollider.isTrigger = false;
     }
 
     WaitForSeconds waitForOneTenthSeconds = new WaitForSeconds(0.1f);

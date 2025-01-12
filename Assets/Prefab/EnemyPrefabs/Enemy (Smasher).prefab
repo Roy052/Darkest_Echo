@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2957228695747331974}
   - component: {fileID: 2957228695747331975}
   - component: {fileID: 6411137870063175084}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy (Smasher)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -44,7 +44,7 @@ public class EnemyAI : MonoBehaviour
     bool isEntered = false;
     bool isWater = false;
 
-    List<Vector2> soundWaveStorage = new List<Vector2>();
+    float currentSoundWaveCreateTime = 0f;
     AudioSource audioSource;
 
     public virtual void Start()
@@ -234,8 +234,12 @@ public class EnemyAI : MonoBehaviour
 
         if (collision.tag == "SoundWave")
         {
-            if (Vector2.Distance(targetPos, collision.GetComponent<SoundWave>().originPos) < Singleton.RangeOfError) return;
+            SoundWave soundWave = collision.GetComponent<SoundWave>();
+
+            if (Vector2.Distance(targetPos, soundWave.originPos) < Singleton.RangeOfError) return;
             if (enemyType == EnemyType.Fugitive) return;
+            if (currentSoundWaveCreateTime > soundWave.GetCreateTime())
+                return;
 
             targetPos = collision.GetComponent<SoundWave>().originPos;
             isFinding = true;

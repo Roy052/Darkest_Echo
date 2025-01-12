@@ -87,6 +87,8 @@ public class SoundWaveGenerator : MonoBehaviour
             soundWave.transform.SetParent(null);
             soundWave.SetActive(true);
 
+            soundWaveScript.SetCreateTime(Time.timeSinceLevelLoad);
+
             if(color != null)
                 soundWaveScript.ChangeColor(color ?? Color.white);
         }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4035391679167095564}
   - component: {fileID: 5662822979386995836}
   - component: {fileID: 8494637354384253470}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Hands
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -192,7 +192,7 @@ GameObject:
   - component: {fileID: 8127572245937137555}
   - component: {fileID: 8127572245937137552}
   - component: {fileID: 4934878602167162331}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -323,6 +323,8 @@ MonoBehaviour:
   isMoving: 0
   isStop: 0
   isSneaking: 0
+  isWater: 0
+  isHungry: 0
   isDead: 0
   canThrow: 0
   currentFloor: 0
