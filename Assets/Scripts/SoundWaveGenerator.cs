@@ -124,7 +124,10 @@ public class SoundWaveGenerator : MonoBehaviour
 
         foreach(SoundWave sw in FindObjectsOfType<SoundWave>())
         {
-            RemoveSoundWave(sw.gameObject);
+            if(sw.isTemp == false)
+                RemoveSoundWave(sw.gameObject);
+            else
+                Destroy(sw.gameObject);
         }
     }
 }

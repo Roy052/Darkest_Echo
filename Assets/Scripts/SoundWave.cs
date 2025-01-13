@@ -28,7 +28,6 @@ public class SoundWave : MonoBehaviour
     private bool isClapping;
     private bool isThrowing;
     private ContactFilter2D wallFilter;
-    private ContactFilter2D wallEndZoneFilter;
 
     private readonly Color normalStartColor = new(1f, 1f, 1f, 1f);
     private readonly Color normalEndColor = new(1f, 1f, 1f, 0f);
@@ -44,9 +43,6 @@ public class SoundWave : MonoBehaviour
         hitInfo = new RaycastHit2D[5];
         wallFilter = new ContactFilter2D();
         wallFilter.SetLayerMask(LayerMask.GetMask("Wall"));
-        wallEndZoneFilter = new ContactFilter2D();
-        wallEndZoneFilter.SetLayerMask(LayerMask.GetMask("Wall"));
-        wallEndZoneFilter.SetLayerMask(LayerMask.GetMask("EndZone"));
         player = GameObject.Find("Player");
         SetType(0);
     }
@@ -60,20 +56,9 @@ public class SoundWave : MonoBehaviour
     private void Update()
     {
         // Cast a ray to detect the wall
-        if (isTemp)
+        if (circleCollider.isTrigger)
         {
             int count = rigid.Cast(moveDir, wallFilter, hitInfo);
-            if (count > 0)
-            {
-                if (hitInfo[0].collider != null)
-                    reflectDir = Vector2.Reflect(moveDir, hitInfo[0].normal).normalized;
-                Debug.DrawRay(transform.position, moveDir);
-            }
-        }
-
-        if (isTempEndZone)
-        {
-            int count = rigid.Cast(moveDir, wallEndZoneFilter, hitInfo);
             if (count > 0)
             {
                 if (hitInfo[0].collider != null)
@@ -363,6 +348,9 @@ public class SoundWave : MonoBehaviour
         yield return waitForOneTenthSeconds;
         trailRenderer.startColor = normalEndColor;
         SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal, transform.position);
-        SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+        if(isTemp == false)
+            SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
+        else
+            Destroy(gameObject);
     }
 }
