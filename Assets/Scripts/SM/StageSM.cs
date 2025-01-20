@@ -460,7 +460,7 @@ public class StageSM : Singleton
 
         if (enemyAi == null)
             enemyAi = enemysParent.GetChild(0).GetComponent<EnemyAI>();
-        enemyAi.MoveFugitive(new Vector2(-13.5f,2.4f));
+        enemyAi.MoveFugitive(new Vector2(-8.5f,2.4f));
         enemyAi.isFinding = true;
     }
 

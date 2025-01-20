@@ -16,7 +16,7 @@ public enum EnemyType
 public class EnemyAI : MonoBehaviour
 {
     const float FoundDetectRadius = 3;
-    const float ChangeTime = 0.01f;
+    const float ChangeTime = 0.5f;
 
     public SpriteRenderer spriteRenderer;
 
@@ -238,7 +238,7 @@ public class EnemyAI : MonoBehaviour
 
             if (Vector2.Distance(targetPos, soundWave.originPos) < Singleton.RangeOfError) return;
             if (enemyType == EnemyType.Fugitive) return;
-            if (currentSoundWaveCreateTime > soundWave.GetCreateTime())
+            if (currentSoundWaveCreateTime + ChangeTime > soundWave.GetCreateTime())
                 return;
 
             targetPos = collision.GetComponent<SoundWave>().originPos;
