@@ -236,6 +236,7 @@ public class EnemyAI : MonoBehaviour
         {
             SoundWave soundWave = collision.GetComponent<SoundWave>();
 
+            if (soundWave.isTemp) return;
             if (Vector2.Distance(targetPos, soundWave.originPos) < Singleton.RangeOfError) return;
             if (enemyType == EnemyType.Fugitive) return;
             if (currentSoundWaveCreateTime + ChangeTime > soundWave.GetCreateTime())
