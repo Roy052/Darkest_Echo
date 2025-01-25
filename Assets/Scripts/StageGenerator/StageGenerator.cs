@@ -317,8 +317,7 @@ public class StageGenerator : Singleton
         }
 
         int movingObjectCount = 0;
-        //for (int i = 0; i < stageData.objects.Count; i++)
-        for (int i = stageData.objects.Count - 1; i >= 0; i--)
+        for (int i = 0; i < stageData.objects.Count; i++)
         {
             GameObject objObject = Instantiate(objectPrefab[stageData.objectTypes[i]], objectsParent);
             objObject.SetActive(true);

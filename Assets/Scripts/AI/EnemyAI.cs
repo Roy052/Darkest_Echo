@@ -26,7 +26,7 @@ public class EnemyAI : MonoBehaviour
     
     public float speed = 5f;
     public float detectionRadius = 10f;
-    public float smoothTime = 0.1f;
+    public float smoothTime = 0.2f;
     public string targetTag;
     public bool isSneak = false;
     public bool isFinding = false;
