@@ -122,12 +122,13 @@ public class SoundWaveGenerator : MonoBehaviour
         while (objectPool.Count > 0)
             objectPool.Dequeue();
 
-        foreach(SoundWave sw in FindObjectsOfType<SoundWave>())
+        var soundWaves = FindObjectsOfType<SoundWave>();
+        foreach (SoundWave sw in soundWaves)
         {
             if(sw.isTemp == false)
                 RemoveSoundWave(sw.gameObject);
             else
-                Destroy(sw.gameObject);
+                DestroyImmediate(sw.gameObject);
         }
     }
 }

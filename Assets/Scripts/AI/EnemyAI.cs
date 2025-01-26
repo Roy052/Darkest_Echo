@@ -142,6 +142,7 @@ public class EnemyAI : MonoBehaviour
 
     public void SetEnemy()
     {
+        targetPos = transform.position;
         path = new List<Vector2>();
         currentWaypoint = 0;
         currentTime = 0;

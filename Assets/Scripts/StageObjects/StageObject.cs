@@ -8,6 +8,7 @@ public enum StageObjectType
     Trap = 2,
     Water = 3,
     MovingObject = 4,
+    UnlockZone = 5,
 }
 
 public class StageObject : MonoBehaviour

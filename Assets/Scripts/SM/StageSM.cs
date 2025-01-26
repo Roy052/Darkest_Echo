@@ -290,6 +290,15 @@ public class StageSM : Singleton
                     movingObjects.Add(movingObject);
                 }
             }
+            else if (data.objectTypes[i] == (int)StageObjectType.UnlockZone)
+            {
+                StageArea stageArea;
+                if (objObject.TryGetComponent(out stageArea))
+                {
+                    stageArea.areaNum = areaCount;
+                    areaCount++;
+                }
+            }
         }
         yield return null;
 
@@ -502,6 +511,7 @@ public class StageSM : Singleton
         enemyAi.isSneak = false;
         movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
         StartCoroutine(WaitForMove());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveFugitiveZone61(bool isEnter)
@@ -655,6 +665,7 @@ public class StageSM : Singleton
         if (isEnter == false) return;
 
         movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone72(bool isEnter)
@@ -662,6 +673,7 @@ public class StageSM : Singleton
         if (isEnter == false) return;
 
         movingObjects[1].StartCoroutine(movingObjects[1].OnEnterPos());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone73(bool isEnter)
@@ -669,6 +681,7 @@ public class StageSM : Singleton
         if (isEnter == false) return;
 
         movingObjects[1].StartCoroutine(movingObjects[1].OnExitPos());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone74(bool isEnter)
@@ -676,6 +689,7 @@ public class StageSM : Singleton
         if (isEnter == false) return;
 
         movingObjects[2].StartCoroutine(movingObjects[2].OnEnterPos());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone75(bool isEnter)
@@ -683,6 +697,7 @@ public class StageSM : Singleton
         if (isEnter == false) return;
 
         movingObjects[2].StartCoroutine(movingObjects[2].OnExitPos());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone76(bool isEnter)
@@ -690,6 +705,7 @@ public class StageSM : Singleton
         if (isEnter == false) return;
 
         movingObjects[3].StartCoroutine(movingObjects[3].OnEnterPos());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone81(bool isEnter)
@@ -697,6 +713,7 @@ public class StageSM : Singleton
         if (isEnter == false) return;
 
         movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone101(bool isEnter)
@@ -705,6 +722,8 @@ public class StageSM : Singleton
             movingObjects[0].StartCoroutine(movingObjects[0].OnEnterPos());
         else
             movingObjects[0].StartCoroutine(movingObjects[0].OnExitPos());
+
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone102(bool isEnter)
@@ -713,6 +732,8 @@ public class StageSM : Singleton
             movingObjects[1].StartCoroutine(movingObjects[1].OnEnterPos());
         else
             movingObjects[1].StartCoroutine(movingObjects[1].OnExitPos());
+
+        StartCoroutine(PlayWallSound());
     }
 
     void MoveWallZone103(bool isEnter)
@@ -721,6 +742,8 @@ public class StageSM : Singleton
             movingObjects[2].StartCoroutine(movingObjects[2].OnEnterPos());
         else
             movingObjects[2].StartCoroutine(movingObjects[2].OnExitPos());
+
+
     }
 
     void TemporaryHungry(bool isEnter)

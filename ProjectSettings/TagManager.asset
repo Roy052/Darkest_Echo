@@ -10,6 +10,7 @@ TagManager:
   - Trap
   - EndZone
   - MovingWall
+  - UnlockZone
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - SoundWave
   - Enemy
   - Player
-  - 
+  - UnlockZone
   - 
   - 
   - 

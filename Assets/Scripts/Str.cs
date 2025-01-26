@@ -7,4 +7,5 @@ public static class Str
     public const string TagWater = "Water";
     public const string TagTrap = "Trap";
     public const string TagEndZone = "EndZone";
+    public const string TagUnlockZone = "UnlockZone";
 }

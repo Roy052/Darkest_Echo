@@ -110,14 +110,18 @@ public class SoundWave : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D other)
     {
         // When Touch Wall, Split
-        if (isTemp == false && (other.gameObject.CompareTag(Str.TagTrap) || other.gameObject.CompareTag(Str.TagWater)))
+        if (isTemp == false && (other.gameObject.CompareTag(Str.TagTrap) || other.gameObject.CompareTag(Str.TagWater) || other.gameObject.CompareTag(Str.TagUnlockZone)))
         {
             GameObject temp = Instantiate(gameObject, transform.parent);
             SoundWave tempSoundwave = temp.GetComponent<SoundWave>();
             tempSoundwave.isTemp = true;
             tempSoundwave.ChangeColor(other.gameObject.GetComponent<Obstacles>().color);
             tempSoundwave.moveDir = moveDir;
-            temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
+            tempSoundwave.spriteRenderer.sortingOrder = 10;
+            tempSoundwave.trailRenderer.sortingOrder = 10;
+            
+            if(other.gameObject.CompareTag(Str.TagWater) == false)
+                StartCoroutine(DelayedDisappear());
         }
         else if (isTemp == false && other.gameObject.CompareTag(Str.TagEndZone))
         {
@@ -128,6 +132,7 @@ public class SoundWave : MonoBehaviour
             tempSoundwave.moveDir = moveDir;
             tempSoundwave.trailRenderer.startWidth *= 2;
             temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
+            trailRenderer.sortingOrder = 10;
         }
 
         // When the sound wave trigger with a wall, it will reflect
@@ -329,6 +334,7 @@ public class SoundWave : MonoBehaviour
         return createTime;
     }
 
+
     public void ChangeColor(Color color)
     {
         originalColor = color;
@@ -337,20 +343,30 @@ public class SoundWave : MonoBehaviour
 
     public void ClearSoundWave()
     {
+        trailRenderer.emitting = true;
         trailRenderer.Clear();
         ChangeColor(Color.white);
         circleCollider.isTrigger = false;
+        spriteRenderer.color = new Color(1, 1, 1, 1);
+        spriteRenderer.sortingOrder = 0;
+        trailRenderer.sortingOrder = 0;
     }
 
-    WaitForSeconds waitForOneTenthSeconds = new WaitForSeconds(0.1f);
     private IEnumerator DelayedStep()
     {
-        yield return waitForOneTenthSeconds;
+        yield return new WaitForSeconds(0.1f);
         trailRenderer.startColor = normalEndColor;
         SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Normal, transform.position);
         if(isTemp == false)
             SoundWaveGenerator.instance.RemoveSoundWave(gameObject);
         else
             Destroy(gameObject);
+    }
+
+    private IEnumerator DelayedDisappear()
+    {
+        yield return new WaitForSeconds(0.2f);
+        trailRenderer.emitting = false;
+        spriteRenderer.color = new Color(1, 1, 1, 0);
     }
 }
