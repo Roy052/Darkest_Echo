@@ -12,6 +12,9 @@ public class SoundWaveGenerator : MonoBehaviour
     public static SoundWaveGenerator instance = null;
     private int soundWaveCount;
     private float offset;
+
+    public bool isLoading = false;
+
     public enum WaveType
     {
         Normal = 0,
@@ -40,12 +43,16 @@ public class SoundWaveGenerator : MonoBehaviour
     private GameObject CreateNewSoundWave()
     {
         var soundWave = Instantiate(soundWavePrefab, this.transform);
+        soundWave.name = $"SoundWave {objectPool.Count}";
         soundWave.gameObject.SetActive(false);
         return soundWave;
     }
 
     public void SpawnSoundWave(WaveType type, Vector3 position, Color? color = null)
     {
+        if(isLoading)
+            return;
+
         switch (type)
         {
             case WaveType.Normal:

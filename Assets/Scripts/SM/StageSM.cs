@@ -95,6 +95,7 @@ public class StageSM : Singleton
         yield return new WaitForSeconds(1);
 
         objPlayer.SetActive(true);
+        SoundWaveGenerator.instance.isLoading = false;
     }
 
     public void StageEnd()
@@ -147,6 +148,7 @@ public class StageSM : Singleton
 
     void ResetStatus()
     {
+        SoundWaveGenerator.instance.isLoading = true;
         isTemporaryHungry = false;
         isEnding = false;
         player.isSneaking = false;

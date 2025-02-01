@@ -5,15 +5,15 @@ public class GameInfos
 {
     public Dictionary<int, string> stageTitle = new Dictionary<int, string>()
     {
-        {1, "발자국"},
-        {2, "인기척" },
-        {3, "경고" },
-        {4, "굶주림" },
-        {5, "먹이" },
-        {6, "사냥" },
-        {7, "후회" },
-        {8, "무리" },
-        {9, "잠입" },
-        {10, "출구" },
+        {1, "FootStep"},
+        {2, "Presence" },
+        {3, "Warning" },
+        {4, "Hunger" },
+        {5, "Prey" },
+        {6, "Hunt" },
+        {7, "Regret" },
+        {8, "Pack" },
+        {9, "Hall" },
+        {10, "Exit" },
     };
 }
