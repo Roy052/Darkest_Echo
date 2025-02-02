@@ -28,6 +28,7 @@ public class LobbySM : Singleton
     }
     public void Set()
     {
+        StageSM.startInStage = false;
         StartCoroutine(FadeManager.FadeIn(labelPlay, 1));
         line.SetActive(false);
         btnStage.SetActive(false);
@@ -93,6 +94,4 @@ public class LobbySM : Singleton
         yield return new WaitForSeconds(1);
         Singleton.gm.LoadSelectStage();
     }
-
-    
 }

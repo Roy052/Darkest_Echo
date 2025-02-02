@@ -27,6 +27,7 @@ public class SoundWave : MonoBehaviour
     private bool isSneaking;
     private bool isClapping;
     private bool isThrowing;
+    private bool isSplit;
     private ContactFilter2D wallFilter;
 
     private readonly Color normalStartColor = new(1f, 1f, 1f, 1f);
@@ -119,6 +120,7 @@ public class SoundWave : MonoBehaviour
             tempSoundwave.moveDir = moveDir;
             tempSoundwave.spriteRenderer.sortingOrder = 10;
             tempSoundwave.trailRenderer.sortingOrder = 10;
+            isSplit = true;
             
             if(other.gameObject.CompareTag(Str.TagWater) == false)
                 StartCoroutine(DelayedDisappear());
@@ -133,6 +135,7 @@ public class SoundWave : MonoBehaviour
             tempSoundwave.trailRenderer.startWidth *= 2;
             temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
             trailRenderer.sortingOrder = 10;
+            isSplit = true;
         }
 
         // When the sound wave trigger with a wall, it will reflect
@@ -150,7 +153,7 @@ public class SoundWave : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // When Touch Wall, Split
-        if (isTemp == false && (collision.gameObject.CompareTag(Str.TagTrap) || collision.gameObject.CompareTag(Str.TagWater)))
+        if (isTemp == false && (collision.gameObject.CompareTag(Str.TagTrap) || collision.gameObject.CompareTag(Str.TagWater) || collision.gameObject.CompareTag(Str.TagUnlockZone)))
         {
             GameObject temp = Instantiate(gameObject, transform.parent);
             SoundWave tempSoundwave = temp.GetComponent<SoundWave>();
@@ -158,6 +161,7 @@ public class SoundWave : MonoBehaviour
             tempSoundwave.ChangeColor(collision.gameObject.GetComponent<Obstacles>().color);
             tempSoundwave.moveDir = moveDir;
             temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
+            isSplit = true;
         }
         else if (isTemp == false && collision.gameObject.CompareTag(Str.TagEndZone))
         {
@@ -170,6 +174,7 @@ public class SoundWave : MonoBehaviour
             temp.GetComponent<SpriteRenderer>().sortingOrder = 10;
             tempSoundwave.circleCollider.isTrigger = true;
             circleCollider.isTrigger = true;
+            isSplit = true;
         }
 
         // When the sound wave trigger with a wall, it will reflect
@@ -188,7 +193,7 @@ public class SoundWave : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         // If Temp SoundWave, Destroy At Exit2D
-        if (isTemp && (collision.gameObject.CompareTag(Str.TagTrap) || collision.gameObject.CompareTag(Str.TagWater)))
+        if (isTemp && (collision.gameObject.CompareTag(Str.TagTrap) || collision.gameObject.CompareTag(Str.TagWater) || collision.gameObject.CompareTag(Str.TagUnlockZone)))
             Destroy(gameObject);
         else if (collision.gameObject.CompareTag(Str.TagEndZone))
         {
@@ -204,13 +209,17 @@ public class SoundWave : MonoBehaviour
             moveDir = reflectDir;
             hitInfo = new RaycastHit2D[2];
         }
+
+        if (isTemp == false && isSplit && gameObject.activeSelf)
+            StartCoroutine(DelayedAppear());
+            
         if (!collision.gameObject.CompareTag(Str.TagWall)) return;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         // If Temp SoundWave, Destroy At Exit2D
-        if (isTemp && (other.gameObject.CompareTag(Str.TagTrap) || other.gameObject.CompareTag(Str.TagWater)))
+        if (isTemp && (other.gameObject.CompareTag(Str.TagTrap) || other.gameObject.CompareTag(Str.TagWater) || other.gameObject.CompareTag(Str.TagUnlockZone)))
             Destroy(gameObject);
         else if (other.gameObject.CompareTag(Str.TagEndZone))
         {
@@ -257,6 +266,10 @@ public class SoundWave : MonoBehaviour
             moveDir = reflectDir;
             hitInfo = new RaycastHit2D[2];
         }
+
+        if (isTemp == false && gameObject.activeSelf)
+            StartCoroutine(DelayedAppear());
+
         if (!other.gameObject.CompareTag(Str.TagWall)) return;
     }
 
@@ -350,6 +363,7 @@ public class SoundWave : MonoBehaviour
         spriteRenderer.color = new Color(1, 1, 1, 1);
         spriteRenderer.sortingOrder = 0;
         trailRenderer.sortingOrder = 0;
+        isSplit = false;
     }
 
     private IEnumerator DelayedStep()
@@ -366,7 +380,15 @@ public class SoundWave : MonoBehaviour
     private IEnumerator DelayedDisappear()
     {
         yield return new WaitForSeconds(0.2f);
-        trailRenderer.emitting = false;
+        //trailRenderer.emitting = false;
         spriteRenderer.color = new Color(1, 1, 1, 0);
+    }
+
+    private IEnumerator DelayedAppear()
+    {
+        yield return new WaitForSeconds(0.2f);
+        trailRenderer.emitting = true;
+        spriteRenderer.color = originalColor;
+        isSplit = false;
     }
 }

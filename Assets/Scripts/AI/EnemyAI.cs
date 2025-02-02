@@ -243,12 +243,15 @@ public class EnemyAI : MonoBehaviour
             if (currentSoundWaveCreateTime + ChangeTime > soundWave.GetCreateTime())
                 return;
 
+            Debug.Log($"Enter Target At {currentSoundWaveCreateTime + ChangeTime} <= {soundWave.GetCreateTime()}");
             targetPos = collision.GetComponent<SoundWave>().originPos;
             isFinding = true;
-            audioSource.Play();
+            if(audioSource.isPlaying == false)
+                audioSource.Play();
             spriteRenderer.color = new Color(1, 1, 1, 1);
             path = null;
             currentTime = 0;
+            currentSoundWaveCreateTime = soundWave.GetCreateTime();
         }
 
         if(collision.tag == Str.TagWater)

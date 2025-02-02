@@ -15,20 +15,21 @@ public class StageEndSM : Singleton
 
     float timer = 0f;
     MotionBlur mb;
+    bool canMove = false;
 
-    IEnumerator MotionBlur()
-    {
-        if (mb == null) yield break;
+    //IEnumerator MotionBlur()
+    //{
+    //    if (mb == null) yield break;
         
-        while(timer < duration)
-        {
-            timer += Time.deltaTime;
-            float t = Mathf.Clamp01(timer / duration);
-            float currentValue = Mathf.Lerp(shutterMin, shutterMax, t);
-            mb.shutterAngle.value = currentValue;
-            yield return null;
-        }
-    }
+    //    while(timer < duration)
+    //    {
+    //        timer += Time.deltaTime;
+    //        float t = Mathf.Clamp01(timer / duration);
+    //        float currentValue = Mathf.Lerp(shutterMin, shutterMax, t);
+    //        mb.shutterAngle.value = currentValue;
+    //        yield return null;
+    //    }
+    //}
 
     IEnumerator Start()
     {
@@ -36,12 +37,18 @@ public class StageEndSM : Singleton
             volume.profile.TryGetSettings(out mb);
         yield return null;
         yield return StartCoroutine(FadeManager.FadeOut(imgShadow, 2));
-        yield return StartCoroutine(MotionBlur());
-
+        canMove = true;
+        yield return new WaitForSeconds(1f);
+        yield return StartCoroutine(FadeManager.FadeIn(imgShadow, 2));
+        //yield return StartCoroutine(MotionBlur());
+        GoToLobby();
     }
 
     public void GoToLobby()
     {
+        if (canMove == false)
+            return;
+
         gm.LoadLobby();
     }
 }

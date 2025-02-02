@@ -6,6 +6,10 @@ using UnityEngine.Events;
 
 public class StageSM : Singleton
 {
+#if UNITY_EDITOR
+    public static bool startInStage = true;
+#endif
+
     const string StrStageFunc = "StageFuncSetup";
     WaitForSeconds WaitForOneSecond = new WaitForSeconds(1);
 
@@ -55,8 +59,13 @@ public class StageSM : Singleton
         objPlayer.SetActive(false);
 
 #if UNITY_EDITOR
-        SetUp(StageSMInspector.currentStageIdx + 1);
-        gm.stageNum = StageSMInspector.currentStageIdx + 1;
+        if (startInStage)
+        {
+            SetUp(StageSMInspector.currentStageIdx + 1);
+            gm.stageNum = StageSMInspector.currentStageIdx + 1;
+        }
+        else
+            SetUp(gm.stageNum);
 #else
         SetUp(gm.stageNum);
 #endif
