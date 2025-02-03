@@ -13,6 +13,8 @@ public class LobbySM : Singleton
     public Text labelPlay;
     public Text labelStage;
     public Text labelSurvival;
+
+    public Image imgShadow;
     private void Awake()
     {
         if (Singleton.lobbySM)
@@ -91,6 +93,7 @@ public class LobbySM : Singleton
 
     IEnumerator _OnStage()
     {
+        StartCoroutine(FadeManager.FadeIn(imgShadow, 1));
         yield return new WaitForSeconds(1);
         Singleton.gm.LoadSelectStage();
     }
