@@ -30,7 +30,9 @@ public class LobbySM : Singleton
     }
     public void Set()
     {
+#if UNITY_EDITOR
         StageSM.startInStage = false;
+#endif
         StartCoroutine(FadeManager.FadeIn(labelPlay, 1));
         line.SetActive(false);
         btnStage.SetActive(false);

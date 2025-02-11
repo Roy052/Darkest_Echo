@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using UnityEditor;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class SoundWave : MonoBehaviour
@@ -299,6 +298,8 @@ public class SoundWave : MonoBehaviour
                 break;
             case 2: // Clapping
                 moveSpeed = 5f;
+                if (player == null)
+                    player = Singleton.stageSM.objPlayer;
                 float tempValue = player.GetComponentInChildren<Clap>().clapPower;
                 fadeDuration = tempValue == 0 ? 3 : 1.5f * tempValue;
                 trailRenderer.time = fadeDuration * 0.7f;
