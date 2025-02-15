@@ -30,6 +30,12 @@ public class SelectStageSM : Singleton
         Set();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Escape))
+            gameEndBox.gameObject.SetActive(gameEndBox.gameObject.activeSelf == false);
+    }
+
     public void Set()
     {
         Vector3 pos = new Vector3(0, 0);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using System.Threading;
 
 public class StageSM : Singleton
 {
@@ -29,6 +30,12 @@ public class StageSM : Singleton
     public Transform wallsParent;
     public Transform enemysParent;
     public Transform objectsParent;
+
+    [Header("Escape Menu")]
+    public GameObject objEscapeMenu;
+    public GameObject objEndBox;
+    public Text textNumberEscapeMenu;
+    public Text textTitleEscapeMenu;
 
     //Area Func
     public List<UnityAction<bool>> areaFunc = new List<UnityAction<bool>>();
@@ -82,6 +89,8 @@ public class StageSM : Singleton
         stageNum = num;
         textNumber.text = $"- {Extended.ConvertToRoman(num)} -";
         textTitle.text = gameInfos.stageTitle[num];
+        textNumberEscapeMenu.text = $"- {Extended.ConvertToRoman(num)} -";
+        textTitleEscapeMenu.text = gameInfos.stageTitle[num];
 
         StartCoroutine(_SetUp());
     }
@@ -135,19 +144,28 @@ public class StageSM : Singleton
     {
         if (isEnding) return;
 
-        StartCoroutine(_StageRestart());
+        StartCoroutine(_StageRestart(false));
         isEnding = true;
     }
 
-    public IEnumerator _StageRestart()
+    public IEnumerator _StageRestart(bool isByMenu)
     {
-        soundManager.PlaySound(SoundEffectType.Dead);
-        imageEnd.color = Color.red;
-        SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Dying, player.transform.position, Color.red);
+        if (isByMenu == false)
+        {
+            soundManager.PlaySound(SoundEffectType.Dead);
+            imageEnd.color = Color.red;
+            SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Dying, player.transform.position, Color.red);
+        }
         StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
         yield return new WaitForSeconds(1);
         ResetStatus();
         SetUp(gm.stageNum);
+    }
+
+    public void StageRestartByMenu()
+    {
+        StartCoroutine(_StageRestart(true));
+        isEnding = true;
     }
 
     public void StageExit()
@@ -808,5 +826,63 @@ public class StageSM : Singleton
         yield return new WaitForSeconds(1);
         gridInstance.RefreshGrid();
         enemyAi.MoveFugitive(new Vector2(60.17f, 9.67f));
+    }
+
+    //Escape Menu
+    private void Update()
+    {
+        if (isEnding == false && Input.GetKeyUp(KeyCode.Escape))
+        {
+            if (objEndBox.activeSelf == false)
+                objEscapeMenu.SetActive(objEscapeMenu.activeSelf == false);
+            else
+                objEndBox.SetActive(objEndBox.activeSelf == false);
+
+            Time.timeScale = objEscapeMenu.activeSelf ? 0f : 1f;
+        }
+    }
+
+    public void OnClickEscapeMenu()
+    {
+        objEscapeMenu.SetActive(true);
+    }
+
+    public void OnClickResume()
+    {
+        objEscapeMenu.SetActive(false);
+    }
+    public void OnClickRestart()
+    {
+        StageRestartByMenu();
+        objEscapeMenu.SetActive(false);
+    }
+
+    public void OnClickLevelSelect()
+    {
+        isEnding = true;
+        objEscapeMenu.SetActive(false);
+        StartCoroutine(_LevelSelect());
+    }
+
+    IEnumerator _LevelSelect()
+    {
+        StartCoroutine(FadeManager.FadeIn(imageEnd, 1));
+        yield return new WaitForSeconds(1f);
+        gm.LoadSelectStage();
+    }
+
+    public void OnClickExit()
+    {
+        objEndBox.SetActive(true);
+    }
+
+    public void OnClickExitYes()
+    {
+        Application.Quit();
+    }
+
+    public void OnClickExitNo()
+    {
+        objEndBox.SetActive(false);
     }
 }

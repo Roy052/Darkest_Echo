@@ -15,6 +15,9 @@ public class Throw : MonoBehaviour
 
     private void Update()
     {
+        if (Singleton.stageSM.objEscapeMenu.activeSelf)
+            return;
+
         if (Singleton.player.canThrow == false) return;
 
         targetPosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
