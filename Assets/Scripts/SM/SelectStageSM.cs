@@ -67,7 +67,8 @@ public class SelectStageSM : Singleton
 
         cameraDragController.SetCameraPosMax(gm.unlockedStageNum * 5);
 
-        for (int i = 0; i < unlockedNum - 1; i++)
+        int lineCount = Mathf.Min(unlockedNum, MaxStage - 1);
+        for (int i = 0; i < lineCount; i++)
         {
             GameObject tempLine = Instantiate(linePrefab, linePrefab.transform.parent);
             tempLine.name = $"Line {i + 1}";
@@ -77,8 +78,8 @@ public class SelectStageSM : Singleton
             tempLine.SetActive(true);
         }
 
-        for (int i = gm.stageNum; i < stageEltList.Count; i++)
-            stageEltList[i].gameObject.SetActive(false);
+        //for (int i = unlockedNum; i < stageEltList.Count; i++)
+        //    stageEltList[i].gameObject.SetActive(false);
     }
 
     public void OnQuit()

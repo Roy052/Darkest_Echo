@@ -132,6 +132,7 @@ public class StageSM : Singleton
         yield return new WaitForSeconds(1);
         stageNum += 1;
         gm.stageNum += 1;
+        gm.unlockedStageNum = Mathf.Max(gm.unlockedStageNum, gm.stageNum + 1);
 #if UNITY_EDITOR
         StageSMInspector.currentStageIdx += 1;
 #endif
@@ -837,8 +838,6 @@ public class StageSM : Singleton
                 objEscapeMenu.SetActive(objEscapeMenu.activeSelf == false);
             else
                 objEndBox.SetActive(objEndBox.activeSelf == false);
-
-            Time.timeScale = objEscapeMenu.activeSelf ? 0f : 1f;
         }
     }
 
