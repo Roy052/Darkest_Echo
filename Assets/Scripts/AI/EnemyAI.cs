@@ -57,7 +57,10 @@ public class EnemyAI : MonoBehaviour
 
     public virtual void Update()
     {
-        if(enemyType == EnemyType.Fugitive && currentSoundWaveTime >= 1)
+        if (Singleton.stageSM != null && Singleton.stageSM.isPaused)
+            return;
+
+        if (enemyType == EnemyType.Fugitive && currentSoundWaveTime >= 1)
         {
             if(isWater)
                 SoundWaveGenerator.instance.SpawnSoundWave(SoundWaveGenerator.WaveType.Wading,

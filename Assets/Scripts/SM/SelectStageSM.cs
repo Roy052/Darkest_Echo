@@ -78,6 +78,8 @@ public class SelectStageSM : Singleton
             tempLine.SetActive(true);
         }
 
+        if (stageEltList.Count >= gm.unlockedStageNum)
+            Camera.main.transform.position = new Vector3(stageEltList[gm.unlockedStageNum - 1].transform.position.x, 0, -10f);
         //for (int i = unlockedNum; i < stageEltList.Count; i++)
         //    stageEltList[i].gameObject.SetActive(false);
     }

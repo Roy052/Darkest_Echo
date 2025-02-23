@@ -55,6 +55,9 @@ public class SoundWave : MonoBehaviour
 
     private void Update()
     {
+        if (Singleton.stageSM != null && Singleton.stageSM.isPaused)
+            return;
+
         // Cast a ray to detect the wall
         if (circleCollider.isTrigger)
         {
@@ -101,6 +104,9 @@ public class SoundWave : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Singleton.stageSM != null && Singleton.stageSM.isPaused)
+            return;
+
         // Move the sound wave
         transform.position += moveSpeed * Time.deltaTime * moveDir;
         trailStartTime += Time.deltaTime;

@@ -15,7 +15,7 @@ public class Throw : MonoBehaviour
 
     private void Update()
     {
-        if (Singleton.stageSM.objEscapeMenu.activeSelf)
+        if (Singleton.stageSM != null && Singleton.stageSM.isPaused)
             return;
 
         if (Singleton.player.canThrow == false) return;

@@ -69,6 +69,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (Singleton.stageSM != null && Singleton.stageSM.isPaused)
+            return;
+
         if (isWater || isSneaking || isHungry) moveSpeed = 1.5f;
         else moveSpeed = 3.5f;
 
@@ -121,6 +124,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (Singleton.stageSM != null && Singleton.stageSM.isPaused)
+            return;
+
         // Player movement input logic
         var x = Input.GetAxisRaw("Horizontal");
         var y = Input.GetAxisRaw("Vertical");

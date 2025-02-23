@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using System.Threading;
+using System;
 
 public class StageSM : Singleton
 {
@@ -15,6 +16,8 @@ public class StageSM : Singleton
     WaitForSeconds WaitForOneSecond = new WaitForSeconds(1);
 
     int stageNum = 1;
+
+    [NonSerialized] public bool isPaused = false;
 
     public Text textNumber;
     public Text textTitle;
@@ -132,7 +135,7 @@ public class StageSM : Singleton
         yield return new WaitForSeconds(1);
         stageNum += 1;
         gm.stageNum += 1;
-        gm.unlockedStageNum = Mathf.Max(gm.unlockedStageNum, gm.stageNum + 1);
+        gm.unlockedStageNum = Mathf.Max(gm.unlockedStageNum, gm.stageNum);
 #if UNITY_EDITOR
         StageSMInspector.currentStageIdx += 1;
 #endif
@@ -838,22 +841,28 @@ public class StageSM : Singleton
                 objEscapeMenu.SetActive(objEscapeMenu.activeSelf == false);
             else
                 objEndBox.SetActive(objEndBox.activeSelf == false);
+
+            isPaused = objEscapeMenu.activeSelf;
         }
     }
 
     public void OnClickEscapeMenu()
     {
         objEscapeMenu.SetActive(true);
+        isPaused = true;
     }
 
     public void OnClickResume()
     {
         objEscapeMenu.SetActive(false);
+        isPaused = false;
     }
     public void OnClickRestart()
     {
         StageRestartByMenu();
         objEscapeMenu.SetActive(false);
+        isPaused = false;
+        isEnding = true;
     }
 
     public void OnClickLevelSelect()

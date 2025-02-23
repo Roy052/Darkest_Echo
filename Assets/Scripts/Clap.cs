@@ -21,6 +21,9 @@ public class Clap : MonoBehaviour
 
     void Update()
     {
+        if (Singleton.stageSM != null && Singleton.stageSM.isPaused)
+            return;
+
         // Clap logic with space bar
         if (!isSneaking)
         {
